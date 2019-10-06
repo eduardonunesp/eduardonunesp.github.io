@@ -6,10 +6,28 @@
     <description>Recent content in Posts on Ed On Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 10 Oct 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 Oct 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://eduardonunesp.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Practicing Golang (Part 1)</title>
+      <link>https://eduardonunesp.github.io/posts/practicing-golang-pt-1/</link>
+      <pubDate>Tue, 13 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://eduardonunesp.github.io/posts/practicing-golang-pt-1/</guid>
+      <description>So I decided to show in practice (according to my bars) how to build a simple service using HTTP and to send requests and a bit of concurrency (nothing too complicated).</description>
+    </item>
+    
+    <item>
+      <title>Practicing Golang (Part 2)</title>
+      <link>https://eduardonunesp.github.io/posts/practicing-golang-pt-2/</link>
+      <pubDate>Tue, 13 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://eduardonunesp.github.io/posts/practicing-golang-pt-2/</guid>
+      <description>The time has come to talk about one of the main features of the Go language.</description>
+    </item>
     
     <item>
       <title>Golang One Month Later (Part 2)</title>
