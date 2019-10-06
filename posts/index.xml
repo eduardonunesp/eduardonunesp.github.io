@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Ed On Code</title>
+    <link>https://eduardonunesp.github.io/posts/</link>
+    <description>Recent content in Posts on Ed On Code</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 10 Oct 2015 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://eduardonunesp.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Golang One Month Later (Part 2)</title>
+      <link>https://eduardonunesp.github.io/posts/golang-one-month-later-pt-2/</link>
+      <pubDate>Sat, 10 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://eduardonunesp.github.io/posts/golang-one-month-later-pt-2/</guid>
+      <description>Let&amp;rsquo;s continue with the second part of the previous post Golang One Month Later, and talk about how it is to edit the Golang code</description>
+    </item>
+    
+    <item>
+      <title>Golang One Month Later (Part 1)</title>
+      <link>https://eduardonunesp.github.io/posts/golang-one-month-later-pt-1/</link>
+      <pubDate>Fri, 09 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://eduardonunesp.github.io/posts/golang-one-month-later-pt-1/</guid>
+      <description>Maybe it&amp;rsquo;s been more than a month that I&amp;rsquo;m studying Go; however this is not the case, the important thing is that I want to share a little of what happened during this period</description>
+    </item>
+    
+  </channel>
+</rss>
