@@ -91,13 +91,28 @@
 <p>Earlier I said that there is a path to sources? Then I realized that even the path to my Github repository was related to the code path as a local package. Note that the path &ldquo;src / github.com / eduardonunesp&rdquo; is the user path in Github and the project for example: &ldquo;src/github.com/eduardonunesp/sslb&rdquo; is the path where the project in Go should be used when you download this project using the command &ldquo;go get github.com/eduardonunesp/sslb&rdquo;. It will automatically create in GOPATH the src directory and the bin directory,  also the code and binary ready to use!</p>
 
 <p>Even when you are coding in go you will need to refer to third party projects as the full path for example:</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">routes</span>
+
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">routes</span>
 <span class="kn">import</span> <span class="p">(</span>
  <span class="s">&#34;log&#34;</span>
  <span class="s">&#34;strconv&#34;</span>
  <span class="s">&#34;github.com/eduardonunesp/sslb/cli&#34;</span>
  <span class="s">&#34;github.com/gorilla/mux&#34;</span>
-<span class="p">)</span></code></pre></div>
+<span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+
 <h2 id="is-there-an-error-no-now-there-is-an-error-now-it-has-not-then-follow">Is there an error? No, now there is an error? Now it has? Not? then follow</h2>
 
 <h3 id="go-doesn-t-want-you-to-miss-or-forget-something-it-bugs-you-with-until-you-learn-it">Go doesn&rsquo;t want you to miss or forget something; it bugs you with until you learn it.</h3>
@@ -123,7 +138,7 @@
 
         		<footer>
 			<span>
-			&copy; <time datetime="2019-10-06 15:19:14.8270907 -0300 -03 m=&#43;0.144588801">2019</time> Eduardo Nunes Pereira. Made with <a href='https://gohugo.io'>Hugo</a> using the <a href='https://github.com/EmielH/tale-hugo/'>Tale</a> theme.
+			&copy; <time datetime="2019-10-06 16:19:29.0869133 -0300 -03 m=&#43;0.106262001">2019</time> Eduardo Nunes Pereira. Made with <a href='https://gohugo.io'>Hugo</a> using the <a href='https://github.com/EmielH/tale-hugo/'>Tale</a> theme.
 			</span>
 		</footer>
 
