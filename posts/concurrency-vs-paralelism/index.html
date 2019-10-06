@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Concurrency vs Paralelism &middot; Ed On Code</title>
+
+		
+  		<link rel="stylesheet" href="https://eduardonunesp.github.io/css/style.css">
+		<link rel="stylesheet" href="https://eduardonunesp.github.io/css/fonts.css">
+		
+		<link rel="icon" type="image/png" sizes="32x32" href="https://eduardonunesp.github.io/images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="https://eduardonunesp.github.io/images/favicon-16x16.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="https://eduardonunesp.github.io/images/apple-touch-icon.png">
+
+		
+		<link href="" rel="alternate" type="application/rss+xml" title="Ed On Code" />
+	</head>
+
+    <body>
+        		<nav class="nav">
+			<div class="nav-container">
+				<a href="https://eduardonunesp.github.io/">
+					<h2 class="nav-title">Ed On Code</h2>
+				</a>
+				<ul>
+    <li><a href="https://eduardonunesp.github.io/about">About</a></li>
+    <li><a href="https://eduardonunesp.github.io/">Posts</a></li>
+</ul>
+			</div>
+		</nav>
+
+        
+
+<main>
+	<div class="post">
+		<div class="post-info">
+    <span>Written by</span>
+        Eduardo NUnes Pereira
+        <br>
+        <span>on&nbsp;</span><time datetime="2015-10-17 00:00:00 &#43;0000 UTC">October 17, 2015</time>
+</div>
+		<h1 class="post-title">Concurrency vs Paralelism</h1>
+<div class="post-line"></div>
+
+		
+
+		
+
+<blockquote>
+<p>In a universe where everything happens at the same time and we don&rsquo;t even consider the amount of events happening around us, everything is dynamic and sometimes there is no sequence or prediction.</p>
+</blockquote>
+
+<p>Picture a queue to place an order, it could be the order of a meal, for example: and while waiting in turn, the cashier is taking orders, the person in front of them is going to call, and quickly a new order has just landed in the kitchen.</p>
+
+<p>Moreover, another attendant is serving a previous order, and you are consulting your super-sharp four-core smartphone, thinking as to which movies are playing at the movies while listening to your favorite band. Wow! How much; This is just an incredibly summarized narration of what happened around in this imaginary exercise.</p>
+
+<blockquote>
+<p>Over the years, software development has advanced and created tools, languages, and ways to handle our &ldquo;universe&rdquo; of events.</p>
+</blockquote>
+
+<p>Programs are designed to work asynchronously, and while receiving a request they already work on a previous request, at the same time as calculating an output for another request and all super-fast, there is no place for a queue where things occur only sequentially, there is opening for intelligently divided tasks and multiple queues to process multiple jobs.</p>
+
+<h2 id="concurrency">Concurrency</h2>
+
+<p>Anyone who has ever used computers with only one processor/core may have lived up to the concurrency and not even noticed (maybe realized and switched to a better computer), just why it happens so fast may seem like it&rsquo;s all at the same time. However, the computer needs to receive the keyboard data, send it to the video, play your music (maybe Pink Floyd), receive network data, show a new email (wow! I must have only spoken 1%). All in one processor/core and it was so fast, and no, it wasn&rsquo;t all at the same time, it was small, well-done tasks, one at a time, divided by time and each using microseconds (0.000001 Second) only.</p>
+
+<blockquote>
+<p>A program that wasn&rsquo;t built to work concurrently, never going to perform satisfactorily; just as a program that wasn&rsquo;t built to work in parallel, never going to use multiple processors/cores satisfactorily, the hardware can&rsquo;t perform miracles.</p>
+</blockquote>
+
+<h2 id="parallelism">Parallelism</h2>
+
+<p>When I said &ldquo;everything happening at the same time&rdquo; in the previous example, I made it clear that it wasn&rsquo;t all at the same time. However, the tasks performed incredibly quickly.</p>
+
+<p>For parallelism to occur at the same time, we need more than one processor or one processor with more than one core, so that two or more tasks happen simultaneously.</p>
+
+<p>If the goal is parallelism, then we need well-planned concurrency, tasks performed by the program cannot conflict, lock, or stand in endless wait.</p>
+
+<blockquote>
+<p>When we talk about concurrency, we focus on the framework, and when we talk about parallelism, the focus is on how such frameworks going to be executed on multiple processor/core hardware.</p>
+</blockquote>
+
+<h2 id="concurrency-and-parallelism-together">Concurrency and parallelism together</h2>
+
+<p>Now that we have in mind the concepts we needed and more hope that they are clear, we can move on to the final piece.</p>
+
+<p>Let&rsquo;s put both concepts together and make this structure communicate in a protected and scalable way; to achieve concurrency, we are going to use the multiple routines in our program; we can call them threads or routines; let&rsquo;s stick to the concepts for now.</p>
+
+<p>Now that we have the parallelism of distributing tasks between processors/cores, the final piece is the communication mechanism, the tunnel or channel that connects multiple routines, because there is no use having multiple routines if they do not communicate with each other.</p>
+
+<p>The means of communication should enable synchronized communication, ie, no data going to arrive early, or arrive later, shouldn&rsquo;t block a previous task or stop serving another; this is why it is so crucial that this mechanism is synchronized. Such allows all jobs to occur without one &ldquo;operating over&rdquo; the other.</p>
+
+<h2 id="final-considerations">Final considerations</h2>
+
+<p>For sure, this is a dense subject, and it also has much theory involved, a subject that usually extends into a chair in the Computer Science course (Operating Systems / Multiprocessed Systems).</p>
+
+<p>I hope I have illustrated and clearly on the subject that I am going to create a more practical example in the next example, where I explain how to use concurrency and parallelism in Go programming.</p>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+<li>Rob Pike, one of the creators of Go on his &ldquo;Concurrency Is Not Parallelism&rdquo; talk <a href="https://www.youtube.com/watch?v=cN_DpYBzKso">https://www.youtube.com/watch?v=cN_DpYBzKso</a></li>
+<li>The paper that influenced a generation <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">https://en.wikipedia.org/wiki/Communicating_sequential_processes</a></li>
+<li>Golang Book <a href="https://www.golang-book.com/books/intro/10">https://www.golang-book.com/books/intro/10</a></li>
+</ul>
+
+
+		
+	</div>
+
+	<div class="pagination">
+		<a href="https://eduardonunesp.github.io/posts/practicing-golang-pt-1/" class="left arrow">&#8592;</a>
+
+		<a href="#" class="top">Top</a>
+	</div>
+</main>
+
+
+        		<footer>
+			<span>
+			&copy; <time datetime="2019-10-06 16:56:48.2799938 -0300 -03 m=&#43;0.092143701">2019</time> Eduardo Nunes Pereira. Made with <a href='https://gohugo.io'>Hugo</a> using the <a href='https://github.com/EmielH/tale-hugo/'>Tale</a> theme.
+			</span>
+		</footer>
+
+    </body>
+</html>

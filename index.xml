@@ -6,10 +6,19 @@
     <description>Recent content on Ed On Code</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Oct 2015 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 17 Oct 2015 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://eduardonunesp.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Concurrency vs Paralelism</title>
+      <link>https://eduardonunesp.github.io/posts/concurrency-vs-paralelism/</link>
+      <pubDate>Sat, 17 Oct 2015 00:00:00 +0000</pubDate>
+      
+      <guid>https://eduardonunesp.github.io/posts/concurrency-vs-paralelism/</guid>
+      <description>In a universe where everything happens at the same time and we don&amp;rsquo;t even consider the amount of events happening around us, everything is dynamic and sometimes there is no sequence or prediction.</description>
+    </item>
     
     <item>
       <title>Practicing Golang (Part 1)</title>
