@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
+        
+
+        <title>Ed On Code</title>
+
+        
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https:&#x2F;&#x2F;edoncode.dev" class="logo">Ed On Code</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https:&#x2F;&#x2F;edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Practicing Golang (Part 2)</h1>
+        <div class="border"></div>
+        <time datetime="2015-10-13" class="date" itemprop="datePublished">
+            13 Oct 2015
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        <h2 id="channels-and-routines">Channels and Routines</h2>
+<p>The time has come to talk about one of the main features of the Go language.</p>
+<p>Undoubtedly one of the most exciting things about language is that competition is in the “blood”; it is in the core of the language, it does not need an auxiliary library, not even “workarounds” or “macgyverisms”.</p>
+<p>Furthermore, the responsible for this are the go call, the channel type, and the routine.</p>
+<p>The go keyword will cause a function linked to the main thread to become independent, ie a routine and keep running until it ends and the channel type is responsible for facilitating communication with background routines, the channel type is synchronized, and when it has a value entered (think like a pipe), it only receives another value if the first one is read (if the pipe is empty), this attitude prevents the functions connected by the channel from being unsynchronized . There are also buffered channels, but this is homework (more information at https://tour.golang.org/concurrency/1).</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">pool</span><span>() </span><span style="color:#b48ead;">chan string </span><span>{
+</span><span>	</span><span style="color:#bf616a;">ch </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan string</span><span>)
+</span><span>	</span><span style="color:#b48ead;">go func</span><span>() {
+</span><span>		</span><span style="color:#bf616a;">haveResponse </span><span>:= </span><span style="color:#d08770;">false
+</span><span>		</span><span style="color:#bf616a;">requestJSON </span><span>:= </span><span style="color:#b48ead;">func</span><span>() {
+</span><span>			</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">res</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">checker</span><span>(); </span><span style="color:#bf616a;">err </span><span>== </span><span style="color:#d08770;">nil </span><span>{
+</span><span>				</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">jsonRes </span><span>:= </span><span style="color:#bf616a;">parseJSON</span><span>(</span><span style="color:#bf616a;">res</span><span>); </span><span style="color:#bf616a;">jsonRes </span><span>!= &quot;&quot; {
+</span><span>					</span><span style="color:#bf616a;">haveResponse </span><span>= </span><span style="color:#d08770;">true
+</span><span>					</span><span style="color:#bf616a;">ch </span><span>&lt;- </span><span style="color:#bf616a;">jsonRes
+</span><span>				}
+</span><span>			}
+</span><span>		}
+</span><span>
+</span><span>		</span><span style="color:#b48ead;">for </span><span>{
+</span><span>			</span><span style="color:#bf616a;">requestJSON</span><span>()
+</span><span>			</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">haveResponse </span><span>{
+</span><span>				</span><span style="color:#b48ead;">break
+</span><span>			} </span><span style="color:#b48ead;">else </span><span>{
+</span><span>				</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">No result try again ...</span><span>&quot;)
+</span><span>			}
+</span><span>		}
+</span><span>
+</span><span>		</span><span style="color:#bf616a;">c </span><span>:= </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Tick</span><span>(</span><span style="color:#d08770;">5 </span><span>* </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Minute</span><span>)
+</span><span>		</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">now </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">c </span><span>{
+</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Updated at </span><span style="color:#d08770;">%v</span><span>&quot;, </span><span style="color:#bf616a;">now</span><span>)
+</span><span>			</span><span style="color:#bf616a;">requestJSON</span><span>()
+</span><span>		}
+</span><span>	}()
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ch
+</span><span>}
+</span></code></pre>
+<p>When executed, the pool function going to create a string channel that is used to communicate with the routine that creates ion line 3, see that the keyword go is present, causing the anonymous function to be in the background. In line 5, we are creating a function and assigning a variable (anonymous function), it requests by calling the functions checker and parseJSON for on line 9 that going to insert in the communication channel the result of USD. The loop on line 14 ends when we have a value in the channel, because sometimes the request made to Yahoo! doesn’t return the value in USD, so we need to make sure it has value right from the start.</p>
+<p>On line 24, we have an infinite loop that executes every 5 minutes with the help of the time. Tick function responsible for pinging the loop so that it executes with the necessary pause</p>
+<h2 id="main-function">Main function</h2>
+<p>Like its C language predecessor, the main function is also called main.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	</span><span style="color:#65737e;">// Get the first value
+</span><span>	</span><span style="color:#bf616a;">checkerpool </span><span>:= </span><span style="color:#bf616a;">pool</span><span>()
+</span><span>	</span><span style="color:#bf616a;">latestResult </span><span>:= &lt;-</span><span style="color:#bf616a;">checkerpool
+</span><span>
+</span><span>	</span><span style="color:#65737e;">// To deploy at heroku :D
+</span><span>	</span><span style="color:#bf616a;">env </span><span>:= </span><span style="color:#bf616a;">os</span><span>.</span><span style="color:#bf616a;">Getenv</span><span>(&quot;</span><span style="color:#a3be8c;">GO_ENV</span><span>&quot;)
+</span><span>	</span><span style="color:#bf616a;">host </span><span>:= &quot;</span><span style="color:#a3be8c;">127.0.0.1</span><span>&quot;
+</span><span>	</span><span style="color:#bf616a;">port </span><span>:= </span><span style="color:#d08770;">9000
+</span><span>	</span><span style="color:#65737e;">//token := &quot;&quot;
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">env </span><span>== &quot;</span><span style="color:#a3be8c;">PRODUCTION</span><span>&quot; {
+</span><span>		</span><span style="color:#bf616a;">host </span><span>= &quot;&quot;
+</span><span>		</span><span style="color:#bf616a;">port</span><span>, </span><span style="color:#bf616a;">_ </span><span>= </span><span style="color:#bf616a;">strconv</span><span>.</span><span style="color:#bf616a;">Atoi</span><span>(</span><span style="color:#bf616a;">os</span><span>.</span><span style="color:#bf616a;">Getenv</span><span>(&quot;</span><span style="color:#a3be8c;">PORT</span><span>&quot;))
+</span><span>		</span><span style="color:#65737e;">//token = os.Getenv(&quot;TOKEN&quot;)
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">address </span><span>:= </span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Sprintf</span><span>(&quot;</span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">:</span><span style="color:#d08770;">%d</span><span>&quot;, </span><span style="color:#bf616a;">host</span><span>, </span><span style="color:#bf616a;">port</span><span>)
+</span><span>	</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Ready to serve at</span><span>&quot;, </span><span style="color:#bf616a;">address</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#bf616a;">HandleFunc</span><span>(&quot;</span><span style="color:#a3be8c;">/</span><span>&quot;, </span><span style="color:#b48ead;">func</span><span>(</span><span style="color:#bf616a;">rw http</span><span>.</span><span style="color:#b48ead;">ResponseWriter</span><span>, </span><span style="color:#bf616a;">req </span><span>*</span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#b48ead;">Request</span><span>) {
+</span><span>		</span><span style="color:#b48ead;">select </span><span>{
+</span><span>		</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">latestResult </span><span>:= &lt;-</span><span style="color:#bf616a;">checkerpool</span><span>:
+</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Get result</span><span>&quot;, </span><span style="color:#bf616a;">latestResult</span><span>)
+</span><span>		</span><span style="color:#b48ead;">default</span><span>:
+</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Get cache value</span><span>&quot;)
+</span><span>		}
+</span><span>
+</span><span>		</span><span style="color:#bf616a;">_</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">rw</span><span>.</span><span style="color:#bf616a;">Write</span><span>([]</span><span style="color:#b48ead;">byte</span><span>(</span><span style="color:#bf616a;">latestResult</span><span>))
+</span><span>
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">err</span><span>)
+</span><span>		}
+</span><span>	})
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#bf616a;">ListenAndServe</span><span>(</span><span style="color:#bf616a;">address</span><span>, </span><span style="color:#d08770;">nil</span><span>); </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>		</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Fatal</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to serve to address</span><span>&quot;, </span><span style="color:#bf616a;">address</span><span>, </span><span style="color:#bf616a;">err</span><span>)
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<p>So finally, we can finish (or start, depends on the point of view). On line 3 should create a pool using the pool function that returns the channel, and on line 4 the value contained in the channel should be removed and inserted in the latestResult variable (which, as the name suggests, should keep the last result).</p>
+<p>Up to line 19, initialization routines will be performed, such as setting variables and checking the environment, and if it is necessary to change the HTTP port (necessary when using Heroku). On line 21 a handler is created for the route “/” and assigned to a function, which should receive the HTTP request, at this moment on line 22 comes the keyword select that tests: if in case a value was successfully removed from the channel follows with execution or default value: if no value has been removed, ie, if the channel is empty you can also follow successfully. Finally, the latestResult value is written to the HTTP response; now the result it should return the value to the requesting user.</p>
+
+    </div>
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>
