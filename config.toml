@@ -4,6 +4,8 @@ base_url = "https://edoncode.dev"
 title = "Ed On Code"
 description = "Ed On Code is a blog about software development and related topics."
 
+output_dir = "docs"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
