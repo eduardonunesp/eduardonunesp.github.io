@@ -6,13 +6,12 @@ date = "2015-10-13"
 
 ## Channels and Routines
 
-The time has come to talk about one of the main features of the Go language.
+The time has come to discuss one of the main features of the Go language: concurrency. Undoubtedly, one of the most exciting aspects of Go is that concurrency is ingrained in the language’s core. It does not require auxiliary libraries, workarounds, or makeshift solutions. 
 
-Undoubtedly one of the most exciting things about language is that competition is in the “blood”; it is in the core of the language, it does not need an auxiliary library, not even “workarounds” or “macgyverisms”.
+The key components responsible for Go’s concurrency model are the go keyword, channels, and goroutines. The go keyword initiates a function as a goroutine, allowing it to run independently alongside the main thread until it completes. Channels facilitate communication between goroutines by providing a synchronized way to send and receive values. When a value is sent to a channel (similar to a pipe), it is only received if the channel is ready to accept it, ensuring synchronization and preventing race conditions between connected functions. 
 
-Furthermore, the responsible for this are the go call, the channel type, and the routine.
+Additionally, Go supports buffered channels, which allow for more flexible communication patterns by enabling channels to hold a specified number of values without immediate receipt. Understanding these concurrency mechanisms is essential for building efficient and scalable applications in Go. For more information, visit the Go Concurrency Tour.
 
-The go keyword will cause a function linked to the main thread to become independent, ie a routine and keep running until it ends and the channel type is responsible for facilitating communication with background routines, the channel type is synchronized, and when it has a value entered (think like a pipe), it only receives another value if the first one is read (if the pipe is empty), this attitude prevents the functions connected by the channel from being unsynchronized . There are also buffered channels, but this is homework (more information at https://tour.golang.org/concurrency/1).
 
 ```go
 func pool() chan string {
@@ -47,9 +46,10 @@ func pool() chan string {
 }
 ```
 
-When executed, the pool function going to create a string channel that is used to communicate with the routine that creates ion line 3, see that the keyword go is present, causing the anonymous function to be in the background. In line 5, we are creating a function and assigning a variable (anonymous function), it requests by calling the functions checker and parseJSON for on line 9 that going to insert in the communication channel the result of USD. The loop on line 14 ends when we have a value in the channel, because sometimes the request made to Yahoo! doesn’t return the value in USD, so we need to make sure it has value right from the start.
+When executed, the pool function creates a string channel used for communication with the goroutine initiated on line 3. The presence of the go keyword ensures that the anonymous function runs in the background. On line 5, we define and assign an anonymous function to a variable, which calls the checker and parseJSON functions on line 9 to insert the USD result into the communication channel. The loop on line 14 terminates once a value is received from the channel, addressing scenarios where a request to Yahoo! might not return a USD value by ensuring a value is present from the outset.
 
-On line 24, we have an infinite loop that executes every 5 minutes with the help of the time. Tick function responsible for pinging the loop so that it executes with the necessary pause
+Furthermore, on line 24, an infinite loop is established to execute every five minutes, utilizing the time.Tick function to trigger the loop with the necessary pauses.
+
 
 ## Main function
 
@@ -96,6 +96,7 @@ func main() {
 	}
 }
 ```
-So finally, we can finish (or start, depends on the point of view). On line 3 should create a pool using the pool function that returns the channel, and on line 4 the value contained in the channel should be removed and inserted in the latestResult variable (which, as the name suggests, should keep the last result).
 
-Up to line 19, initialization routines will be performed, such as setting variables and checking the environment, and if it is necessary to change the HTTP port (necessary when using Heroku). On line 21 a handler is created for the route “/” and assigned to a function, which should receive the HTTP request, at this moment on line 22 comes the keyword select that tests: if in case a value was successfully removed from the channel follows with execution or default value: if no value has been removed, ie, if the channel is empty you can also follow successfully. Finally, the latestResult value is written to the HTTP response; now the result it should return the value to the requesting user.
+Finally, we reach the concluding steps of our implementation. On line 3, we create a pool using the pool function, which returns a channel. On line 4, the value from this channel is retrieved and stored in the latestResult variable, which, as its name suggests, holds the most recent result. Up to line 19, various initialization routines are performed, including setting variables, checking the environment, and, if necessary, changing the HTTP port (which is essential when deploying to platforms like Heroku). On line 21, a handler is created for the root route “/” and assigned to a function designed to handle HTTP requests. 
+
+At this point, on line 22, the select statement is used to check if a value was successfully retrieved from the channel. If a value is present, the corresponding execution path is followed; otherwise, the default case is executed if the channel is empty. Finally, the latestResult value is written to the HTTP response, ensuring that the requesting user receives the most recent USD value.
