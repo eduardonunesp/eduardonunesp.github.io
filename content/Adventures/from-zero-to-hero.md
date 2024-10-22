@@ -4,23 +4,19 @@ slug = "from-zero-to-hero"
 date = "2015-05-28"
 +++
 
-> Last weekend on the 22nd, 23rd, and 24th, I attended the Startup Weekend Education; here in Florianópolis, it was one of the most exceptional experiences I have ever had in my entrepreneurial career (which also has very new).
+> Last weekend, from the 22nd to the 24th, I attended Startup Weekend Education in Florianópolis. It was one of the most exceptional experiences I have ever had in my entrepreneurial career, which is still in its early stages.
 
-Our first meeting was on Friday on the 22nd, and I knew no one and nothing of what it would be or how it should proceed, you know that weird feeling of lost in the crowd? That’s how I felt. By the end of the first day of the event, we had the idea of what we’re going to work on, and we also had a team ready.
+My first meeting was on Friday, the 22nd. I knew no one and had no idea what to expect or how the event would unfold. You know that weird feeling of being lost in a crowd? That’s exactly how I felt. By the end of the first day, we had developed a clear idea of what we were going to work on and had formed a dedicated team.
 
-Project chosen team formed, Saturday morning a still quiet breakfast. Then the rush began, which the folks at the organization called “From Zero”, a continuous brainstorming sessions about the problem, many ideas, much disagreement until it came to a consensus.
+On Saturday morning, our newly formed team gathered for a still-quiet breakfast. Then the rush began, an activity the organizers referred to as “From Zero” — continuous brainstorming sessions focused on identifying and solving problems. There were numerous ideas and a fair amount of disagreement until we finally reached a consensus.
 
-During the afternoon, it’s time to validate the idea, summarizing was like: validates, and confirms. As an entrepreneur, probably that is the part that I’ve always missed, I think. It’s the part of going out on the street, asking the client or future client, if we’re right, or close, or not, it’s time to face the facts, are you ready or not, do you have a product or just an illusion?
+In the afternoon, it was time to validate our idea. This involved testing and confirming our concept. As an entrepreneur, this is probably the part I’ve always missed: going out into the real world, engaging with potential clients, and asking them if our idea resonated with their needs. It was time to face the facts—were we ready, or were we merely chasing an illusion?
 
-Should we redo the brainstorm from scratch (and the clock doesn’t stop at this time at 3:00 pm on Saturday)? We came back for a brainstorm again, at least it wasn’t totally from scratch.
+Faced with uncertainty, we had to decide whether to redo the brainstorming from scratch. The clock was ticking relentlessly at 3:00 pm on Saturday, so we returned to another brainstorming session, though not entirely from scratch. After conducting research on the streets and through social networks, we felt confident that our solution was validated. With that assurance, it was time to dive into coding, working late into the night from home.
 
-After searching the material on the street and social networks, we considered the solution validated. Then it’s time to code until late at home.
+Sunday arrived, marking the final day of the event. Interestingly, breakfast was lively and fun, a stark contrast to the quietness of Saturday morning. After breakfast, it was time to reach out to customers and begin selling our product. It may sound crazy, but 48 hours is a short time. While this is obvious, witnessing our product in the hands of the first users—even during the “free” period—was incredibly rewarding.
 
-Sunday came, the last day, the funny thing was that breakfast was super fun, it wasn’t that “quiet” as the Saturday mood. After breakfast, it’s time to run after customers and sell the product.
+Our product started gaining traction; people were actively using it, asking questions, and showing curiosity—all on Sunday. Finally, at 4:00 pm, we finished our 3-minute pitch and presented it at 5:00 pm.
 
-It may sound crazy, but 48 hours is a short time, it’s obvious, but when you see the product walking in and entering the first users, even if the product is in the “free” period, it’s a cool thing.
-
-The product was moving; people already active inside the product asking questions and curious (remembering that it was Sunday). Well, finally, at 16:00 hours, we finished our 3-minute pitch and presented at 17:00 on the clock.
-
-Did we win? Well, we gained a lot of experience and learning that can’t be explained. We did not climb the podium, but the product was moving and gained some traction, not enough for selling for sure, but to make us proud, that’s for sure.
+Did we win? While we didn’t climb the podium, we gained invaluable experience and learning that words can’t fully capture. Our product was moving and garnered some traction. It might not be enough for immediate sales, but it certainly made us proud and motivated us to continue our entrepreneurial journey.
 
