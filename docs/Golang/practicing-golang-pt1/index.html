@@ -37,15 +37,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
@@ -81,15 +81,14 @@
         </time>
     </div>
     <div itemprop="articleBody">
-        <p>On my previous article: Golang, a month later, I took a brief look at the programming language that was born inside Google and showed some points that I found exciting and others not so memorable.</p>
-<p>So I decided to show in practice (according to my bars) how to build a simple service using HTTP and to send requests and a bit of concurrency (nothing too complicated).</p>
-<p>The service in question is a consumer service that translates the USD currency to the BRL currency (Dollars to Real); so the user is going to send a request to the service, and it responds with the current dollar value of the last 5 minutes.</p>
-<p>Why the last 5 minutes? That’s when the competition comes in because a routine is running that continually checking the dollar via HTTP request every 5 minutes (all at the same time).</p>
-<p>This way, whenever a user request arrives at the service, it immediately returns the value it needs because it does not need to consult another service whenever a new request arrives, and all because it stores the last value in memory and concurrently.</p>
-<p>No worries, the explanation is in a nonlinear way; I mean, not the way it is performed, but in the end, all explanations going to make sense (at least I hope).</p>
+        <p>In my previous article on Golang, I took a brief look at the programming language developed by Google, highlighting some features that I found exciting and others that were less memorable.</p>
+<p>Building on that foundation, I decided to demonstrate, in practice, how to create a simple HTTP service that handles requests and incorporates basic concurrency — nothing too complicated. The service I developed is a currency converter that translates USD to BRL (US Dollars to Brazilian Reais).</p>
+<p>When a user sends a request to the service, it responds with the current dollar value based on data from the last five minutes. Why the last five minutes? This approach involves a routine that continuously checks the dollar rate via HTTP requests every five minutes concurrently.</p>
+<p>Consequently, when a user request arrives, the service can immediately return the required value without needing to query an external service each time, as it stores the latest value in memory and manages it concurrently.</p>
+<p>Don’t worry if the explanation seems nonlinear; while the process may not follow this exact order, I hope that all the explanations will make sense in the end.</p>
 <h2 id="Initial_structure">Initial structure</h2>
 <h1 id="To_interpret_JSON,_we_need_to_associate_it_with_a_structure;_this_is_very_common_in_language">To interpret JSON, we need to associate it with a structure; this is very common in language</h1>
-<p>Our structure or type struct must reflect the return of the service to be queried. Let’s look at a Yahoo! which converts USD to BRL and returns the requested values in JSON format.</p>
+<p>Our data structure, defined using a struct, must accurately represent the response returned by the service when queried. For example, consider a service similar to Yahoo Finance that converts USD to BRL and returns the requested values in JSON format. To handle this response effectively in Go, we need to design a struct that mirrors the JSON structure, ensuring seamless data parsing and manipulation.</p>
 <p>The initial structure should be:</p>
 <pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>requestResult </span><span style="color:#b48ead;">struct </span><span>{
 </span><span>	</span><span style="color:#bf616a;">Query </span><span style="color:#b48ead;">struct </span><span>{
@@ -100,7 +99,7 @@
 </span><span>	} `</span><span style="color:#a3be8c;">json:&quot;query&quot;</span><span>`
 </span><span>}
 </span></code></pre>
-<p>The following structure is “reflecting” the JSON format that is expected and answered by the Yahoo! service.</p>
+<p>The following struct mirrors the JSON format returned by the Yahoo! service.</p>
 <pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
 </span><span>  &quot;</span><span style="color:#a3be8c;">query</span><span>&quot;: {
 </span><span>    &quot;</span><span style="color:#a3be8c;">count</span><span>&quot;:</span><span style="color:#d08770;">1</span><span>,
@@ -110,7 +109,7 @@
 </span><span>  }
 </span><span>}
 </span></code></pre>
-<p>Next, we should send a request for the service according to the following URL and code (I advise you to visit the Yahoo! documentation at https://developer.yahoo.com/yql/)</p>
+<p>Next, we will send a request to the service using the following URL and code snippet. I recommend consulting the Yahoo! documentation at https://developer.yahoo.com/yql/ for more detailed information.</p>
 <pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">const </span><span style="color:#bf616a;">url </span><span>= &quot;</span><span style="color:#a3be8c;">http://query.yahooapis.com/v1/public/yql?...</span><span>&quot;
 </span><span>
 </span><span style="color:#65737e;">// Make the request and return the content of body
@@ -137,10 +136,11 @@
 </span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">string</span><span>(</span><span style="color:#bf616a;">contents</span><span>), </span><span style="color:#d08770;">nil
 </span><span>}
 </span></code></pre>
-<p>The checker function should return two parameters (remember I mentioned in the previous article about functions returning the error and a result). On line 5 we are making the request using the get function of package HTTP (belongs to the standard library), we test if there was any error (err! = Nil), then we going to read the contents on line 18 and return the result of the function on line 24.</p>
-<p>What about the defer on line 11?; that is a routine designed to be executed only when the function terminates, so function with defer on line 11 is going to be executed to terminate the HTTP request; that is an excellent strategy for clearing any pending resources in the role.</p>
+<p>The checker function is designed to return two parameters, aligning with the practice mentioned in the previous article where functions typically return both a result and an error. On line 5, we make an HTTP request using the Get function from the http package, which is part of Go’s standard library.</p>
+<p>We then check for any errors by evaluating if err != nil. If no error occurs, we proceed to read the response content on line 18 and ultimately return the function’s result on line 24. Regarding the defer statement on line 11, it is a routine intended to execute only when the function terminates.</p>
+<p>By deferring the closure of the HTTP request, we ensure that it is properly terminated, effectively managing any pending resources. This is an excellent strategy for resource cleanup, preventing potential leaks and ensuring that all resources are released appropriately once the function completes.</p>
 <h2 id="Interpreting_JSON">Interpreting JSON</h2>
-<p>The idea now is to get the string of the checker function and return what interests us, the value in USD, for this, should perform the following function:</p>
+<p>The next step is to extract the USD value from the string returned by the checker function. To achieve this, the parseJSON function takes the JSON text result received on line 3 and creates an object based on the requestResult struct. On line 5, the json.Unmarshal function is responsible for parsing the JSON data and mapping it to the requestResult structure. This underscores the importance of designing the struct to accurately reflect the JSON format, ensuring that only the relevant data—the USD value—is extracted and returned. By aligning the struct with the JSON response, we enable efficient and precise data handling, allowing our service to focus solely on the information that matters.</p>
 <pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">parseJSON</span><span>(</span><span style="color:#bf616a;">jsonResult </span><span style="color:#b48ead;">string</span><span>) </span><span style="color:#b48ead;">string </span><span>{
 </span><span>	</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">JSON REQUEST</span><span>&quot;, </span><span style="color:#bf616a;">jsonResult</span><span>)
 </span><span>	</span><span style="color:#bf616a;">result </span><span>:= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#b48ead;">requestResult</span><span>)
@@ -156,7 +156,7 @@
 </span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">result</span><span>.</span><span style="color:#bf616a;">Query</span><span>.</span><span style="color:#bf616a;">Results
 </span><span>}
 </span></code></pre>
-<p>When the parseJSON function receives the JSON text result on line 3, we going to create an object based on the requestResult structure and line 5 the json.Unmarshal function should be responsible for interpreting the value and associating it with the structure, so the importance of the structure “reflects” JSON format and returning only what matters, which is the USD value</p>
+<p>When the parseJSON function receives the JSON text result on line 3, it creates an object based on the requestResult struct. On line 5, the json.Unmarshal function is responsible for parsing the JSON data and mapping it to the requestResult structure. This highlights the importance of designing the struct to accurately mirror the JSON format, ensuring that only the relevant data—the USD value—is extracted and returned. By aligning the struct with the JSON response, we facilitate efficient and precise data handling, allowing our service to focus solely on the information that matters.</p>
 
     </div>
 </article>
