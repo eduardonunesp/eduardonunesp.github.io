@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
+        
+
+        <title>Ed On Code</title>
+
+        
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Real Time Volume-Weighted Average Price</h1>
+        <div class="border"></div>
+        <time datetime="2023-10-13" class="date" itemprop="datePublished">
+            13 Oct 2023
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        <p>Today I'm going to talk about an analysis indicator know as Volume-Weighted Average Price. In the fast-paced world of financial markets, traders are constantly on the lookout for tools and strategies to help them make informed decisions.</p>
+<p>One such tool that has gained significant popularity over the years is the Volume-Weighted Average Price (VWAP). VWAP is more than just an indicator; it's a powerful concept that traders use to gain insights into market dynamics, execute orders effectively, and improve their trading strategies. In this blog post, we will delve into what VWAP is, how it works and create our own in Go.</p>
+<h2 id="First_what_is_VWAP?">First what is VWAP?</h2>
+<p>Volume-Weighted Average Price (VWAP) is a trading indicator that provides a benchmark price for a particular security over a given time period, typically a trading day. Unlike traditional moving averages, VWAP takes into account both the price and the volume of trades. In essence, VWAP calculates the average price at which a security has traded throughout the day, weighted by the volume of those trades. It's calculated using the following formula:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>VWAP = (Σ(Price * Volume)) / ΣVolume
+</span></code></pre>
+<h2 id="Creating_the_trading_structures">Creating the trading structures</h2>
+<p>So first lets create the structures that we will use to represent the trades and the VWAP result. We will also create an interface that all trade providers must implement. This will allow us to create a VWAP calculator that can be used with any trade provider.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// TradeChannel is the channel is used to receive trades from the provider
+</span><span style="color:#b48ead;">type </span><span>TradeChannel </span><span style="color:#b48ead;">chan Trade
+</span><span>
+</span><span style="color:#65737e;">// TradePair is the representation of the trading pair left and right pairs
+</span><span style="color:#65737e;">// For instance ETH-USD, BTC-USD, USD-ETH
+</span><span style="color:#b48ead;">type </span><span>TradePair </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">From </span><span style="color:#b48ead;">string
+</span><span>	</span><span style="color:#bf616a;">To   </span><span style="color:#b48ead;">string
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// Trade represents a trade that matched/closed on the provider
+</span><span style="color:#b48ead;">type </span><span>Trade </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">TradePair </span><span style="color:#b48ead;">TradePair
+</span><span>	</span><span style="color:#bf616a;">Price     </span><span>*</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float
+</span><span>	</span><span style="color:#bf616a;">Quantity  </span><span>*</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// VWAPResult serves as a container for the result of a VWAP calculation
+</span><span style="color:#b48ead;">type </span><span>VWAPResult </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>	</span><span style="color:#bf616a;">Pair      </span><span style="color:#b48ead;">TradePair
+</span><span>	</span><span style="color:#bf616a;">VWAPValue </span><span>*</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float
+</span><span>}
+</span><span>
+</span><span>
+</span><span style="color:#65737e;">// TradeProvider is the core interface that all trade providers must implement
+</span><span style="color:#b48ead;">type </span><span>TradeProvider </span><span style="color:#b48ead;">interface </span><span>{
+</span><span>	</span><span style="color:#8fa1b3;">GetTradeChannel</span><span>(</span><span style="color:#bf616a;">pair </span><span style="color:#b48ead;">TradePair</span><span>) (</span><span style="color:#b48ead;">TradeChannel</span><span>, </span><span style="color:#b48ead;">error</span><span>)
+</span><span>}
+</span></code></pre>
+<h2 id="Creating_the_VWAP_calculator">Creating the VWAP calculator</h2>
+<p>Now that we have the structures in place we can create the VWAP calculator. The calculator will take a trade provider and a trade pair and return a channel that will be used to receive the VWAP result.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// We&#39;re going to omit the imports and other boilerplate code for brevity
+</span><span>
+</span><span style="color:#65737e;">// Calculate runs the VWAP calculation and send the resut to a chan of thep VWAP result
+</span><span style="color:#65737e;">// The VWAP has the realtime calculations
+</span><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">vwap </span><span>*</span><span style="color:#b48ead;">VWAP</span><span>) </span><span style="color:#8fa1b3;">Calculate</span><span>(</span><span style="color:#bf616a;">vwapResultChan </span><span style="color:#b48ead;">chan</span><span>&lt;- </span><span style="color:#b48ead;">VWAPResult</span><span>) {
+</span><span>	</span><span style="color:#b48ead;">go func</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">outloop</span><span>:
+</span><span>		</span><span style="color:#b48ead;">for </span><span>{
+</span><span>			</span><span style="color:#b48ead;">select </span><span>{
+</span><span>			</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">ctx</span><span>.</span><span style="color:#bf616a;">Done</span><span>():
+</span><span>				</span><span style="color:#b48ead;">break </span><span style="color:#bf616a;">outloop
+</span><span>			</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">trade</span><span>, </span><span style="color:#bf616a;">ok </span><span>:= &lt;-</span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeChan</span><span>:
+</span><span>				</span><span style="color:#b48ead;">if </span><span>!</span><span style="color:#bf616a;">ok </span><span>{
+</span><span>					</span><span style="color:#b48ead;">break </span><span style="color:#bf616a;">outloop
+</span><span>				}
+</span><span>				</span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeSamples</span><span>.</span><span style="color:#bf616a;">PushBack</span><span>(</span><span style="color:#bf616a;">trade</span><span>)
+</span><span>
+</span><span>				</span><span style="color:#65737e;">// Keep max of queue buffer size or 200 samples
+</span><span>				</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeSamples</span><span>.</span><span style="color:#bf616a;">Len</span><span>() &gt; </span><span style="color:#bf616a;">queueBufferSize </span><span>{
+</span><span>					</span><span style="color:#bf616a;">e </span><span>:= </span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeSamples</span><span>.</span><span style="color:#bf616a;">Front</span><span>()
+</span><span>					</span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeSamples</span><span>.</span><span style="color:#bf616a;">Remove</span><span>(</span><span style="color:#bf616a;">e</span><span>)
+</span><span>				}
+</span><span>
+</span><span>				</span><span style="color:#65737e;">// PV = Σ(Price * Volume)
+</span><span>				</span><span style="color:#bf616a;">sumPriceAndVolume </span><span>:= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float</span><span>)
+</span><span>				</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">e </span><span>:= </span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeSamples</span><span>.</span><span style="color:#bf616a;">Front</span><span>(); </span><span style="color:#bf616a;">e </span><span>!= </span><span style="color:#d08770;">nil</span><span>; </span><span style="color:#bf616a;">e </span><span>= </span><span style="color:#bf616a;">e</span><span>.</span><span style="color:#bf616a;">Next</span><span>() {
+</span><span>					</span><span style="color:#bf616a;">priceAndVolume </span><span>:= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float</span><span>).</span><span style="color:#bf616a;">Mul</span><span>(</span><span style="color:#bf616a;">e</span><span>.</span><span style="color:#bf616a;">Value</span><span>.(</span><span style="color:#b48ead;">Trade</span><span>).</span><span style="color:#bf616a;">Price</span><span>, </span><span style="color:#bf616a;">e</span><span>.</span><span style="color:#bf616a;">Value</span><span>.(</span><span style="color:#b48ead;">Trade</span><span>).</span><span style="color:#bf616a;">Quantity</span><span>)
+</span><span>					</span><span style="color:#bf616a;">sumPriceAndVolume </span><span>= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float</span><span>).</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#bf616a;">sumPriceAndVolume</span><span>, </span><span style="color:#bf616a;">priceAndVolume</span><span>)
+</span><span>				}
+</span><span>
+</span><span>				</span><span style="color:#65737e;">// SV = ΣVolume
+</span><span>				</span><span style="color:#bf616a;">sumVolume </span><span>:= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float</span><span>)
+</span><span>				</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">e </span><span>:= </span><span style="color:#bf616a;">vwap</span><span>.</span><span style="color:#bf616a;">tradeSamples</span><span>.</span><span style="color:#bf616a;">Front</span><span>(); </span><span style="color:#bf616a;">e </span><span>!= </span><span style="color:#d08770;">nil</span><span>; </span><span style="color:#bf616a;">e </span><span>= </span><span style="color:#bf616a;">e</span><span>.</span><span style="color:#bf616a;">Next</span><span>() {
+</span><span>					</span><span style="color:#bf616a;">sumVolume </span><span>= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float</span><span>).</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#bf616a;">sumVolume</span><span>, </span><span style="color:#bf616a;">e</span><span>.</span><span style="color:#bf616a;">Value</span><span>.(</span><span style="color:#b48ead;">Trade</span><span>).</span><span style="color:#bf616a;">Quantity</span><span>)
+</span><span>				}
+</span><span>
+</span><span>				</span><span style="color:#65737e;">// VWP = PV / SV
+</span><span>				</span><span style="color:#bf616a;">result </span><span>:= </span><span style="color:#bf616a;">VWAPResult</span><span>{
+</span><span>					</span><span style="color:#bf616a;">Pair</span><span>:      </span><span style="color:#bf616a;">trade</span><span>.</span><span style="color:#bf616a;">TradePair</span><span>,
+</span><span>					</span><span style="color:#bf616a;">VWAPValue</span><span>: </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#bf616a;">big</span><span>.</span><span style="color:#b48ead;">Float</span><span>).</span><span style="color:#bf616a;">Quo</span><span>(</span><span style="color:#bf616a;">sumPriceAndVolume</span><span>, </span><span style="color:#bf616a;">sumVolume</span><span>),
+</span><span>				}
+</span><span>
+</span><span>				</span><span style="color:#bf616a;">vwapResultChan </span><span>&lt;- </span><span style="color:#bf616a;">result
+</span><span>			}
+</span><span>		}
+</span><span>	}()
+</span><span>}
+</span></code></pre>
+<h2 id="Getting_the_trades_from_the_provider">Getting the trades from the provider</h2>
+<p>Now that we have the VWAP calculator we need to get the trades from the provider. For this example we will use the <a href="https://docs.cloud.coinbase.com/exchange/docs/websocket-overview">Coinbase Pro Websocket API</a> to get the trades in realtime. We will create a function that will get the trades from the provider and send them to the VWAP calculator.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// We&#39;re going to omit the imports and other boilerplate code for brevity
+</span><span>
+</span><span style="color:#65737e;">// CreateTradeProvider will return the TradeProvider ready to use with a go channel ready to consume
+</span><span style="color:#b48ead;">func </span><span>(</span><span style="color:#bf616a;">c </span><span style="color:#b48ead;">coinbaseProvider</span><span>) </span><span style="color:#8fa1b3;">GetTradeChannel</span><span>(</span><span style="color:#bf616a;">pair internals</span><span>.</span><span style="color:#b48ead;">TradePair</span><span>) (</span><span style="color:#bf616a;">internals</span><span>.</span><span style="color:#b48ead;">TradeChannel</span><span>, </span><span style="color:#b48ead;">error</span><span>) {
+</span><span>	</span><span style="color:#65737e;">// Connect to the websocket API 
+</span><span>	</span><span style="color:#bf616a;">wsConn</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">newCoinbaseWS</span><span>()
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">nil</span><span>, </span><span style="color:#bf616a;">ErrFailedToConnect
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#65737e;">// Subscribe to the match channel
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">subscribeToMatchChannel</span><span>(</span><span style="color:#bf616a;">wsConn</span><span>, </span><span style="color:#bf616a;">pair</span><span>.</span><span style="color:#bf616a;">String</span><span>()); </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#d08770;">nil</span><span>, </span><span style="color:#bf616a;">ErrFailedToSubscribe
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">tradeChan </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#bf616a;">internals</span><span>.</span><span style="color:#b48ead;">TradeChannel</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">go func</span><span>() {
+</span><span>		</span><span style="color:#b48ead;">defer </span><span style="color:#96b5b4;">close</span><span>(</span><span style="color:#bf616a;">tradeChan</span><span>)
+</span><span>		</span><span style="color:#b48ead;">defer </span><span style="color:#bf616a;">wsConn</span><span>.</span><span style="color:#bf616a;">Close</span><span>()
+</span><span>
+</span><span>		</span><span style="color:#b48ead;">var </span><span style="color:#bf616a;">errCounter </span><span style="color:#b48ead;">int
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">outerloop</span><span>:
+</span><span>		</span><span style="color:#b48ead;">for </span><span>{
+</span><span>			</span><span style="color:#b48ead;">select </span><span>{
+</span><span>			</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">c</span><span>.</span><span style="color:#bf616a;">ctx</span><span>.</span><span style="color:#bf616a;">Done</span><span>():
+</span><span>				</span><span style="color:#b48ead;">break </span><span style="color:#bf616a;">outerloop
+</span><span>			</span><span style="color:#b48ead;">default</span><span>:
+</span><span>				</span><span style="color:#65737e;">// Get the response from the websocket
+</span><span>				</span><span style="color:#bf616a;">price</span><span>, </span><span style="color:#bf616a;">quantity</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">matchResponse</span><span>(</span><span style="color:#bf616a;">wsConn</span><span>)
+</span><span>				</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>&amp;&amp; </span><span style="color:#bf616a;">errors</span><span>.</span><span style="color:#bf616a;">Is</span><span>(</span><span style="color:#bf616a;">err</span><span>, </span><span style="color:#bf616a;">errNonExpectedMessage</span><span>) {
+</span><span>					</span><span style="color:#b48ead;">continue
+</span><span>				} </span><span style="color:#b48ead;">else if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>					</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">errCounter </span><span>&gt;= </span><span style="color:#bf616a;">ErrCounterThreshold </span><span>{
+</span><span>						</span><span style="color:#b48ead;">break </span><span style="color:#bf616a;">outerloop
+</span><span>					}
+</span><span>					</span><span style="color:#b48ead;">continue
+</span><span>				}
+</span><span>				</span><span style="color:#bf616a;">errCounter </span><span>= </span><span style="color:#d08770;">0
+</span><span>
+</span><span>				</span><span style="color:#65737e;">// Only accept with price and quantity ok
+</span><span>				</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">price </span><span>== </span><span style="color:#d08770;">nil </span><span>&amp;&amp; </span><span style="color:#bf616a;">quantity </span><span>== </span><span style="color:#d08770;">nil </span><span>{
+</span><span>					</span><span style="color:#b48ead;">continue
+</span><span>				}
+</span><span>
+</span><span>				</span><span style="color:#65737e;">// New trade ready to push into go channel
+</span><span>				</span><span style="color:#bf616a;">tradeChan </span><span>&lt;- </span><span style="color:#bf616a;">internals</span><span>.</span><span style="color:#bf616a;">NewTrade</span><span>(</span><span style="color:#bf616a;">pair</span><span>, </span><span style="color:#bf616a;">price</span><span>, </span><span style="color:#bf616a;">quantity</span><span>)
+</span><span>			}
+</span><span>		}
+</span><span>	}()
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">tradeChan</span><span>, </span><span style="color:#d08770;">nil
+</span><span>}
+</span></code></pre>
+<h2 id="Putting_it_all_together">Putting it all together</h2>
+<p>Now that we have the VWAP calculator and the trade provider we can put it all together. We will create a main function that will create the VWAP calculator and the trade provider. Then we will run the VWAP calculator and print the results to the console.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#65737e;">// We&#39;re going to omit the imports and other boilerplate code for brevity
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>	</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">cancel </span><span>:= </span><span style="color:#bf616a;">context</span><span>.</span><span style="color:#bf616a;">WithCancel</span><span>(</span><span style="color:#bf616a;">context</span><span>.</span><span style="color:#bf616a;">Background</span><span>())
+</span><span>	</span><span style="color:#bf616a;">vwapResultChan </span><span>:= </span><span style="color:#bf616a;">createResultChan</span><span>()
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">pair </span><span>:= </span><span style="color:#bf616a;">internals</span><span>.</span><span style="color:#bf616a;">NewTradePair</span><span>(&quot;</span><span style="color:#a3be8c;">BTC</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">USD</span><span>&quot;)
+</span><span>	</span><span style="color:#bf616a;">provider </span><span>:= </span><span style="color:#bf616a;">tradeproviders</span><span>.</span><span style="color:#bf616a;">NewCoinbaseProvider</span><span>(</span><span style="color:#bf616a;">ctx</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">tradeChan</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">provider</span><span>.</span><span style="color:#bf616a;">GetTradeChannel</span><span>(</span><span style="color:#bf616a;">pair</span><span>)
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
+</span><span>		</span><span style="color:#96b5b4;">panic</span><span>(</span><span style="color:#bf616a;">err</span><span>)
+</span><span>	}
+</span><span>
+</span><span>	</span><span style="color:#bf616a;">internals</span><span>.</span><span style="color:#bf616a;">NewVWAP</span><span>(</span><span style="color:#bf616a;">ctx</span><span>, </span><span style="color:#bf616a;">tradeChan</span><span>).</span><span style="color:#bf616a;">Calculate</span><span>(</span><span style="color:#bf616a;">vwapResultChan</span><span>)
+</span><span>
+</span><span>	</span><span style="color:#b48ead;">for </span><span>{
+</span><span>		</span><span style="color:#b48ead;">select </span><span>{
+</span><span>		</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">result </span><span>:= &lt;-</span><span style="color:#bf616a;">vwapResultChan</span><span>:
+</span><span>			</span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Printf</span><span>(&quot;</span><span style="color:#a3be8c;">VWAP RESULT </span><span style="color:#d08770;">%s %f</span><span style="color:#96b5b4;">\n</span><span>&quot;, </span><span style="color:#bf616a;">result</span><span>.</span><span style="color:#bf616a;">Pair</span><span>.</span><span style="color:#bf616a;">String</span><span>(), </span><span style="color:#bf616a;">result</span><span>.</span><span style="color:#bf616a;">VWAPValue</span><span>)
+</span><span>		</span><span style="color:#b48ead;">case </span><span>&lt;-</span><span style="color:#bf616a;">waitSIGINT</span><span>():
+</span><span>			</span><span style="color:#bf616a;">cancel</span><span>()
+</span><span>			</span><span style="color:#96b5b4;">close</span><span>(</span><span style="color:#bf616a;">vwapResultChan</span><span>)
+</span><span>			</span><span style="color:#bf616a;">os</span><span>.</span><span style="color:#bf616a;">Exit</span><span>(</span><span style="color:#d08770;">0</span><span>)
+</span><span>		}
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<h2 id="Conclusion">Conclusion</h2>
+<p>In this blog post we have created a VWAP calculator that can be used with any trade provider. We have also created a trade provider that uses the Coinbase Pro Websocket API to get the trades in realtime. We have put it all together and printed the results to the console. I hope you have enjoyed this blog post and learned something new.</p>
+<p>This code can be found at my <a href="https://github.com/eduardonunesp/rtvwap">GitHub://eduardonunesp/rtvwap</a></p>
+
+    </div>
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>
