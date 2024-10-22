@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
+        
+
+        <title>Ed On Code</title>
+
+        
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https:&#x2F;&#x2F;edoncode.dev" class="logo">Ed On Code</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                    |
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https:&#x2F;&#x2F;edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Concurrency versus Parallelism</h1>
+        <div class="border"></div>
+        <time datetime="2015-10-17" class="date" itemprop="datePublished">
+            17 Oct 2015
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        <blockquote>
+<p>In a universe where everything falls at the same time, and we don’t even estimate the number of events happening around us, everything is changing; sometimes, there is no flow or foresight.</p>
+</blockquote>
+<p>Picture a queue to place an order, it could be the order of a meal, for example: and while waiting in turn, the cashier is taking orders, the person in front of them is going to call, and quickly a new order has just landed in the kitchen.</p>
+<p>Moreover, another attendant is serving a previous order, and you are consulting your super-sharp four-core smartphone, thinking as to which movies are playing at the movie theaters while listening to your favorite band. Wow! How much; This is just an incredibly summarized narration of what happened around in this imaginary exercise.</p>
+<blockquote>
+<p>Over the years, software development has advanced and created tools, languages, and ways to handle our “universe” of events.</p>
+</blockquote>
+<p>Programs are designed to work asynchronously, and while receiving a request they already work on a previous request, at the same time as calculating an output for another request and all super-fast, there is no place for a queue where things occur only sequentially, there is opening for intelligently divided tasks and multiple queues to process multiple jobs.</p>
+<h2 id="concurrency">Concurrency</h2>
+<p>Anyone who has ever used computers with only one processor/core may have lived up to the concurrency and not even noticed (maybe realized and switched to a better computer), just why it happens so fast may seem like it’s all at the same time. However, the computer needs to receive the keyboard data, send it to the video, play your music (maybe Pink Floyd), receive network data, show a new email (wow! I must have only spoken 1%). All in one processor/core and it was so fast, and no, it wasn’t all at the same time, it was small, well-done tasks, one at a time, divided by time and each using microseconds (0.000001 Second) only.</p>
+<p>A program that wasn’t built to work concurrently, never going to perform satisfactorily; just as a program that wasn’t built to work in parallel, never going to use multiple processors/cores satisfactorily, the hardware can’t perform miracles.</p>
+<h2 id="parallelism">Parallelism</h2>
+<p>When I said “everything happening at the same time” in the previous example, I made it clear that it wasn’t all at the same time. However, the tasks performed incredibly quickly.</p>
+<p>For parallelism to occur at the same time, we need more than one processor or one processor with more than one core, so that two or more tasks happen simultaneously.</p>
+<p>If the goal is parallelism, then we need well-planned concurrency, tasks performed by the program cannot conflict, lock, or stand in endless wait.</p>
+<p>When we talk about concurrency, we focus on the framework, and when we talk about parallelism, the focus is on how such frameworks going to be executed on multiple processor/core hardware.</p>
+<h2 id="concurrency-and-parallelism-together">Concurrency and parallelism together</h2>
+<p>Now that we have in mind the concepts we needed and more hope that they are clear, we can move on to the final piece.</p>
+<p>Let’s put both concepts together and make this structure communicate in a protected and scalable way; to achieve concurrency, we are going to use the multiple routines in our program; we can call them threads or routines; let’s stick to the concepts for now.</p>
+<p>Now that we have the parallelism of distributing tasks between processors/cores, the final piece is the communication mechanism, the tunnel or channel that connects multiple routines, because there is no use having multiple routines if they do not communicate with each other.</p>
+<p>The means of communication should enable synchronized communication, ie, no data going to arrive early, or arrive later, shouldn’t block a previous task or stop serving another; this is why it is so crucial that this mechanism is synchronized. Such allows all jobs to occur without one “operating over” the other.</p>
+<h2 id="final-considerations">Final considerations</h2>
+<p>For sure, this is a dense subject, and it also has much theory involved, a subject that usually extends into a chair in the Computer Science course (Operating Systems / Multiprocessed Systems).</p>
+<p>I hope that small article had illustrated and clearly on the subject that, I am going to create a more practical example in the next example, where I explain how to use concurrency and parallelism in Go programming.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Rob Pike, one of the creators of Go on his “Concurrency Is Not Parallelism” talk <a href="https://www.youtube.com/watch?v=cN_DpYBzKso">https://www.youtube.com/watch?v=cN_DpYBzKso</a></li>
+<li>The paper that influenced a generation <a href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">https://en.wikipedia.org/wiki/Communicating_sequential_processes</a></li>
+<li>Golang Book <a href="https://www.golang-book.com/books/intro/10">https://www.golang-book.com/books/intro/10</a></li>
+</ul>
+
+    </div>
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>
