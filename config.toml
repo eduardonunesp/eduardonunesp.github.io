@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://edoncode.dev"
+base_url = "edoncode.dev"
 
 title = "Ed On Code"
 description = "Ed On Code is a blog about software development and related topics."
