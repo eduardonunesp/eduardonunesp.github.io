@@ -11,7 +11,7 @@
         <title>Ed On Code</title>
 
         
-            <link rel="stylesheet" href="edoncode.dev/theme.css">
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
         
         
     </head>
@@ -21,7 +21,7 @@
         
             <header>
                 <div class="header-left">
-                    <a href="edoncode.dev" class="logo">Ed On Code</a>
+                    <a href="https:&#x2F;&#x2F;edoncode.dev" class="logo">Ed On Code</a>
                 </div>
                 <div class="header-right">
                     <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
@@ -30,28 +30,28 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="edoncode.dev/Golang/">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
                                     <span itemprop="name">Golang</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="edoncode.dev/Tech/">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
                                     <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="edoncode.dev/Thoughts/">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
                                     <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="edoncode.dev/Adventures/">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
                                     <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
@@ -59,7 +59,7 @@
                         
                         <li class="nav">
                             <a itemprop="url" href="https://github.com/eduardonunesp">
-                                <img class="icon" src="edoncode.dev/icons/github.svg" alt="Github">
+                                <img class="icon" src="https:&#x2F;&#x2F;edoncode.dev/icons/github.svg" alt="Github">
                             </a>
                         </li>
                         
@@ -87,8 +87,8 @@
 <p>Why the last 5 minutes? That’s when the competition comes in because a routine is running that continually checking the dollar via HTTP request every 5 minutes (all at the same time).</p>
 <p>This way, whenever a user request arrives at the service, it immediately returns the value it needs because it does not need to consult another service whenever a new request arrives, and all because it stores the last value in memory and concurrently.</p>
 <p>No worries, the explanation is in a nonlinear way; I mean, not the way it is performed, but in the end, all explanations going to make sense (at least I hope).</p>
-<h2 id="initial-structure">Initial structure</h2>
-<h1 id="to-interpret-json-we-need-to-associate-it-with-a-structure-this-is-very-common-in-language">To interpret JSON, we need to associate it with a structure; this is very common in language</h1>
+<h2 id="Initial_structure">Initial structure</h2>
+<h1 id="To_interpret_JSON,_we_need_to_associate_it_with_a_structure;_this_is_very_common_in_language">To interpret JSON, we need to associate it with a structure; this is very common in language</h1>
 <p>Our structure or type struct must reflect the return of the service to be queried. Let’s look at a Yahoo! which converts USD to BRL and returns the requested values in JSON format.</p>
 <p>The initial structure should be:</p>
 <pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>requestResult </span><span style="color:#b48ead;">struct </span><span>{
@@ -139,7 +139,7 @@
 </span></code></pre>
 <p>The checker function should return two parameters (remember I mentioned in the previous article about functions returning the error and a result). On line 5 we are making the request using the get function of package HTTP (belongs to the standard library), we test if there was any error (err! = Nil), then we going to read the contents on line 18 and return the result of the function on line 24.</p>
 <p>What about the defer on line 11?; that is a routine designed to be executed only when the function terminates, so function with defer on line 11 is going to be executed to terminate the HTTP request; that is an excellent strategy for clearing any pending resources in the role.</p>
-<h2 id="interpreting-json">Interpreting JSON</h2>
+<h2 id="Interpreting_JSON">Interpreting JSON</h2>
 <p>The idea now is to get the string of the checker function and return what interests us, the value in USD, for this, should perform the following function:</p>
 <pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">parseJSON</span><span>(</span><span style="color:#bf616a;">jsonResult </span><span style="color:#b48ead;">string</span><span>) </span><span style="color:#b48ead;">string </span><span>{
 </span><span>	</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">JSON REQUEST</span><span>&quot;, </span><span style="color:#bf616a;">jsonResult</span><span>)

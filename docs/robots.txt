@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 Allow: /
-Sitemap: edoncode.dev/sitemap.xml
+Sitemap: https://edoncode.dev/sitemap.xml

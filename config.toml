@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "edoncode.dev"
+base_url = "https://edoncode.dev"
 
 title = "Ed On Code"
 description = "Ed On Code is a blog about software development and related topics."
@@ -17,6 +17,10 @@ default_language = "en"
 # theme = "anpu"
 theme = "oceanic-zen"
 
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "off"
 
 [markdown]
 # Whether to do syntax highlighting
