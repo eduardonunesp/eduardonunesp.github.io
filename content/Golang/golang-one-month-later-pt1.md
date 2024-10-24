@@ -4,6 +4,8 @@ slug = "golang-one-month-later-pt1"
 date = "2015-10-09"
 +++
 
+{{ image(path="images/gophers1.png") }}
+
 Maybe it’s been more than a month that I’m studying Go http://www.golangbr.org/; however this is not the case, the important thing is that I want to share a little of what happened during this period — starting with the fact that I had not been studying a new language for some time (in fact Go is really new, it was released to the public on March 2012, when I was “immersed” in Python and then Node.JS).
 
 ## The Way Go Creates Its Environment
@@ -42,6 +44,8 @@ It requires setting two GOPATH environment variables, which is the primary path 
 
 ## Where are my sources and binaries in Go?
 
+{{ image(path="images/gopher_run.png") }}
+
 ### Packages, repositories, and binaries are all “connected”
 The next thing I was surprised about was the package system, which concerns how you organize your projects and how you use third party projects and binaries.
 
@@ -59,7 +63,10 @@ import (
 )
 ```
 
+
 ## Is there an error? No, now there is an error? Now it has? Not? then follow
+
+{{ image(path="images/gopher_fix.png")}}
 
 ### Go doesn’t want you to miss or forget something; it bugs you with until you learn it.
 

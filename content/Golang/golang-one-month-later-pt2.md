@@ -6,6 +6,8 @@ date = "2015-10-10"
 
 ## Editor
 
+{{ image(path="images/gopher_talk.png") }}
+
 ### The program that we use to turn coffee into code
 
 I have been using Sublime Text for some time now, I also like vim (I used it as the primary editor for a long time), I use both, but 90% of the time I am using Sublime.
@@ -14,7 +16,9 @@ The compiler may even refuse to compile your beloved code because of an unused v
 
 The plugin I recommend is GoSublime, highly configurable, and full of sweet combinations; for example, I set it up when saving my code, already formatting, removing unused imports and running linter. Some people use Atom, which also has excellent support, but I was not used to it.
 
-## Batteries included
+## Batteries included.
+
+{{ image(path="images/gopher_fly.png") }}
 
 ### Much more than batteries say a nuclear power plant.
 

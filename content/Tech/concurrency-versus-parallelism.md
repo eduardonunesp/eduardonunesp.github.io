@@ -4,6 +4,10 @@ slug = "concurrency-versus-parallelism"
 date = "2015-10-17"
 +++
 
+<center>
+{{ image(path="images/universe.png") }}
+</center>
+
 > In a universe where countless events unfold simultaneously and we cannot even begin to comprehend their sheer number, everything is in a state of constant change. This relentless flux often leaves us without a clear direction or the ability to foresee what lies ahead, making it challenging to maintain a steady flow or exercise foresight amidst the chaos.
 
 Imagine standing in line to place an order for a meal. As you wait your turn, the cashier takes orders while the person ahead of you steps aside to make a call. Meanwhile, a new order swiftly arrives in the kitchen. Nearby, another attendant is busy serving a previous order, and you find yourself glancing at your powerful four-core smartphone, pondering which movies are playing at the theaters while listening to your favorite band. 
@@ -14,11 +18,19 @@ Modern programs are designed to operate asynchronously, handling multiple reques
 
 ## Concurrency
 
+<center>
+{{ image(path="images/hardware.png") }}
+</center>
+
 Anyone who has ever used a computer with only a single processor or core may have experienced the illusion of concurrency without even realizing it. Tasks such as receiving keyboard input, sending video output, playing music (perhaps Pink Floyd), receiving network data, and displaying new emails all seem to happen simultaneously. In reality, a single-core processor handles these operations sequentially, executing small, efficient tasks one at a time, each within microseconds (millionths of a second). This rapid task switching creates the perception of parallelism. However, a program not designed to operate concurrently will never perform satisfactorily on such systems. 
 
 Similarly, programs that are not built to leverage parallelism cannot effectively utilize multiple processors or cores. Ultimately, hardware alone cannot compensate for software that does not take advantage of concurrency and parallelism.
 
 ## Parallelism
+
+<center>
+{{ image(path="images/cpus.png") }}
+</center>
 
 In the previous example, when I mentioned “everything happening at the same time,” I clarified that tasks weren’t truly simultaneous but were executed incredibly quickly in succession. 
 
@@ -29,6 +41,10 @@ When we discuss concurrency, our focus is on the software framework that manages
 Effective parallelism relies on both robust concurrent design and the appropriate hardware to ensure that multiple processes can run in tandem without interference.
 
 ## Concurrency and parallelism together
+
+<center>
+{{ image(path="images/dbz.png") }}
+</center>
 
 Now that we have a clear understanding of the necessary concepts, we can proceed to the final component. To effectively integrate concurrency and parallelism, we need to establish a communication structure that is both protected and scalable.
 

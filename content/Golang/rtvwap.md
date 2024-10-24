@@ -12,9 +12,9 @@ One such tool that has gained significant popularity over the years is the Volum
 
 Volume-Weighted Average Price (VWAP) is a trading indicator that provides a benchmark price for a particular security over a given time period, typically a trading day. Unlike traditional moving averages, VWAP takes into account both the price and the volume of trades. In essence, VWAP calculates the average price at which a security has traded throughout the day, weighted by the volume of those trades. It's calculated using the following formula:
 
-```
-VWAP = (Σ(Price * Volume)) / ΣVolume
-```
+<div style="background: white; margin: auto; width: 20%">
+<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6c0a822a0a9e58a127105e818a07061a02851685" />
+</div>
 
 ## Creating the trading structures
 
