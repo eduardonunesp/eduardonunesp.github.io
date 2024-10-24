@@ -30,8 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
@@ -44,15 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -124,7 +124,7 @@
 <p>In Python, we often use virtualenv to create a package environment that doesn’t mix with the global environment; in Node.JS, NPM makes life even more comfortable to create a dependency environment in the project directory itself. Go has an approach that I found strange at first, but once I got used to making sense.</p>
 <p>The idea is to create a root directory for the environment, which contains dependencies and sources projects on this path, as well as the compiled binaries in Go.</p>
 <p>It requires setting two GOPATH environment variables, which is the primary path for Go projects, not just your projects, but in reality, any project you download using the go get command uses this path. The second required path is $ GOPATH / bin, which can be added to your main PATH.</p>
-<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>.
+<pre style="background-color:#1e1e1e;color:#dcdcdc;"><code><span>.
 </span><span>├── bin
 </span><span>│ ├── benchcmp
 </span><span>│ ├── consul
@@ -154,12 +154,12 @@
 <p>The next thing I was surprised about was the package system, which concerns how you organize your projects and how you use third party projects and binaries.</p>
 <p>Earlier I said that there is a path to sources? Then I realized that even the path to my Github repository was related to the code path as a local package. Note that the path “src / github.com / eduardonunesp” is the user path in Github and the project for example: “src/github.com/eduardonunesp/sslb” is the path where the project in Go should be used when you download this project using the command “go get github.com/eduardonunesp/sslb”. It will automatically create in GOPATH the src directory and the bin directory, also the code and binary ready to use!</p>
 <p>Even when you are coding in go you will need to refer to third party projects as the full path for example:</p>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">routes
-</span><span style="color:#b48ead;">import </span><span>(
-</span><span>	&quot;</span><span style="color:#a3be8c;">log</span><span>&quot;
-</span><span>	&quot;</span><span style="color:#a3be8c;">strconv</span><span>&quot;
-</span><span>	&quot;</span><span style="color:#a3be8c;">github.com/eduardonunesp/sslb/cli</span><span>&quot;
-</span><span>	&quot;</span><span style="color:#a3be8c;">github.com/gorilla/mux</span><span>&quot;
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">package </span><span>routes
+</span><span style="color:#569cd6;">import </span><span>(
+</span><span>	</span><span style="color:#d69d85;">&quot;log&quot;
+</span><span>	</span><span style="color:#d69d85;">&quot;strconv&quot;
+</span><span>	</span><span style="color:#d69d85;">&quot;github.com/eduardonunesp/sslb/cli&quot;
+</span><span>	</span><span style="color:#d69d85;">&quot;github.com/gorilla/mux&quot;
 </span><span>)
 </span></code></pre>
 <h2 id="Is_there_an_error?_No,_now_there_is_an_error?_Now_it_has?_Not?_then_follow">Is there an error? No, now there is an error? Now it has? Not? then follow</h2>

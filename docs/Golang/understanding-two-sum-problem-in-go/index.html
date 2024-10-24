@@ -30,8 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
@@ -44,15 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -202,21 +202,21 @@ Return the indices of the two numbers in <code>nums</code> such that they add up
 <hr />
 <h2 id="Solution_1:_Optimized_Approach_Using_a_Hash_Map">Solution 1: Optimized Approach Using a Hash Map</h2>
 <h3 id="Solution_1_Code_Overview">Solution 1 Code Overview</h3>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">twoSum</span><span>(</span><span style="color:#bf616a;">nums </span><span>[]</span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">target </span><span style="color:#b48ead;">int</span><span>) []</span><span style="color:#b48ead;">int </span><span>{
-</span><span>    </span><span style="color:#65737e;">// Create a map to store the difference and its index
-</span><span>    </span><span style="color:#bf616a;">resultMap </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">int</span><span>]</span><span style="color:#b48ead;">int</span><span>)
-</span><span>    </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">idx</span><span>, </span><span style="color:#bf616a;">num </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">nums </span><span>{
-</span><span>        </span><span style="color:#65737e;">// Calculate the desired complement
-</span><span>        </span><span style="color:#bf616a;">desired </span><span>:= </span><span style="color:#bf616a;">target </span><span>- </span><span style="color:#bf616a;">num
-</span><span>        </span><span style="color:#65737e;">// Check if the complement exists in the map
-</span><span>        </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">n</span><span>, </span><span style="color:#bf616a;">ok </span><span>:= </span><span style="color:#bf616a;">resultMap</span><span>[</span><span style="color:#bf616a;">desired</span><span>]; </span><span style="color:#bf616a;">ok </span><span>{
-</span><span>            </span><span style="color:#65737e;">// If found, return the pair of indices
-</span><span>            </span><span style="color:#b48ead;">return </span><span>[]</span><span style="color:#b48ead;">int</span><span>{</span><span style="color:#bf616a;">n</span><span>, </span><span style="color:#bf616a;">idx</span><span>}
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">func </span><span>twoSum(nums []int, target int) []int {
+</span><span>    </span><span style="color:#608b4e;">// Create a map to store the difference and its index
+</span><span>    resultMap := make(</span><span style="color:#569cd6;">map</span><span>[int]int)
+</span><span>    </span><span style="color:#569cd6;">for </span><span>idx, num := </span><span style="color:#569cd6;">range </span><span>nums {
+</span><span>        </span><span style="color:#608b4e;">// Calculate the desired complement
+</span><span>        desired := target </span><span style="color:#569cd6;">- </span><span>num
+</span><span>        </span><span style="color:#608b4e;">// Check if the complement exists in the map
+</span><span>        </span><span style="color:#569cd6;">if </span><span>n, ok := resultMap[desired]; ok {
+</span><span>            </span><span style="color:#608b4e;">// If found, return the pair of indices
+</span><span>            </span><span style="color:#569cd6;">return </span><span>[]int{n, idx}
 </span><span>        }
-</span><span>        </span><span style="color:#65737e;">// Store the current number and its index in the map
-</span><span>        </span><span style="color:#bf616a;">resultMap</span><span>[</span><span style="color:#bf616a;">num</span><span>] = </span><span style="color:#bf616a;">idx
+</span><span>        </span><span style="color:#608b4e;">// Store the current number and its index in the map
+</span><span>        resultMap[num] = idx
 </span><span>    }
-</span><span>    </span><span style="color:#b48ead;">return </span><span>[]</span><span style="color:#b48ead;">int</span><span>{}
+</span><span>    </span><span style="color:#569cd6;">return </span><span>[]int{}
 </span><span>}
 </span></code></pre>
 <h3 id="Solution_1_How_It_Works">Solution 1 How It Works</h3>
@@ -302,18 +302,18 @@ Return the indices of the two numbers in <code>nums</code> such that they add up
 <hr />
 <h2 id="Solution_2:_Brute_Force_Approach_Using_Nested_Loops">Solution 2: Brute Force Approach Using Nested Loops</h2>
 <h3 id="Solution_2_Code_Overview">Solution 2 Code Overview</h3>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">twoSumsBruteForce</span><span>(</span><span style="color:#bf616a;">nums </span><span>[]</span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">target </span><span style="color:#b48ead;">int</span><span>) []</span><span style="color:#b48ead;">int </span><span>{
-</span><span>    </span><span style="color:#65737e;">// Iterate through each element for the first number
-</span><span>    </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">idx1 </span><span>:= </span><span style="color:#d08770;">0</span><span>; </span><span style="color:#bf616a;">idx1 </span><span>&lt; </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">nums</span><span>); </span><span style="color:#bf616a;">idx1</span><span>++ {
-</span><span>        </span><span style="color:#65737e;">// Iterate through the remaining elements for the second number
-</span><span>        </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">idx2 </span><span>:= </span><span style="color:#bf616a;">idx1 </span><span>+ </span><span style="color:#d08770;">1</span><span>; </span><span style="color:#bf616a;">idx2 </span><span>&lt; </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">nums</span><span>); </span><span style="color:#bf616a;">idx2</span><span>++ {
-</span><span>            </span><span style="color:#65737e;">// Check if the pair sums up to the target
-</span><span>            </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">nums</span><span>[</span><span style="color:#bf616a;">idx1</span><span>]+</span><span style="color:#bf616a;">nums</span><span>[</span><span style="color:#bf616a;">idx2</span><span>] == </span><span style="color:#bf616a;">target </span><span>{
-</span><span>                </span><span style="color:#b48ead;">return </span><span>[]</span><span style="color:#b48ead;">int</span><span>{</span><span style="color:#bf616a;">idx1</span><span>, </span><span style="color:#bf616a;">idx2</span><span>}
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">func </span><span>twoSumsBruteForce(nums []int, target int) []int {
+</span><span>    </span><span style="color:#608b4e;">// Iterate through each element for the first number
+</span><span>    </span><span style="color:#569cd6;">for </span><span>idx1 := </span><span style="color:#b5cea8;">0</span><span>; idx1 </span><span style="color:#569cd6;">&lt; </span><span>len(nums); idx1</span><span style="color:#569cd6;">++ </span><span>{
+</span><span>        </span><span style="color:#608b4e;">// Iterate through the remaining elements for the second number
+</span><span>        </span><span style="color:#569cd6;">for </span><span>idx2 := idx1 </span><span style="color:#569cd6;">+ </span><span style="color:#b5cea8;">1</span><span>; idx2 </span><span style="color:#569cd6;">&lt; </span><span>len(nums); idx2</span><span style="color:#569cd6;">++ </span><span>{
+</span><span>            </span><span style="color:#608b4e;">// Check if the pair sums up to the target
+</span><span>            </span><span style="color:#569cd6;">if </span><span>nums[idx1]</span><span style="color:#569cd6;">+</span><span>nums[idx2] </span><span style="color:#569cd6;">== </span><span>target {
+</span><span>                </span><span style="color:#569cd6;">return </span><span>[]int{idx1, idx2}
 </span><span>            }
 </span><span>        }
 </span><span>    }
-</span><span>    </span><span style="color:#b48ead;">return </span><span>[]</span><span style="color:#b48ead;">int</span><span>{}
+</span><span>    </span><span style="color:#569cd6;">return </span><span>[]int{}
 </span><span>}
 </span></code></pre>
 <h3 id="Solution_2_How_It_Works">Solution 2 How It Works</h3>

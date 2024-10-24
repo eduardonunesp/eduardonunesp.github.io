@@ -30,8 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
@@ -44,15 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -175,50 +175,50 @@ Return the <code>k</code> most frequent elements in <code>nums</code>. The answe
 </ol>
 <hr />
 <h2 id="Code_Overview">Code Overview</h2>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">leetcode
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">package </span><span>leetcode
 </span><span>
-</span><span style="color:#65737e;">// Given an integer array nums and an integer k, return the k most frequent
-</span><span style="color:#65737e;">// elements. You may return the answer in any order.
+</span><span style="color:#608b4e;">// Given an integer array nums and an integer k, return the k most frequent
+</span><span style="color:#608b4e;">// elements. You may return the answer in any order.
 </span><span>
-</span><span style="color:#65737e;">// Example 1:
+</span><span style="color:#608b4e;">// Example 1:
 </span><span>
-</span><span style="color:#65737e;">// Input: nums = [1,1,1,2,2,3], k = 2
-</span><span style="color:#65737e;">// Output: [1,2]
-</span><span style="color:#65737e;">// Example 2:
+</span><span style="color:#608b4e;">// Input: nums = [1,1,1,2,2,3], k = 2
+</span><span style="color:#608b4e;">// Output: [1,2]
+</span><span style="color:#608b4e;">// Example 2:
 </span><span>
-</span><span style="color:#65737e;">// Input: nums = [1], k = 1
-</span><span style="color:#65737e;">// Output: [1]
+</span><span style="color:#608b4e;">// Input: nums = [1], k = 1
+</span><span style="color:#608b4e;">// Output: [1]
 </span><span>
-</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">topKFrequent</span><span>(</span><span style="color:#bf616a;">nums </span><span>[]</span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">K </span><span style="color:#b48ead;">int</span><span>) []</span><span style="color:#b48ead;">int </span><span>{
-</span><span>    </span><span style="color:#65737e;">// create int with the list of the K values
-</span><span>    </span><span style="color:#bf616a;">KList </span><span>:= </span><span style="color:#96b5b4;">make</span><span>([]</span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">K</span><span>)
-</span><span>    </span><span style="color:#65737e;">// mapping with number as key and count frequency
-</span><span>    </span><span style="color:#bf616a;">freqMap </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">int</span><span>]</span><span style="color:#b48ead;">int</span><span>)
-</span><span>    </span><span style="color:#65737e;">// first pass through the values and fill the map
-</span><span>    </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">_</span><span>, </span><span style="color:#bf616a;">num </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">nums </span><span>{
-</span><span>        </span><span style="color:#bf616a;">freqMap</span><span>[</span><span style="color:#bf616a;">num</span><span>]++
+</span><span style="color:#569cd6;">func </span><span>topKFrequent(nums []int, K int) []int {
+</span><span>    </span><span style="color:#608b4e;">// create int with the list of the K values
+</span><span>    KList := make([]int, K)
+</span><span>    </span><span style="color:#608b4e;">// mapping with number as key and count frequency
+</span><span>    freqMap := make(</span><span style="color:#569cd6;">map</span><span>[int]int)
+</span><span>    </span><span style="color:#608b4e;">// first pass through the values and fill the map
+</span><span>    </span><span style="color:#569cd6;">for </span><span>_, num := </span><span style="color:#569cd6;">range </span><span>nums {
+</span><span>        freqMap[num]</span><span style="color:#569cd6;">++
 </span><span>    }
-</span><span>    </span><span style="color:#65737e;">// update the bucket of values for K
-</span><span>    </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">K </span><span>{
-</span><span>        </span><span style="color:#b48ead;">var </span><span>(
-</span><span>            </span><span style="color:#bf616a;">maxFreqFound      </span><span style="color:#b48ead;">int
-</span><span>            </span><span style="color:#bf616a;">maxCandidateFound </span><span style="color:#b48ead;">int
+</span><span>    </span><span style="color:#608b4e;">// update the bucket of values for K
+</span><span>    </span><span style="color:#569cd6;">for </span><span>i := </span><span style="color:#569cd6;">range </span><span>K {
+</span><span>        </span><span style="color:#569cd6;">var </span><span>(
+</span><span>            maxFreqFound      int
+</span><span>            maxCandidateFound int
 </span><span>        )
-</span><span>        </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">num</span><span>, </span><span style="color:#bf616a;">freq </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">freqMap </span><span>{
-</span><span>            </span><span style="color:#65737e;">// is freq gt max freq found
-</span><span>            </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">freq </span><span>&gt; </span><span style="color:#bf616a;">maxFreqFound </span><span>{
-</span><span>                </span><span style="color:#65737e;">// found candidate number
-</span><span>                </span><span style="color:#bf616a;">maxCandidateFound </span><span>= </span><span style="color:#bf616a;">num
-</span><span>                </span><span style="color:#65737e;">// register the current max freq found
-</span><span>                </span><span style="color:#bf616a;">maxFreqFound </span><span>= </span><span style="color:#bf616a;">freq
+</span><span>        </span><span style="color:#569cd6;">for </span><span>num, freq := </span><span style="color:#569cd6;">range </span><span>freqMap {
+</span><span>            </span><span style="color:#608b4e;">// is freq gt max freq found
+</span><span>            </span><span style="color:#569cd6;">if </span><span>freq </span><span style="color:#569cd6;">&gt; </span><span>maxFreqFound {
+</span><span>                </span><span style="color:#608b4e;">// found candidate number
+</span><span>                maxCandidateFound = num
+</span><span>                </span><span style="color:#608b4e;">// register the current max freq found
+</span><span>                maxFreqFound = freq
 </span><span>            }
 </span><span>        }
-</span><span>        </span><span style="color:#65737e;">// update the K list result
-</span><span>        </span><span style="color:#bf616a;">KList</span><span>[</span><span style="color:#bf616a;">i</span><span>] = </span><span style="color:#bf616a;">maxCandidateFound
-</span><span>        </span><span style="color:#65737e;">// remove the value found from map
-</span><span>        </span><span style="color:#96b5b4;">delete</span><span>(</span><span style="color:#bf616a;">freqMap</span><span>, </span><span style="color:#bf616a;">maxCandidateFound</span><span>)
+</span><span>        </span><span style="color:#608b4e;">// update the K list result
+</span><span>        KList[i] = maxCandidateFound
+</span><span>        </span><span style="color:#608b4e;">// remove the value found from map
+</span><span>        delete(freqMap, maxCandidateFound)
 </span><span>    }
-</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">KList
+</span><span>    </span><span style="color:#569cd6;">return </span><span>KList
 </span><span>}
 </span></code></pre>
 <hr />
@@ -276,7 +276,7 @@ Return the <code>k</code> most frequent elements in <code>nums</code>. The answe
 <li>
 <p><strong>Frequency Counting</strong>:</p>
 <ul>
-<li>After the first loop, <code>freqMap</code> becomes:<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+<li>After the first loop, <code>freqMap</code> becomes:<pre style="background-color:#1e1e1e;color:#dcdcdc;"><code><span>{
 </span><span>    1: 3,
 </span><span>    2: 2,
 </span><span>    3: 1
@@ -298,7 +298,7 @@ Return the <code>k</code> most frequent elements in <code>nums</code>. The answe
 </li>
 <li>Add <code>1</code> to <code>KList[0]</code> and remove <code>1</code> from <code>freqMap</code>.</li>
 <li><code>KList</code> now: <code>[1, 0]</code></li>
-<li><code>freqMap</code> now:<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+<li><code>freqMap</code> now:<pre style="background-color:#1e1e1e;color:#dcdcdc;"><code><span>{
 </span><span>    2: 2,
 </span><span>    3: 1
 </span><span>}
@@ -318,7 +318,7 @@ Return the <code>k</code> most frequent elements in <code>nums</code>. The answe
 </li>
 <li>Add <code>2</code> to <code>KList[1]</code> and remove <code>2</code> from <code>freqMap</code>.</li>
 <li><code>KList</code> now: <code>[1, 2]</code></li>
-<li><code>freqMap</code> now:<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+<li><code>freqMap</code> now:<pre style="background-color:#1e1e1e;color:#dcdcdc;"><code><span>{
 </span><span>    3: 1
 </span><span>}
 </span></code></pre>

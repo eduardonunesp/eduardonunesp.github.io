@@ -30,8 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
@@ -44,15 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -100,78 +100,78 @@
 <p>The time has come to discuss one of the main features of the Go language: concurrency. Undoubtedly, one of the most exciting aspects of Go is that concurrency is ingrained in the language’s core. It does not require auxiliary libraries, workarounds, or makeshift solutions.</p>
 <p>The key components responsible for Go’s concurrency model are the go keyword, channels, and goroutines. The go keyword initiates a function as a goroutine, allowing it to run independently alongside the main thread until it completes. Channels facilitate communication between goroutines by providing a synchronized way to send and receive values. When a value is sent to a channel (similar to a pipe), it is only received if the channel is ready to accept it, ensuring synchronization and preventing race conditions between connected functions.</p>
 <p>Additionally, Go supports buffered channels, which allow for more flexible communication patterns by enabling channels to hold a specified number of values without immediate receipt. Understanding these concurrency mechanisms is essential for building efficient and scalable applications in Go. For more information, visit the Go Concurrency Tour.</p>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">pool</span><span>() </span><span style="color:#b48ead;">chan string </span><span>{
-</span><span>	</span><span style="color:#bf616a;">ch </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">chan string</span><span>)
-</span><span>	</span><span style="color:#b48ead;">go func</span><span>() {
-</span><span>		</span><span style="color:#bf616a;">haveResponse </span><span>:= </span><span style="color:#d08770;">false
-</span><span>		</span><span style="color:#bf616a;">requestJSON </span><span>:= </span><span style="color:#b48ead;">func</span><span>() {
-</span><span>			</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">res</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">checker</span><span>(); </span><span style="color:#bf616a;">err </span><span>== </span><span style="color:#d08770;">nil </span><span>{
-</span><span>				</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">jsonRes </span><span>:= </span><span style="color:#bf616a;">parseJSON</span><span>(</span><span style="color:#bf616a;">res</span><span>); </span><span style="color:#bf616a;">jsonRes </span><span>!= &quot;&quot; {
-</span><span>					</span><span style="color:#bf616a;">haveResponse </span><span>= </span><span style="color:#d08770;">true
-</span><span>					</span><span style="color:#bf616a;">ch </span><span>&lt;- </span><span style="color:#bf616a;">jsonRes
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">func </span><span>pool() </span><span style="color:#569cd6;">chan </span><span>string {
+</span><span>	ch := make(</span><span style="color:#569cd6;">chan </span><span>string)
+</span><span>	</span><span style="color:#569cd6;">go func</span><span>() {
+</span><span>		haveResponse := </span><span style="color:#569cd6;">false
+</span><span>		requestJSON := </span><span style="color:#569cd6;">func</span><span>() {
+</span><span>			</span><span style="color:#569cd6;">if </span><span>res, err := checker(); err </span><span style="color:#569cd6;">== nil </span><span>{
+</span><span>				</span><span style="color:#569cd6;">if </span><span>jsonRes := parseJSON(res); jsonRes </span><span style="color:#569cd6;">!= </span><span style="color:#d69d85;">&quot;&quot; </span><span>{
+</span><span>					haveResponse = </span><span style="color:#569cd6;">true
+</span><span>					ch </span><span style="color:#569cd6;">&lt;- </span><span>jsonRes
 </span><span>				}
 </span><span>			}
 </span><span>		}
 </span><span>
-</span><span>		</span><span style="color:#b48ead;">for </span><span>{
-</span><span>			</span><span style="color:#bf616a;">requestJSON</span><span>()
-</span><span>			</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">haveResponse </span><span>{
-</span><span>				</span><span style="color:#b48ead;">break
-</span><span>			} </span><span style="color:#b48ead;">else </span><span>{
-</span><span>				</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">No result try again ...</span><span>&quot;)
+</span><span>		</span><span style="color:#569cd6;">for </span><span>{
+</span><span>			requestJSON()
+</span><span>			</span><span style="color:#569cd6;">if </span><span>haveResponse {
+</span><span>				</span><span style="color:#569cd6;">break
+</span><span>			} </span><span style="color:#569cd6;">else </span><span>{
+</span><span>				log.Println(</span><span style="color:#d69d85;">&quot;No result try again ...&quot;</span><span>)
 </span><span>			}
 </span><span>		}
 </span><span>
-</span><span>		</span><span style="color:#bf616a;">c </span><span>:= </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Tick</span><span>(</span><span style="color:#d08770;">5 </span><span>* </span><span style="color:#bf616a;">time</span><span>.</span><span style="color:#bf616a;">Minute</span><span>)
-</span><span>		</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">now </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">c </span><span>{
-</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Updated at </span><span style="color:#d08770;">%v</span><span>&quot;, </span><span style="color:#bf616a;">now</span><span>)
-</span><span>			</span><span style="color:#bf616a;">requestJSON</span><span>()
+</span><span>		c := time.Tick(</span><span style="color:#b5cea8;">5 </span><span style="color:#569cd6;">* </span><span>time.Minute)
+</span><span>		</span><span style="color:#569cd6;">for </span><span>now := </span><span style="color:#569cd6;">range </span><span>c {
+</span><span>			log.Println(</span><span style="color:#d69d85;">&quot;Updated at </span><span style="color:#b4cea8;">%v</span><span style="color:#d69d85;">&quot;</span><span>, now)
+</span><span>			requestJSON()
 </span><span>		}
 </span><span>	}()
-</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">ch
+</span><span>	</span><span style="color:#569cd6;">return </span><span>ch
 </span><span>}
 </span></code></pre>
 <p>When executed, the pool function creates a string channel used for communication with the goroutine initiated on line 3. The presence of the go keyword ensures that the anonymous function runs in the background. On line 5, we define and assign an anonymous function to a variable, which calls the checker and parseJSON functions on line 9 to insert the USD result into the communication channel. The loop on line 14 terminates once a value is received from the channel, addressing scenarios where a request to Yahoo! might not return a USD value by ensuring a value is present from the outset.</p>
 <p>Furthermore, on line 24, an infinite loop is established to execute every five minutes, utilizing the time.Tick function to trigger the loop with the necessary pauses.</p>
 <h2 id="Main_function">Main function</h2>
 <p>Like its C language predecessor, the main function is also called main.</p>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">main</span><span>() {
-</span><span>	</span><span style="color:#65737e;">// Get the first value
-</span><span>	</span><span style="color:#bf616a;">checkerpool </span><span>:= </span><span style="color:#bf616a;">pool</span><span>()
-</span><span>	</span><span style="color:#bf616a;">latestResult </span><span>:= &lt;-</span><span style="color:#bf616a;">checkerpool
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">func </span><span>main() {
+</span><span>	</span><span style="color:#608b4e;">// Get the first value
+</span><span>	checkerpool := pool()
+</span><span>	latestResult := </span><span style="color:#569cd6;">&lt;-</span><span>checkerpool
 </span><span>
-</span><span>	</span><span style="color:#65737e;">// To deploy at heroku :D
-</span><span>	</span><span style="color:#bf616a;">env </span><span>:= </span><span style="color:#bf616a;">os</span><span>.</span><span style="color:#bf616a;">Getenv</span><span>(&quot;</span><span style="color:#a3be8c;">GO_ENV</span><span>&quot;)
-</span><span>	</span><span style="color:#bf616a;">host </span><span>:= &quot;</span><span style="color:#a3be8c;">127.0.0.1</span><span>&quot;
-</span><span>	</span><span style="color:#bf616a;">port </span><span>:= </span><span style="color:#d08770;">9000
-</span><span>	</span><span style="color:#65737e;">//token := &quot;&quot;
+</span><span>	</span><span style="color:#608b4e;">// To deploy at heroku :D
+</span><span>	env := os.Getenv(</span><span style="color:#d69d85;">&quot;GO_ENV&quot;</span><span>)
+</span><span>	host := </span><span style="color:#d69d85;">&quot;127.0.0.1&quot;
+</span><span>	port := </span><span style="color:#b5cea8;">9000
+</span><span>	</span><span style="color:#608b4e;">//token := &quot;&quot;
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">env </span><span>== &quot;</span><span style="color:#a3be8c;">PRODUCTION</span><span>&quot; {
-</span><span>		</span><span style="color:#bf616a;">host </span><span>= &quot;&quot;
-</span><span>		</span><span style="color:#bf616a;">port</span><span>, </span><span style="color:#bf616a;">_ </span><span>= </span><span style="color:#bf616a;">strconv</span><span>.</span><span style="color:#bf616a;">Atoi</span><span>(</span><span style="color:#bf616a;">os</span><span>.</span><span style="color:#bf616a;">Getenv</span><span>(&quot;</span><span style="color:#a3be8c;">PORT</span><span>&quot;))
-</span><span>		</span><span style="color:#65737e;">//token = os.Getenv(&quot;TOKEN&quot;)
+</span><span>	</span><span style="color:#569cd6;">if </span><span>env </span><span style="color:#569cd6;">== </span><span style="color:#d69d85;">&quot;PRODUCTION&quot; </span><span>{
+</span><span>		host = </span><span style="color:#d69d85;">&quot;&quot;
+</span><span>		port, _ = strconv.Atoi(os.Getenv(</span><span style="color:#d69d85;">&quot;PORT&quot;</span><span>))
+</span><span>		</span><span style="color:#608b4e;">//token = os.Getenv(&quot;TOKEN&quot;)
 </span><span>	}
 </span><span>
-</span><span>	</span><span style="color:#bf616a;">address </span><span>:= </span><span style="color:#bf616a;">fmt</span><span>.</span><span style="color:#bf616a;">Sprintf</span><span>(&quot;</span><span style="color:#d08770;">%s</span><span style="color:#a3be8c;">:</span><span style="color:#d08770;">%d</span><span>&quot;, </span><span style="color:#bf616a;">host</span><span>, </span><span style="color:#bf616a;">port</span><span>)
-</span><span>	</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Ready to serve at</span><span>&quot;, </span><span style="color:#bf616a;">address</span><span>)
+</span><span>	address := fmt.Sprintf(</span><span style="color:#d69d85;">&quot;</span><span style="color:#b4cea8;">%s</span><span style="color:#d69d85;">:</span><span style="color:#b4cea8;">%d</span><span style="color:#d69d85;">&quot;</span><span>, host, port)
+</span><span>	log.Println(</span><span style="color:#d69d85;">&quot;Ready to serve at&quot;</span><span>, address)
 </span><span>
-</span><span>	</span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#bf616a;">HandleFunc</span><span>(&quot;</span><span style="color:#a3be8c;">/</span><span>&quot;, </span><span style="color:#b48ead;">func</span><span>(</span><span style="color:#bf616a;">rw http</span><span>.</span><span style="color:#b48ead;">ResponseWriter</span><span>, </span><span style="color:#bf616a;">req </span><span>*</span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#b48ead;">Request</span><span>) {
-</span><span>		</span><span style="color:#b48ead;">select </span><span>{
-</span><span>		</span><span style="color:#b48ead;">case </span><span style="color:#bf616a;">latestResult </span><span>:= &lt;-</span><span style="color:#bf616a;">checkerpool</span><span>:
-</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Get result</span><span>&quot;, </span><span style="color:#bf616a;">latestResult</span><span>)
-</span><span>		</span><span style="color:#b48ead;">default</span><span>:
-</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Get cache value</span><span>&quot;)
+</span><span>	http.HandleFunc(</span><span style="color:#d69d85;">&quot;/&quot;</span><span>, </span><span style="color:#569cd6;">func</span><span>(rw http.</span><span style="color:#569cd6;">ResponseWriter</span><span>, req </span><span style="color:#569cd6;">*</span><span>http.</span><span style="color:#569cd6;">Request</span><span>) {
+</span><span>		</span><span style="color:#569cd6;">select </span><span>{
+</span><span>		</span><span style="color:#569cd6;">case </span><span>latestResult := </span><span style="color:#569cd6;">&lt;-</span><span>checkerpool:
+</span><span>			log.Println(</span><span style="color:#d69d85;">&quot;Get result&quot;</span><span>, latestResult)
+</span><span>		</span><span style="color:#569cd6;">default</span><span>:
+</span><span>			log.Println(</span><span style="color:#d69d85;">&quot;Get cache value&quot;</span><span>)
 </span><span>		}
 </span><span>
-</span><span>		</span><span style="color:#bf616a;">_</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">rw</span><span>.</span><span style="color:#bf616a;">Write</span><span>([]</span><span style="color:#b48ead;">byte</span><span>(</span><span style="color:#bf616a;">latestResult</span><span>))
+</span><span>		_, err := rw.Write([]byte(latestResult))
 </span><span>
-</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
-</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">err</span><span>)
+</span><span>		</span><span style="color:#569cd6;">if </span><span>err </span><span style="color:#569cd6;">!= nil </span><span>{
+</span><span>			log.Println(err)
 </span><span>		}
 </span><span>	})
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#bf616a;">ListenAndServe</span><span>(</span><span style="color:#bf616a;">address</span><span>, </span><span style="color:#d08770;">nil</span><span>); </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
-</span><span>		</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Fatal</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to serve to address</span><span>&quot;, </span><span style="color:#bf616a;">address</span><span>, </span><span style="color:#bf616a;">err</span><span>)
+</span><span>	</span><span style="color:#569cd6;">if </span><span>err := http.ListenAndServe(address, </span><span style="color:#569cd6;">nil</span><span>); err </span><span style="color:#569cd6;">!= nil </span><span>{
+</span><span>		log.Fatal(</span><span style="color:#d69d85;">&quot;Failed to serve to address&quot;</span><span>, address, err)
 </span><span>	}
 </span><span>}
 </span></code></pre>

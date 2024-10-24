@@ -30,8 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
@@ -44,15 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -194,28 +194,28 @@
 <h2 id="Iterative_Binary_Search_Implementation">Iterative Binary Search Implementation</h2>
 <p>Let's explore the iterative implementation of Binary Search in Go.</p>
 <h3 id="Iterative_Binary_Search_Implementation_Code_Overview">Iterative Binary Search Implementation Code Overview</h3>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">algorithms
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">package </span><span>algorithms
 </span><span>
-</span><span style="color:#b48ead;">import </span><span>(
-</span><span>	&quot;</span><span style="color:#a3be8c;">cmp</span><span>&quot;
+</span><span style="color:#569cd6;">import </span><span>(
+</span><span>	</span><span style="color:#d69d85;">&quot;cmp&quot;
 </span><span>)
 </span><span>
-</span><span style="color:#65737e;">// BinarySearch performs an iterative binary search on a sorted list.
-</span><span style="color:#65737e;">// It returns the index of the target if found, otherwise -1.
-</span><span style="color:#b48ead;">func </span><span style="color:#bf616a;">BinarySearch</span><span>[</span><span style="color:#bf616a;">T cmp</span><span>.</span><span style="color:#bf616a;">Ordered</span><span>](</span><span style="color:#bf616a;">list </span><span>[]</span><span style="color:#b48ead;">T</span><span>, </span><span style="color:#bf616a;">target T</span><span>) </span><span style="color:#bf616a;">int </span><span>{
-</span><span>	</span><span style="color:#bf616a;">firstIdx</span><span>, </span><span style="color:#bf616a;">lastIdx </span><span>:= </span><span style="color:#d08770;">0</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">list</span><span>)-</span><span style="color:#d08770;">1
-</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">firstIdx </span><span>&lt;= </span><span style="color:#bf616a;">lastIdx </span><span>{
-</span><span>		</span><span style="color:#bf616a;">midIdx </span><span>:= (</span><span style="color:#bf616a;">firstIdx </span><span>+ </span><span style="color:#bf616a;">lastIdx</span><span>) / </span><span style="color:#d08770;">2
-</span><span>		</span><span style="color:#bf616a;">midValue </span><span>:= </span><span style="color:#bf616a;">list</span><span>[</span><span style="color:#bf616a;">midIdx</span><span>]
-</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">midValue </span><span>&gt; </span><span style="color:#bf616a;">target </span><span>{
-</span><span>			</span><span style="color:#bf616a;">lastIdx </span><span>= </span><span style="color:#bf616a;">midIdx </span><span>- </span><span style="color:#d08770;">1
-</span><span>		} </span><span style="color:#b48ead;">else if </span><span style="color:#bf616a;">midValue </span><span>&lt; </span><span style="color:#bf616a;">target </span><span>{
-</span><span>			</span><span style="color:#bf616a;">firstIdx </span><span>= </span><span style="color:#bf616a;">midIdx </span><span>+ </span><span style="color:#d08770;">1
-</span><span>		} </span><span style="color:#b48ead;">else </span><span>{
-</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">midIdx
+</span><span style="color:#608b4e;">// BinarySearch performs an iterative binary search on a sorted list.
+</span><span style="color:#608b4e;">// It returns the index of the target if found, otherwise -1.
+</span><span style="color:#569cd6;">func </span><span>BinarySearch[T cmp.Ordered](list []</span><span style="color:#569cd6;">T</span><span>, target T) int {
+</span><span>	firstIdx, lastIdx := </span><span style="color:#b5cea8;">0</span><span>, len(list)</span><span style="color:#569cd6;">-</span><span style="color:#b5cea8;">1
+</span><span>	</span><span style="color:#569cd6;">for </span><span>firstIdx </span><span style="color:#569cd6;">&lt;</span><span>= lastIdx {
+</span><span>		midIdx := (firstIdx </span><span style="color:#569cd6;">+ </span><span>lastIdx) </span><span style="color:#569cd6;">/ </span><span style="color:#b5cea8;">2
+</span><span>		midValue := list[midIdx]
+</span><span>		</span><span style="color:#569cd6;">if </span><span>midValue </span><span style="color:#569cd6;">&gt; </span><span>target {
+</span><span>			lastIdx = midIdx </span><span style="color:#569cd6;">- </span><span style="color:#b5cea8;">1
+</span><span>		} </span><span style="color:#569cd6;">else if </span><span>midValue </span><span style="color:#569cd6;">&lt; </span><span>target {
+</span><span>			firstIdx = midIdx </span><span style="color:#569cd6;">+ </span><span style="color:#b5cea8;">1
+</span><span>		} </span><span style="color:#569cd6;">else </span><span>{
+</span><span>			</span><span style="color:#569cd6;">return </span><span>midIdx
 </span><span>		}
 </span><span>	}
-</span><span>	</span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1
+</span><span>	</span><span style="color:#569cd6;">return -</span><span style="color:#b5cea8;">1
 </span><span>}
 </span></code></pre>
 <h3 id="Iterative_Binary_Search_Implementation_How_It_Works">Iterative Binary Search Implementation How It Works</h3>
@@ -309,27 +309,27 @@
 <h2 id="Recursive_Binary_Search_Implementation">Recursive Binary Search Implementation</h2>
 <p>Now, let's examine the recursive implementation of Binary Search in Go.</p>
 <h3 id="Recursive_Binary_Search_Implementation_Code_Overview">Recursive Binary Search Implementation Code Overview</h3>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">algorithms
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">package </span><span>algorithms
 </span><span>
-</span><span style="color:#b48ead;">import </span><span>(
-</span><span>	&quot;</span><span style="color:#a3be8c;">cmp</span><span>&quot;
+</span><span style="color:#569cd6;">import </span><span>(
+</span><span>	</span><span style="color:#d69d85;">&quot;cmp&quot;
 </span><span>)
 </span><span>
-</span><span style="color:#65737e;">// RecursiveBinarySearch performs a recursive binary search on a sorted list.
-</span><span style="color:#65737e;">// It returns the index of the target if found, otherwise -1.
-</span><span style="color:#b48ead;">func </span><span style="color:#bf616a;">RecursiveBinarySearch</span><span>[</span><span style="color:#bf616a;">T cmp</span><span>.</span><span style="color:#bf616a;">Ordered</span><span>](</span><span style="color:#bf616a;">list </span><span>[]</span><span style="color:#b48ead;">T</span><span>, </span><span style="color:#bf616a;">target T</span><span>, </span><span style="color:#bf616a;">firstIdx</span><span>, </span><span style="color:#bf616a;">lastIdx int</span><span>) </span><span style="color:#bf616a;">int </span><span>{
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">firstIdx </span><span>&gt; </span><span style="color:#bf616a;">lastIdx </span><span>{
-</span><span>		</span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1
+</span><span style="color:#608b4e;">// RecursiveBinarySearch performs a recursive binary search on a sorted list.
+</span><span style="color:#608b4e;">// It returns the index of the target if found, otherwise -1.
+</span><span style="color:#569cd6;">func </span><span>RecursiveBinarySearch[T cmp.Ordered](list []</span><span style="color:#569cd6;">T</span><span>, target T, firstIdx, lastIdx int) int {
+</span><span>	</span><span style="color:#569cd6;">if </span><span>firstIdx </span><span style="color:#569cd6;">&gt; </span><span>lastIdx {
+</span><span>		</span><span style="color:#569cd6;">return -</span><span style="color:#b5cea8;">1
 </span><span>	}
-</span><span>	</span><span style="color:#bf616a;">midIdx </span><span>:= (</span><span style="color:#bf616a;">firstIdx </span><span>+ </span><span style="color:#bf616a;">lastIdx</span><span>) / </span><span style="color:#d08770;">2
-</span><span>	</span><span style="color:#bf616a;">midValue </span><span>:= </span><span style="color:#bf616a;">list</span><span>[</span><span style="color:#bf616a;">midIdx</span><span>]
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">target </span><span>== </span><span style="color:#bf616a;">midValue </span><span>{
-</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">midIdx
-</span><span>	} </span><span style="color:#b48ead;">else </span><span>{
-</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">target </span><span>&lt; </span><span style="color:#bf616a;">midValue </span><span>{
-</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">RecursiveBinarySearch</span><span>[</span><span style="color:#bf616a;">T</span><span>](</span><span style="color:#bf616a;">list</span><span>, </span><span style="color:#bf616a;">target</span><span>, </span><span style="color:#bf616a;">firstIdx</span><span>, </span><span style="color:#bf616a;">midIdx</span><span>-</span><span style="color:#d08770;">1</span><span>)
-</span><span>		} </span><span style="color:#b48ead;">else </span><span>{
-</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">RecursiveBinarySearch</span><span>[</span><span style="color:#bf616a;">T</span><span>](</span><span style="color:#bf616a;">list</span><span>, </span><span style="color:#bf616a;">target</span><span>, </span><span style="color:#bf616a;">midIdx</span><span>+</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">lastIdx</span><span>)
+</span><span>	midIdx := (firstIdx </span><span style="color:#569cd6;">+ </span><span>lastIdx) </span><span style="color:#569cd6;">/ </span><span style="color:#b5cea8;">2
+</span><span>	midValue := list[midIdx]
+</span><span>	</span><span style="color:#569cd6;">if </span><span>target </span><span style="color:#569cd6;">== </span><span>midValue {
+</span><span>		</span><span style="color:#569cd6;">return </span><span>midIdx
+</span><span>	} </span><span style="color:#569cd6;">else </span><span>{
+</span><span>		</span><span style="color:#569cd6;">if </span><span>target </span><span style="color:#569cd6;">&lt; </span><span>midValue {
+</span><span>			</span><span style="color:#569cd6;">return </span><span>RecursiveBinarySearch[T](list, target, firstIdx, midIdx</span><span style="color:#569cd6;">-</span><span style="color:#b5cea8;">1</span><span>)
+</span><span>		} </span><span style="color:#569cd6;">else </span><span>{
+</span><span>			</span><span style="color:#569cd6;">return </span><span>RecursiveBinarySearch[T](list, target, midIdx</span><span style="color:#569cd6;">+</span><span style="color:#b5cea8;">1</span><span>, lastIdx)
 </span><span>		}
 </span><span>	}
 </span><span>}

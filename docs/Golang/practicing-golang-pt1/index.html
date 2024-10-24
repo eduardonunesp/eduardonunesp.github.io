@@ -30,8 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
                                 </a>
                             </li>
                         
@@ -44,15 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -113,50 +113,50 @@
 <h1 id="To_interpret_JSON,_we_need_to_associate_it_with_a_structure;_this_is_very_common_in_language">To interpret JSON, we need to associate it with a structure; this is very common in language</h1>
 <p>Our data structure, defined using a struct, must accurately represent the response returned by the service when queried. For example, consider a service similar to Yahoo Finance that converts USD to BRL and returns the requested values in JSON format. To handle this response effectively in Go, we need to design a struct that mirrors the JSON structure, ensuring seamless data parsing and manipulation.</p>
 <p>The initial structure should be:</p>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">type </span><span>requestResult </span><span style="color:#b48ead;">struct </span><span>{
-</span><span>	</span><span style="color:#bf616a;">Query </span><span style="color:#b48ead;">struct </span><span>{
-</span><span>		</span><span style="color:#bf616a;">Count   </span><span style="color:#b48ead;">int    </span><span>`</span><span style="color:#a3be8c;">json:&quot;count&quot;</span><span>`
-</span><span>		</span><span style="color:#bf616a;">Created </span><span style="color:#b48ead;">string </span><span>`</span><span style="color:#a3be8c;">json:&quot;created&quot;</span><span>`
-</span><span>		</span><span style="color:#bf616a;">Lang    </span><span style="color:#b48ead;">string </span><span>`</span><span style="color:#a3be8c;">json:&quot;lang&quot;</span><span>`
-</span><span>		</span><span style="color:#bf616a;">Results </span><span style="color:#b48ead;">string </span><span>`</span><span style="color:#a3be8c;">json:&quot;results&quot;</span><span>`
-</span><span>	} `</span><span style="color:#a3be8c;">json:&quot;query&quot;</span><span>`
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">type </span><span style="color:#4ec9b0;">requestResult </span><span style="color:#569cd6;">struct </span><span>{
+</span><span>	Query </span><span style="color:#569cd6;">struct </span><span>{
+</span><span>		Count   int    </span><span style="color:#d69d85;">`json:&quot;count&quot;`
+</span><span>		Created string </span><span style="color:#d69d85;">`json:&quot;created&quot;`
+</span><span>		Lang    string </span><span style="color:#d69d85;">`json:&quot;lang&quot;`
+</span><span>		Results string </span><span style="color:#d69d85;">`json:&quot;results&quot;`
+</span><span>	} </span><span style="color:#d69d85;">`json:&quot;query&quot;`
 </span><span>}
 </span></code></pre>
 <p>The following struct mirrors the JSON format returned by the Yahoo! service.</p>
-<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
-</span><span>  &quot;</span><span style="color:#a3be8c;">query</span><span>&quot;: {
-</span><span>    &quot;</span><span style="color:#a3be8c;">count</span><span>&quot;:</span><span style="color:#d08770;">1</span><span>,
-</span><span>    &quot;</span><span style="color:#a3be8c;">created</span><span>&quot;:&quot;</span><span style="color:#a3be8c;">2015–10–13T00:55:09Z</span><span>&quot;,
-</span><span>    &quot;</span><span style="color:#a3be8c;">lang</span><span>&quot;:&quot;</span><span style="color:#a3be8c;">en-US</span><span>&quot;,
-</span><span>    &quot;</span><span style="color:#a3be8c;">results</span><span>&quot;:&quot;</span><span style="color:#a3be8c;">3.7616 BRL</span><span>&quot;
+<pre data-lang="json" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  </span><span style="color:#d69d85;">&quot;query&quot;</span><span>: {
+</span><span>    </span><span style="color:#d69d85;">&quot;count&quot;</span><span>:</span><span style="color:#b5cea8;">1</span><span>,
+</span><span>    </span><span style="color:#d69d85;">&quot;created&quot;</span><span>:</span><span style="color:#d69d85;">&quot;2015–10–13T00:55:09Z&quot;</span><span>,
+</span><span>    </span><span style="color:#d69d85;">&quot;lang&quot;</span><span>:</span><span style="color:#d69d85;">&quot;en-US&quot;</span><span>,
+</span><span>    </span><span style="color:#d69d85;">&quot;results&quot;</span><span>:</span><span style="color:#d69d85;">&quot;3.7616 BRL&quot;
 </span><span>  }
 </span><span>}
 </span></code></pre>
 <p>Next, we will send a request to the service using the following URL and code snippet. I recommend consulting the Yahoo! documentation at https://developer.yahoo.com/yql/ for more detailed information.</p>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">const </span><span style="color:#bf616a;">url </span><span>= &quot;</span><span style="color:#a3be8c;">http://query.yahooapis.com/v1/public/yql?...</span><span>&quot;
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">const </span><span>url = </span><span style="color:#d69d85;">&quot;http://query.yahooapis.com/v1/public/yql?...&quot;
 </span><span>
-</span><span style="color:#65737e;">// Make the request and return the content of body
-</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">checker</span><span>() (</span><span style="color:#b48ead;">string</span><span>, </span><span style="color:#b48ead;">error</span><span>) {
-</span><span>	</span><span style="color:#bf616a;">resp</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">http</span><span>.</span><span style="color:#bf616a;">Get</span><span>(</span><span style="color:#bf616a;">url</span><span>)
+</span><span style="color:#608b4e;">// Make the request and return the content of body
+</span><span style="color:#569cd6;">func </span><span>checker() (string, error) {
+</span><span>	resp, err := http.Get(url)
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
-</span><span>		</span><span style="color:#b48ead;">return </span><span>&quot;&quot;, </span><span style="color:#bf616a;">err
+</span><span>	</span><span style="color:#569cd6;">if </span><span>err </span><span style="color:#569cd6;">!= nil </span><span>{
+</span><span>		</span><span style="color:#569cd6;">return </span><span style="color:#d69d85;">&quot;&quot;</span><span>, err
 </span><span>	}
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">defer func</span><span>() {
-</span><span>		</span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">resp</span><span>.</span><span style="color:#bf616a;">Body</span><span>.</span><span style="color:#bf616a;">Close</span><span>()
-</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
-</span><span>			</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">Error to close get request</span><span>&quot;)
+</span><span>	</span><span style="color:#569cd6;">defer func</span><span>() {
+</span><span>		err := resp.Body.Close()
+</span><span>		</span><span style="color:#569cd6;">if </span><span>err </span><span style="color:#569cd6;">!= nil </span><span>{
+</span><span>			log.Println(</span><span style="color:#d69d85;">&quot;Error to close get request&quot;</span><span>)
 </span><span>		}
 </span><span>	}()
 </span><span>
-</span><span>	</span><span style="color:#bf616a;">contents</span><span>, </span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">ioutil</span><span>.</span><span style="color:#bf616a;">ReadAll</span><span>(</span><span style="color:#bf616a;">resp</span><span>.</span><span style="color:#bf616a;">Body</span><span>)
+</span><span>	contents, err := ioutil.ReadAll(resp.Body)
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
-</span><span>		</span><span style="color:#b48ead;">return </span><span>&quot;&quot;, </span><span style="color:#bf616a;">err
+</span><span>	</span><span style="color:#569cd6;">if </span><span>err </span><span style="color:#569cd6;">!= nil </span><span>{
+</span><span>		</span><span style="color:#569cd6;">return </span><span style="color:#d69d85;">&quot;&quot;</span><span>, err
 </span><span>	}
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">string</span><span>(</span><span style="color:#bf616a;">contents</span><span>), </span><span style="color:#d08770;">nil
+</span><span>	</span><span style="color:#569cd6;">return </span><span>string(contents), </span><span style="color:#569cd6;">nil
 </span><span>}
 </span></code></pre>
 <p>The checker function is designed to return two parameters, aligning with the practice mentioned in the previous article where functions typically return both a result and an error. On line 5, we make an HTTP request using the Get function from the http package, which is part of Go’s standard library.</p>
@@ -164,19 +164,19 @@
 <p>By deferring the closure of the HTTP request, we ensure that it is properly terminated, effectively managing any pending resources. This is an excellent strategy for resource cleanup, preventing potential leaks and ensuring that all resources are released appropriately once the function completes.</p>
 <h2 id="Interpreting_JSON">Interpreting JSON</h2>
 <p>The next step is to extract the USD value from the string returned by the checker function. To achieve this, the parseJSON function takes the JSON text result received on line 3 and creates an object based on the requestResult struct. On line 5, the json.Unmarshal function is responsible for parsing the JSON data and mapping it to the requestResult structure. This underscores the importance of designing the struct to accurately reflect the JSON format, ensuring that only the relevant data—the USD value—is extracted and returned. By aligning the struct with the JSON response, we enable efficient and precise data handling, allowing our service to focus solely on the information that matters.</p>
-<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">parseJSON</span><span>(</span><span style="color:#bf616a;">jsonResult </span><span style="color:#b48ead;">string</span><span>) </span><span style="color:#b48ead;">string </span><span>{
-</span><span>	</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(&quot;</span><span style="color:#a3be8c;">JSON REQUEST</span><span>&quot;, </span><span style="color:#bf616a;">jsonResult</span><span>)
-</span><span>	</span><span style="color:#bf616a;">result </span><span>:= </span><span style="color:#96b5b4;">new</span><span>(</span><span style="color:#b48ead;">requestResult</span><span>)
+<pre data-lang="go" style="background-color:#1e1e1e;color:#dcdcdc;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#569cd6;">func </span><span>parseJSON(jsonResult string) string {
+</span><span>	log.Println(</span><span style="color:#d69d85;">&quot;JSON REQUEST&quot;</span><span>, jsonResult)
+</span><span>	result := new(</span><span style="color:#569cd6;">requestResult</span><span>)
 </span><span>
-</span><span>	</span><span style="color:#bf616a;">err </span><span>:= </span><span style="color:#bf616a;">json</span><span>.</span><span style="color:#bf616a;">Unmarshal</span><span>([]</span><span style="color:#b48ead;">byte</span><span>(</span><span style="color:#bf616a;">jsonResult</span><span>), </span><span style="color:#bf616a;">result</span><span>)
+</span><span>	err := json.Unmarshal([]byte(jsonResult), result)
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">err </span><span>!= </span><span style="color:#d08770;">nil </span><span>{
-</span><span>		</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">err</span><span>)
+</span><span>	</span><span style="color:#569cd6;">if </span><span>err </span><span style="color:#569cd6;">!= nil </span><span>{
+</span><span>		log.Println(err)
 </span><span>	}
 </span><span>
-</span><span>	</span><span style="color:#bf616a;">log</span><span>.</span><span style="color:#bf616a;">Println</span><span>(</span><span style="color:#bf616a;">result</span><span>)
+</span><span>	log.Println(result)
 </span><span>
-</span><span>	</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">result</span><span>.</span><span style="color:#bf616a;">Query</span><span>.</span><span style="color:#bf616a;">Results
+</span><span>	</span><span style="color:#569cd6;">return </span><span>result.Query.Results
 </span><span>}
 </span></code></pre>
 <p>When the parseJSON function receives the JSON text result on line 3, it creates an object based on the requestResult struct. On line 5, the json.Unmarshal function is responsible for parsing the JSON data and mapping it to the requestResult structure. This highlights the importance of designing the struct to accurately mirror the JSON format, ensuring that only the relevant data—the USD value—is extracted and returned. By aligning the struct with the JSON response, we facilitate efficient and precise data handling, allowing our service to focus solely on the information that matters.</p>
