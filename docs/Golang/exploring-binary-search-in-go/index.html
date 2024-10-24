@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
+        
+
+        <title>Ed On Code</title>
+
+        
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Exploring Binary Search in Go: Iterative and Recursive Implementations</h1>
+        <div class="border"></div>
+        <time datetime="2024-06-02" class="date" itemprop="datePublished">
+            02 Jun 2024
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        
+    <ul>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Introduction_to_Binary_Search">Introduction to Binary Search</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Understanding_Go_Generics_and_cmp.Ordered">Understanding Go Generics and cmp.Ordered</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#cmp.Ordered_Constraint">cmp.Ordered Constraint</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Iterative_Binary_Search_Implementation">Iterative Binary Search Implementation</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Iterative_Binary_Search_Implementation_Code_Overview">Iterative Binary Search Implementation Code Overview</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Iterative_Binary_Search_Implementation_How_It_Works">Iterative Binary Search Implementation How It Works</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Iterative_Binary_Search_Implementation_Example_Walkthrough">Iterative Binary Search Implementation Example Walkthrough</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Iterative_Binary_Search_Implementation_Time_and_Space_Complexity">Iterative Binary Search Implementation Time and Space Complexity</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Recursive_Binary_Search_Implementation">Recursive Binary Search Implementation</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Recursive_Binary_Search_Implementation_Code_Overview">Recursive Binary Search Implementation Code Overview</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Recursive_Binary_Search_Implementation_How_It_Works">Recursive Binary Search Implementation How It Works</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Recursive_Binary_Search_Implementation_Example_Walkthrough">Recursive Binary Search Implementation Example Walkthrough</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Recursive_Binary_Search_Implementation_Time_and_Space_Complexity">Recursive Binary Search Implementation Time and Space Complexity</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Comparing_Iterative_and_Recursive_Approaches">Comparing Iterative and Recursive Approaches</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Summary">Summary</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/exploring-binary-search-in-go/#Conclusion">Conclusion</a>
+            
+        </li>
+    
+    </ul>
+
+        <p>Binary Search is a fundamental algorithm in computer science, renowned for its efficiency in searching through sorted datasets. In this article, we'll delve into two generic implementations of Binary Search in Go (Golang): an <strong>iterative</strong> approach and a <strong>recursive</strong> approach. We'll explore how these implementations work, their time and space complexities, and the benefits of using generics with Go's <code>cmp.Ordered</code> constraint.</p>
+<h2 id="Introduction_to_Binary_Search">Introduction to Binary Search</h2>
+<p>Binary Search is an efficient algorithm for finding an item from a sorted list of items. It works by repeatedly dividing the search interval in half:</p>
+<ol>
+<li><strong>Start</strong> with an interval covering the whole array.</li>
+<li><strong>Compare</strong> the target value to the middle element of the array.</li>
+<li><strong>If</strong> the target value matches the middle element, the position is returned.</li>
+<li><strong>Otherwise</strong>, if the target value is less than the middle element, narrow the interval to the lower half.</li>
+<li><strong>Else</strong>, narrow it to the upper half.</li>
+<li><strong>Repeat</strong> the process until the target value is found or the interval is empty.</li>
+</ol>
+<p>Binary Search operates in <strong>O(log N)</strong> time complexity, making it significantly faster than linear search for large datasets.</p>
+<hr />
+<h2 id="Understanding_Go_Generics_and_cmp.Ordered">Understanding Go Generics and <code>cmp.Ordered</code></h2>
+<p>With the introduction of generics in Go 1.18, developers can write more flexible and reusable code. In our Binary Search implementations, we utilize generics to allow the search functions to operate on any ordered type.</p>
+<h3 id="cmp.Ordered_Constraint"><code>cmp.Ordered</code> Constraint</h3>
+<p>The <code>cmp.Ordered</code> constraint is a type constraint that requires the type to support comparison operators (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>). This ensures that the elements in the list can be ordered, which is a prerequisite for Binary Search.</p>
+<p>By using generics with the <code>cmp.Ordered</code> constraint, our Binary Search functions can work with various data types such as integers, floating-point numbers, and strings, provided they are ordered.</p>
+<hr />
+<h2 id="Iterative_Binary_Search_Implementation">Iterative Binary Search Implementation</h2>
+<p>Let's explore the iterative implementation of Binary Search in Go.</p>
+<h3 id="Iterative_Binary_Search_Implementation_Code_Overview">Iterative Binary Search Implementation Code Overview</h3>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">algorithms
+</span><span>
+</span><span style="color:#b48ead;">import </span><span>(
+</span><span>	&quot;</span><span style="color:#a3be8c;">cmp</span><span>&quot;
+</span><span>)
+</span><span>
+</span><span style="color:#65737e;">// BinarySearch performs an iterative binary search on a sorted list.
+</span><span style="color:#65737e;">// It returns the index of the target if found, otherwise -1.
+</span><span style="color:#b48ead;">func </span><span style="color:#bf616a;">BinarySearch</span><span>[</span><span style="color:#bf616a;">T cmp</span><span>.</span><span style="color:#bf616a;">Ordered</span><span>](</span><span style="color:#bf616a;">list </span><span>[]</span><span style="color:#b48ead;">T</span><span>, </span><span style="color:#bf616a;">target T</span><span>) </span><span style="color:#bf616a;">int </span><span>{
+</span><span>	</span><span style="color:#bf616a;">firstIdx</span><span>, </span><span style="color:#bf616a;">lastIdx </span><span>:= </span><span style="color:#d08770;">0</span><span>, </span><span style="color:#96b5b4;">len</span><span>(</span><span style="color:#bf616a;">list</span><span>)-</span><span style="color:#d08770;">1
+</span><span>	</span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">firstIdx </span><span>&lt;= </span><span style="color:#bf616a;">lastIdx </span><span>{
+</span><span>		</span><span style="color:#bf616a;">midIdx </span><span>:= (</span><span style="color:#bf616a;">firstIdx </span><span>+ </span><span style="color:#bf616a;">lastIdx</span><span>) / </span><span style="color:#d08770;">2
+</span><span>		</span><span style="color:#bf616a;">midValue </span><span>:= </span><span style="color:#bf616a;">list</span><span>[</span><span style="color:#bf616a;">midIdx</span><span>]
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">midValue </span><span>&gt; </span><span style="color:#bf616a;">target </span><span>{
+</span><span>			</span><span style="color:#bf616a;">lastIdx </span><span>= </span><span style="color:#bf616a;">midIdx </span><span>- </span><span style="color:#d08770;">1
+</span><span>		} </span><span style="color:#b48ead;">else if </span><span style="color:#bf616a;">midValue </span><span>&lt; </span><span style="color:#bf616a;">target </span><span>{
+</span><span>			</span><span style="color:#bf616a;">firstIdx </span><span>= </span><span style="color:#bf616a;">midIdx </span><span>+ </span><span style="color:#d08770;">1
+</span><span>		} </span><span style="color:#b48ead;">else </span><span>{
+</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">midIdx
+</span><span>		}
+</span><span>	}
+</span><span>	</span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1
+</span><span>}
+</span></code></pre>
+<h3 id="Iterative_Binary_Search_Implementation_How_It_Works">Iterative Binary Search Implementation How It Works</h3>
+<ol>
+<li>
+<p><strong>Initialization</strong>:</p>
+<ul>
+<li><code>firstIdx</code>: The starting index of the search interval (initially <code>0</code>).</li>
+<li><code>lastIdx</code>: The ending index of the search interval (initially <code>len(list) - 1</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Loop Condition</strong>:</p>
+<ul>
+<li>The loop continues as long as <code>firstIdx</code> is less than or equal to <code>lastIdx</code>. This ensures that there is still a valid interval to search within.</li>
+</ul>
+</li>
+<li>
+<p><strong>Calculating the Middle Index</strong>:</p>
+<ul>
+<li><code>midIdx</code>: The middle index of the current search interval, calculated as <code>(firstIdx + lastIdx) / 2</code>.</li>
+<li><code>midValue</code>: The value at <code>midIdx</code> in the list.</li>
+</ul>
+</li>
+<li>
+<p><strong>Comparison</strong>:</p>
+<ul>
+<li>If <code>midValue</code> is greater than the <code>target</code>, the search interval is narrowed to the lower half by setting <code>lastIdx</code> to <code>midIdx - 1</code>.</li>
+<li>If <code>midValue</code> is less than the <code>target</code>, the search interval is narrowed to the upper half by setting <code>firstIdx</code> to <code>midIdx + 1</code>.</li>
+<li>If <code>midValue</code> equals the <code>target</code>, the function returns <code>midIdx</code>, indicating the position of the target.</li>
+</ul>
+</li>
+<li>
+<p><strong>Termination</strong>:</p>
+<ul>
+<li>If the loop completes without finding the <code>target</code>, the function returns <code>-1</code>, indicating that the target is not present in the list.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Iterative_Binary_Search_Implementation_Example_Walkthrough">Iterative Binary Search Implementation Example Walkthrough</h3>
+<p>Consider searching for the target value <code>7</code> in the sorted list <code>[1, 3, 5, 7, 9, 11]</code>.</p>
+<ol>
+<li>
+<p><strong>Initial State</strong>:</p>
+<ul>
+<li><code>firstIdx = 0</code></li>
+<li><code>lastIdx = 5</code></li>
+</ul>
+</li>
+<li>
+<p><strong>First Iteration</strong>:</p>
+<ul>
+<li><code>midIdx = (0 + 5) / 2 = 2</code></li>
+<li><code>midValue = list[2] = 5</code></li>
+<li>Since <code>5 &lt; 7</code>, update <code>firstIdx</code> to <code>3</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Second Iteration</strong>:</p>
+<ul>
+<li><code>midIdx = (3 + 5) / 2 = 4</code></li>
+<li><code>midValue = list[4] = 9</code></li>
+<li>Since <code>9 &gt; 7</code>, update <code>lastIdx</code> to <code>3</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Third Iteration</strong>:</p>
+<ul>
+<li><code>midIdx = (3 + 3) / 2 = 3</code></li>
+<li><code>midValue = list[3] = 7</code></li>
+<li><code>7 == 7</code>, target found at index <code>3</code>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Iterative_Binary_Search_Implementation_Time_and_Space_Complexity">Iterative Binary Search Implementation Time and Space Complexity</h3>
+<ul>
+<li>
+<p><strong>Time Complexity</strong>: <strong>O(log N)</strong></p>
+<ul>
+<li>The search interval is halved with each iteration, leading to logarithmic time complexity.</li>
+</ul>
+</li>
+<li>
+<p><strong>Space Complexity</strong>: <strong>O(1)</strong></p>
+<ul>
+<li>The iterative approach uses a constant amount of extra space.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="Recursive_Binary_Search_Implementation">Recursive Binary Search Implementation</h2>
+<p>Now, let's examine the recursive implementation of Binary Search in Go.</p>
+<h3 id="Recursive_Binary_Search_Implementation_Code_Overview">Recursive Binary Search Implementation Code Overview</h3>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">algorithms
+</span><span>
+</span><span style="color:#b48ead;">import </span><span>(
+</span><span>	&quot;</span><span style="color:#a3be8c;">cmp</span><span>&quot;
+</span><span>)
+</span><span>
+</span><span style="color:#65737e;">// RecursiveBinarySearch performs a recursive binary search on a sorted list.
+</span><span style="color:#65737e;">// It returns the index of the target if found, otherwise -1.
+</span><span style="color:#b48ead;">func </span><span style="color:#bf616a;">RecursiveBinarySearch</span><span>[</span><span style="color:#bf616a;">T cmp</span><span>.</span><span style="color:#bf616a;">Ordered</span><span>](</span><span style="color:#bf616a;">list </span><span>[]</span><span style="color:#b48ead;">T</span><span>, </span><span style="color:#bf616a;">target T</span><span>, </span><span style="color:#bf616a;">firstIdx</span><span>, </span><span style="color:#bf616a;">lastIdx int</span><span>) </span><span style="color:#bf616a;">int </span><span>{
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">firstIdx </span><span>&gt; </span><span style="color:#bf616a;">lastIdx </span><span>{
+</span><span>		</span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1
+</span><span>	}
+</span><span>	</span><span style="color:#bf616a;">midIdx </span><span>:= (</span><span style="color:#bf616a;">firstIdx </span><span>+ </span><span style="color:#bf616a;">lastIdx</span><span>) / </span><span style="color:#d08770;">2
+</span><span>	</span><span style="color:#bf616a;">midValue </span><span>:= </span><span style="color:#bf616a;">list</span><span>[</span><span style="color:#bf616a;">midIdx</span><span>]
+</span><span>	</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">target </span><span>== </span><span style="color:#bf616a;">midValue </span><span>{
+</span><span>		</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">midIdx
+</span><span>	} </span><span style="color:#b48ead;">else </span><span>{
+</span><span>		</span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">target </span><span>&lt; </span><span style="color:#bf616a;">midValue </span><span>{
+</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">RecursiveBinarySearch</span><span>[</span><span style="color:#bf616a;">T</span><span>](</span><span style="color:#bf616a;">list</span><span>, </span><span style="color:#bf616a;">target</span><span>, </span><span style="color:#bf616a;">firstIdx</span><span>, </span><span style="color:#bf616a;">midIdx</span><span>-</span><span style="color:#d08770;">1</span><span>)
+</span><span>		} </span><span style="color:#b48ead;">else </span><span>{
+</span><span>			</span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">RecursiveBinarySearch</span><span>[</span><span style="color:#bf616a;">T</span><span>](</span><span style="color:#bf616a;">list</span><span>, </span><span style="color:#bf616a;">target</span><span>, </span><span style="color:#bf616a;">midIdx</span><span>+</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#bf616a;">lastIdx</span><span>)
+</span><span>		}
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<h3 id="Recursive_Binary_Search_Implementation_How_It_Works">Recursive Binary Search Implementation How It Works</h3>
+<ol>
+<li>
+<p><strong>Base Case</strong>:</p>
+<ul>
+<li>If <code>firstIdx</code> exceeds <code>lastIdx</code>, the search interval is invalid, and the function returns <code>-1</code>, indicating that the target is not found.</li>
+</ul>
+</li>
+<li>
+<p><strong>Calculating the Middle Index</strong>:</p>
+<ul>
+<li><code>midIdx</code>: The middle index of the current search interval, calculated as <code>(firstIdx + lastIdx) / 2</code>.</li>
+<li><code>midValue</code>: The value at <code>midIdx</code> in the list.</li>
+</ul>
+</li>
+<li>
+<p><strong>Comparison</strong>:</p>
+<ul>
+<li>If <code>midValue</code> equals the <code>target</code>, the function returns <code>midIdx</code>, indicating the position of the target.</li>
+<li>If <code>target</code> is less than <code>midValue</code>, the function recursively searches the lower half by calling itself with updated indices (<code>firstIdx</code> to <code>midIdx - 1</code>).</li>
+<li>If <code>target</code> is greater than <code>midValue</code>, the function recursively searches the upper half by calling itself with updated indices (<code>midIdx + 1</code> to <code>lastIdx</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Termination</strong>:</p>
+<ul>
+<li>The recursion continues until the base case is met or the target is found.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Recursive_Binary_Search_Implementation_Example_Walkthrough">Recursive Binary Search Implementation Example Walkthrough</h3>
+<p>Consider searching for the target value <code>7</code> in the sorted list <code>[1, 3, 5, 7, 9, 11]</code> using <code>RecursiveBinarySearch(list, 7, 0, 5)</code>.</p>
+<ol>
+<li>
+<p><strong>First Call</strong>:</p>
+<ul>
+<li><code>firstIdx = 0</code>, <code>lastIdx = 5</code></li>
+<li><code>midIdx = (0 + 5) / 2 = 2</code></li>
+<li><code>midValue = list[2] = 5</code></li>
+<li>Since <code>7 &gt; 5</code>, recurse with <code>firstIdx = 3</code>, <code>lastIdx = 5</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Second Call</strong>:</p>
+<ul>
+<li><code>firstIdx = 3</code>, <code>lastIdx = 5</code></li>
+<li><code>midIdx = (3 + 5) / 2 = 4</code></li>
+<li><code>midValue = list[4] = 9</code></li>
+<li>Since <code>7 &lt; 9</code>, recurse with <code>firstIdx = 3</code>, <code>lastIdx = 3</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Third Call</strong>:</p>
+<ul>
+<li><code>firstIdx = 3</code>, <code>lastIdx = 3</code></li>
+<li><code>midIdx = (3 + 3) / 2 = 3</code></li>
+<li><code>midValue = list[3] = 7</code></li>
+<li><code>7 == 7</code>, target found at index <code>3</code>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Recursive_Binary_Search_Implementation_Time_and_Space_Complexity">Recursive Binary Search Implementation Time and Space Complexity</h3>
+<ul>
+<li>
+<p><strong>Time Complexity</strong>: <strong>O(log N)</strong></p>
+<ul>
+<li>Similar to the iterative approach, the search interval is halved with each recursive call.</li>
+</ul>
+</li>
+<li>
+<p><strong>Space Complexity</strong>: <strong>O(log N)</strong></p>
+<ul>
+<li>Due to recursion, the call stack can grow up to <code>log N</code> levels deep.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="Comparing_Iterative_and_Recursive_Approaches">Comparing Iterative and Recursive Approaches</h2>
+<table><thead><tr><th>Aspect</th><th>Iterative Binary Search</th><th>Recursive Binary Search</th></tr></thead><tbody>
+<tr><td><strong>Time Complexity</strong></td><td>O(log N)</td><td>O(log N)</td></tr>
+<tr><td><strong>Space Complexity</strong></td><td>O(1)</td><td>O(log N)</td></tr>
+<tr><td><strong>Ease of Implementation</strong></td><td>Simple and straightforward</td><td>Slightly more complex due to recursion</td></tr>
+<tr><td><strong>Performance</strong></td><td>Slightly better due to no recursion overhead</td><td>Potentially slower due to recursive calls</td></tr>
+<tr><td><strong>Readability</strong></td><td>Clear and easy to follow</td><td>Elegant but can be harder to trace</td></tr>
+<tr><td><strong>Stack Overflow Risk</strong></td><td>None</td><td>Possible with very large datasets</td></tr>
+</tbody></table>
+<h3 id="Summary">Summary</h3>
+<ul>
+<li>
+<p><strong>Iterative Approach</strong>:</p>
+<ul>
+<li><strong>Pros</strong>:
+<ul>
+<li>Uses constant space.</li>
+<li>Generally faster due to lack of recursion overhead.</li>
+<li>Simpler stack usage, eliminating the risk of stack overflow.</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:
+<ul>
+<li>Can be slightly less elegant compared to the recursive approach.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Recursive Approach</strong>:</p>
+<ul>
+<li><strong>Pros</strong>:
+<ul>
+<li>More elegant and closer to the theoretical definition of Binary Search.</li>
+<li>Easier to understand for those familiar with recursion.</li>
+</ul>
+</li>
+<li><strong>Cons</strong>:
+<ul>
+<li>Uses additional space proportional to the depth of recursion.</li>
+<li>Risk of stack overflow with very large datasets.</li>
+<li>Slightly slower due to the overhead of recursive calls.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="Conclusion">Conclusion</h2>
+<p>Binary Search is a powerful algorithm for efficiently searching through sorted datasets. Both iterative and recursive implementations in Go offer the same logarithmic time complexity, but they differ in space usage and implementation nuances.</p>
+<ul>
+<li>
+<p><strong>Iterative Binary Search</strong> is generally preferred in practice due to its constant space usage and slight performance advantages. It's straightforward to implement and free from the risks associated with deep recursion.</p>
+</li>
+<li>
+<p><strong>Recursive Binary Search</strong> provides a more elegant and theoretically appealing solution, closely mirroring the mathematical definition of the algorithm. However, it comes with increased space usage and potential stack overflow risks for extremely large datasets.</p>
+</li>
+</ul>
+<p>By leveraging Go's generics and the <code>cmp.Ordered</code> constraint, these Binary Search implementations become versatile and reusable across various data types, enhancing code flexibility and maintainability.</p>
+<p>Whether you choose an iterative or recursive approach depends on the specific requirements and constraints of your project. Understanding both methods equips you with the knowledge to make informed decisions and implement efficient search algorithms in your Go applications.</p>
+
+    </div>
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>

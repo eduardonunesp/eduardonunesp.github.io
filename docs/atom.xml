@@ -5,8 +5,326 @@
     <link rel="self" type="application/atom+xml" href="https://edoncode.dev/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://edoncode.dev"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
-    <updated>2024-05-13T00:00:00+00:00</updated>
+    <updated>2024-06-02T00:00:00+00:00</updated>
     <id>https://edoncode.dev/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Exploring Binary Search in Go: Iterative and Recursive Implementations</title>
+        <published>2024-06-02T00:00:00+00:00</published>
+        <updated>2024-06-02T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://edoncode.dev/Golang/exploring-binary-search-in-go/"/>
+        <id>https://edoncode.dev/Golang/exploring-binary-search-in-go/</id>
+        
+        <content type="html" xml:base="https://edoncode.dev/Golang/exploring-binary-search-in-go/">&lt;p&gt;Binary Search is a fundamental algorithm in computer science, renowned for its efficiency in searching through sorted datasets. In this article, we&#x27;ll delve into two generic implementations of Binary Search in Go (Golang): an &lt;strong&gt;iterative&lt;&#x2F;strong&gt; approach and a &lt;strong&gt;recursive&lt;&#x2F;strong&gt; approach. We&#x27;ll explore how these implementations work, their time and space complexities, and the benefits of using generics with Go&#x27;s &lt;code&gt;cmp.Ordered&lt;&#x2F;code&gt; constraint.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;Introduction_to_Binary_Search&quot;&gt;Introduction to Binary Search&lt;&#x2F;h2&gt;
+&lt;p&gt;Binary Search is an efficient algorithm for finding an item from a sorted list of items. It works by repeatedly dividing the search interval in half:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Start&lt;&#x2F;strong&gt; with an interval covering the whole array.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Compare&lt;&#x2F;strong&gt; the target value to the middle element of the array.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;If&lt;&#x2F;strong&gt; the target value matches the middle element, the position is returned.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Otherwise&lt;&#x2F;strong&gt;, if the target value is less than the middle element, narrow the interval to the lower half.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Else&lt;&#x2F;strong&gt;, narrow it to the upper half.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Repeat&lt;&#x2F;strong&gt; the process until the target value is found or the interval is empty.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Binary Search operates in &lt;strong&gt;O(log N)&lt;&#x2F;strong&gt; time complexity, making it significantly faster than linear search for large datasets.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Understanding_Go_Generics_and_cmp.Ordered&quot;&gt;Understanding Go Generics and &lt;code&gt;cmp.Ordered&lt;&#x2F;code&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;With the introduction of generics in Go 1.18, developers can write more flexible and reusable code. In our Binary Search implementations, we utilize generics to allow the search functions to operate on any ordered type.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;cmp.Ordered_Constraint&quot;&gt;&lt;code&gt;cmp.Ordered&lt;&#x2F;code&gt; Constraint&lt;&#x2F;h3&gt;
+&lt;p&gt;The &lt;code&gt;cmp.Ordered&lt;&#x2F;code&gt; constraint is a type constraint that requires the type to support comparison operators (&lt;code&gt;&amp;lt;&lt;&#x2F;code&gt;, &lt;code&gt;&amp;lt;=&lt;&#x2F;code&gt;, &lt;code&gt;&amp;gt;&lt;&#x2F;code&gt;, &lt;code&gt;&amp;gt;=&lt;&#x2F;code&gt;). This ensures that the elements in the list can be ordered, which is a prerequisite for Binary Search.&lt;&#x2F;p&gt;
+&lt;p&gt;By using generics with the &lt;code&gt;cmp.Ordered&lt;&#x2F;code&gt; constraint, our Binary Search functions can work with various data types such as integers, floating-point numbers, and strings, provided they are ordered.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Iterative_Binary_Search_Implementation&quot;&gt;Iterative Binary Search Implementation&lt;&#x2F;h2&gt;
+&lt;p&gt;Let&#x27;s explore the iterative implementation of Binary Search in Go.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;Iterative_Binary_Search_Implementation_Code_Overview&quot;&gt;Iterative Binary Search Implementation Code Overview&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;algorithms
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;	&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; BinarySearch performs an iterative binary search on a sorted list.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; It returns the index of the target if found, otherwise -1.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;BinarySearch&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;T cmp&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Ordered&lt;&#x2F;span&gt;&lt;span&gt;](&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list &lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;T&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target T&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list&lt;&#x2F;span&gt;&lt;span&gt;)-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx &lt;&#x2F;span&gt;&lt;span&gt;:= (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx &lt;&#x2F;span&gt;&lt;span&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx&lt;&#x2F;span&gt;&lt;span&gt;) &#x2F; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midValue &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midValue &lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx &lt;&#x2F;span&gt;&lt;span&gt;- &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;		} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midValue &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx &lt;&#x2F;span&gt;&lt;span&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;		} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;Iterative_Binary_Search_Implementation_How_It_Works&quot;&gt;Iterative Binary Search Implementation How It Works&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Initialization&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;firstIdx&lt;&#x2F;code&gt;: The starting index of the search interval (initially &lt;code&gt;0&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;lastIdx&lt;&#x2F;code&gt;: The ending index of the search interval (initially &lt;code&gt;len(list) - 1&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Loop Condition&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The loop continues as long as &lt;code&gt;firstIdx&lt;&#x2F;code&gt; is less than or equal to &lt;code&gt;lastIdx&lt;&#x2F;code&gt;. This ensures that there is still a valid interval to search within.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Calculating the Middle Index&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;midIdx&lt;&#x2F;code&gt;: The middle index of the current search interval, calculated as &lt;code&gt;(firstIdx + lastIdx) &#x2F; 2&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue&lt;&#x2F;code&gt;: The value at &lt;code&gt;midIdx&lt;&#x2F;code&gt; in the list.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Comparison&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If &lt;code&gt;midValue&lt;&#x2F;code&gt; is greater than the &lt;code&gt;target&lt;&#x2F;code&gt;, the search interval is narrowed to the lower half by setting &lt;code&gt;lastIdx&lt;&#x2F;code&gt; to &lt;code&gt;midIdx - 1&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;If &lt;code&gt;midValue&lt;&#x2F;code&gt; is less than the &lt;code&gt;target&lt;&#x2F;code&gt;, the search interval is narrowed to the upper half by setting &lt;code&gt;firstIdx&lt;&#x2F;code&gt; to &lt;code&gt;midIdx + 1&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;If &lt;code&gt;midValue&lt;&#x2F;code&gt; equals the &lt;code&gt;target&lt;&#x2F;code&gt;, the function returns &lt;code&gt;midIdx&lt;&#x2F;code&gt;, indicating the position of the target.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Termination&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If the loop completes without finding the &lt;code&gt;target&lt;&#x2F;code&gt;, the function returns &lt;code&gt;-1&lt;&#x2F;code&gt;, indicating that the target is not present in the list.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;Iterative_Binary_Search_Implementation_Example_Walkthrough&quot;&gt;Iterative Binary Search Implementation Example Walkthrough&lt;&#x2F;h3&gt;
+&lt;p&gt;Consider searching for the target value &lt;code&gt;7&lt;&#x2F;code&gt; in the sorted list &lt;code&gt;[1, 3, 5, 7, 9, 11]&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Initial State&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;firstIdx = 0&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;lastIdx = 5&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;First Iteration&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;midIdx = (0 + 5) &#x2F; 2 = 2&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue = list[2] = 5&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Since &lt;code&gt;5 &amp;lt; 7&lt;&#x2F;code&gt;, update &lt;code&gt;firstIdx&lt;&#x2F;code&gt; to &lt;code&gt;3&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Second Iteration&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;midIdx = (3 + 5) &#x2F; 2 = 4&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue = list[4] = 9&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Since &lt;code&gt;9 &amp;gt; 7&lt;&#x2F;code&gt;, update &lt;code&gt;lastIdx&lt;&#x2F;code&gt; to &lt;code&gt;3&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Third Iteration&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;midIdx = (3 + 3) &#x2F; 2 = 3&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue = list[3] = 7&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;7 == 7&lt;&#x2F;code&gt;, target found at index &lt;code&gt;3&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;Iterative_Binary_Search_Implementation_Time_and_Space_Complexity&quot;&gt;Iterative Binary Search Implementation Time and Space Complexity&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Time Complexity&lt;&#x2F;strong&gt;: &lt;strong&gt;O(log N)&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The search interval is halved with each iteration, leading to logarithmic time complexity.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Space Complexity&lt;&#x2F;strong&gt;: &lt;strong&gt;O(1)&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The iterative approach uses a constant amount of extra space.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Recursive_Binary_Search_Implementation&quot;&gt;Recursive Binary Search Implementation&lt;&#x2F;h2&gt;
+&lt;p&gt;Now, let&#x27;s examine the recursive implementation of Binary Search in Go.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;Recursive_Binary_Search_Implementation_Code_Overview&quot;&gt;Recursive Binary Search Implementation Code Overview&lt;&#x2F;h3&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;algorithms
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;	&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;cmp&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; RecursiveBinarySearch performs a recursive binary search on a sorted list.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; It returns the index of the target if found, otherwise -1.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;RecursiveBinarySearch&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;T cmp&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Ordered&lt;&#x2F;span&gt;&lt;span&gt;](&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list &lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;T&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target T&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx int&lt;&#x2F;span&gt;&lt;span&gt;) &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx &lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx &lt;&#x2F;span&gt;&lt;span&gt;:= (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx &lt;&#x2F;span&gt;&lt;span&gt;+ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx&lt;&#x2F;span&gt;&lt;span&gt;) &#x2F; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midValue &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx&lt;&#x2F;span&gt;&lt;span&gt;]
+&lt;&#x2F;span&gt;&lt;span&gt;	&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target &lt;&#x2F;span&gt;&lt;span&gt;== &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midValue &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx
+&lt;&#x2F;span&gt;&lt;span&gt;	} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;		&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target &lt;&#x2F;span&gt;&lt;span&gt;&amp;lt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midValue &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;RecursiveBinarySearch&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;T&lt;&#x2F;span&gt;&lt;span&gt;](&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;firstIdx&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx&lt;&#x2F;span&gt;&lt;span&gt;-&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;		} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;else &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;			&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;RecursiveBinarySearch&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;T&lt;&#x2F;span&gt;&lt;span&gt;](&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;list&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;target&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;midIdx&lt;&#x2F;span&gt;&lt;span&gt;+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;lastIdx&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;		}
+&lt;&#x2F;span&gt;&lt;span&gt;	}
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h3 id=&quot;Recursive_Binary_Search_Implementation_How_It_Works&quot;&gt;Recursive Binary Search Implementation How It Works&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Base Case&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If &lt;code&gt;firstIdx&lt;&#x2F;code&gt; exceeds &lt;code&gt;lastIdx&lt;&#x2F;code&gt;, the search interval is invalid, and the function returns &lt;code&gt;-1&lt;&#x2F;code&gt;, indicating that the target is not found.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Calculating the Middle Index&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;midIdx&lt;&#x2F;code&gt;: The middle index of the current search interval, calculated as &lt;code&gt;(firstIdx + lastIdx) &#x2F; 2&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue&lt;&#x2F;code&gt;: The value at &lt;code&gt;midIdx&lt;&#x2F;code&gt; in the list.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Comparison&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;If &lt;code&gt;midValue&lt;&#x2F;code&gt; equals the &lt;code&gt;target&lt;&#x2F;code&gt;, the function returns &lt;code&gt;midIdx&lt;&#x2F;code&gt;, indicating the position of the target.&lt;&#x2F;li&gt;
+&lt;li&gt;If &lt;code&gt;target&lt;&#x2F;code&gt; is less than &lt;code&gt;midValue&lt;&#x2F;code&gt;, the function recursively searches the lower half by calling itself with updated indices (&lt;code&gt;firstIdx&lt;&#x2F;code&gt; to &lt;code&gt;midIdx - 1&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;If &lt;code&gt;target&lt;&#x2F;code&gt; is greater than &lt;code&gt;midValue&lt;&#x2F;code&gt;, the function recursively searches the upper half by calling itself with updated indices (&lt;code&gt;midIdx + 1&lt;&#x2F;code&gt; to &lt;code&gt;lastIdx&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Termination&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The recursion continues until the base case is met or the target is found.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;Recursive_Binary_Search_Implementation_Example_Walkthrough&quot;&gt;Recursive Binary Search Implementation Example Walkthrough&lt;&#x2F;h3&gt;
+&lt;p&gt;Consider searching for the target value &lt;code&gt;7&lt;&#x2F;code&gt; in the sorted list &lt;code&gt;[1, 3, 5, 7, 9, 11]&lt;&#x2F;code&gt; using &lt;code&gt;RecursiveBinarySearch(list, 7, 0, 5)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;First Call&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;firstIdx = 0&lt;&#x2F;code&gt;, &lt;code&gt;lastIdx = 5&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midIdx = (0 + 5) &#x2F; 2 = 2&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue = list[2] = 5&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Since &lt;code&gt;7 &amp;gt; 5&lt;&#x2F;code&gt;, recurse with &lt;code&gt;firstIdx = 3&lt;&#x2F;code&gt;, &lt;code&gt;lastIdx = 5&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Second Call&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;firstIdx = 3&lt;&#x2F;code&gt;, &lt;code&gt;lastIdx = 5&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midIdx = (3 + 5) &#x2F; 2 = 4&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue = list[4] = 9&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Since &lt;code&gt;7 &amp;lt; 9&lt;&#x2F;code&gt;, recurse with &lt;code&gt;firstIdx = 3&lt;&#x2F;code&gt;, &lt;code&gt;lastIdx = 3&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Third Call&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;firstIdx = 3&lt;&#x2F;code&gt;, &lt;code&gt;lastIdx = 3&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midIdx = (3 + 3) &#x2F; 2 = 3&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;midValue = list[3] = 7&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;7 == 7&lt;&#x2F;code&gt;, target found at index &lt;code&gt;3&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;Recursive_Binary_Search_Implementation_Time_and_Space_Complexity&quot;&gt;Recursive Binary Search Implementation Time and Space Complexity&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Time Complexity&lt;&#x2F;strong&gt;: &lt;strong&gt;O(log N)&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Similar to the iterative approach, the search interval is halved with each recursive call.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Space Complexity&lt;&#x2F;strong&gt;: &lt;strong&gt;O(log N)&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Due to recursion, the call stack can grow up to &lt;code&gt;log N&lt;&#x2F;code&gt; levels deep.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Comparing_Iterative_and_Recursive_Approaches&quot;&gt;Comparing Iterative and Recursive Approaches&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Aspect&lt;&#x2F;th&gt;&lt;th&gt;Iterative Binary Search&lt;&#x2F;th&gt;&lt;th&gt;Recursive Binary Search&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Time Complexity&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;O(log N)&lt;&#x2F;td&gt;&lt;td&gt;O(log N)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Space Complexity&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;O(1)&lt;&#x2F;td&gt;&lt;td&gt;O(log N)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Ease of Implementation&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;Simple and straightforward&lt;&#x2F;td&gt;&lt;td&gt;Slightly more complex due to recursion&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Performance&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;Slightly better due to no recursion overhead&lt;&#x2F;td&gt;&lt;td&gt;Potentially slower due to recursive calls&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Readability&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;Clear and easy to follow&lt;&#x2F;td&gt;&lt;td&gt;Elegant but can be harder to trace&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;Stack Overflow Risk&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;None&lt;&#x2F;td&gt;&lt;td&gt;Possible with very large datasets&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;Summary&quot;&gt;Summary&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Iterative Approach&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Pros&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Uses constant space.&lt;&#x2F;li&gt;
+&lt;li&gt;Generally faster due to lack of recursion overhead.&lt;&#x2F;li&gt;
+&lt;li&gt;Simpler stack usage, eliminating the risk of stack overflow.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Cons&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Can be slightly less elegant compared to the recursive approach.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Recursive Approach&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Pros&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;More elegant and closer to the theoretical definition of Binary Search.&lt;&#x2F;li&gt;
+&lt;li&gt;Easier to understand for those familiar with recursion.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Cons&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;Uses additional space proportional to the depth of recursion.&lt;&#x2F;li&gt;
+&lt;li&gt;Risk of stack overflow with very large datasets.&lt;&#x2F;li&gt;
+&lt;li&gt;Slightly slower due to the overhead of recursive calls.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;Binary Search is a powerful algorithm for efficiently searching through sorted datasets. Both iterative and recursive implementations in Go offer the same logarithmic time complexity, but they differ in space usage and implementation nuances.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Iterative Binary Search&lt;&#x2F;strong&gt; is generally preferred in practice due to its constant space usage and slight performance advantages. It&#x27;s straightforward to implement and free from the risks associated with deep recursion.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Recursive Binary Search&lt;&#x2F;strong&gt; provides a more elegant and theoretically appealing solution, closely mirroring the mathematical definition of the algorithm. However, it comes with increased space usage and potential stack overflow risks for extremely large datasets.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;By leveraging Go&#x27;s generics and the &lt;code&gt;cmp.Ordered&lt;&#x2F;code&gt; constraint, these Binary Search implementations become versatile and reusable across various data types, enhancing code flexibility and maintainability.&lt;&#x2F;p&gt;
+&lt;p&gt;Whether you choose an iterative or recursive approach depends on the specific requirements and constraints of your project. Understanding both methods equips you with the knowledge to make informed decisions and implement efficient search algorithms in your Go applications.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
     <entry xml:lang="en">
         <title>Understanding the Two Sum Problem in Go: Optimized and Brute Force Solution</title>
         <published>2024-05-13T00:00:00+00:00</published>
