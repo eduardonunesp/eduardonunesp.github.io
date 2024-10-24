@@ -30,15 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Golang/">
-                                    <span itemprop="name">Golang</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -51,8 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
@@ -81,6 +81,29 @@
         </time>
     </div>
     <div itemprop="articleBody">
+        
+    <ul>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/practicing-golang-pt1/#Initial_structure">Initial structure</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/practicing-golang-pt1/#To_interpret_JSON,_we_need_to_associate_it_with_a_structure;_this_is_very_common_in_language">To interpret JSON, we need to associate it with a structure; this is very common in language</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/practicing-golang-pt1/#Interpreting_JSON">Interpreting JSON</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+    </ul>
+
         <p>In my previous article on Golang, I took a brief look at the programming language developed by Google, highlighting some features that I found exciting and others that were less memorable.</p>
 <p>Building on that foundation, I decided to demonstrate, in practice, how to create a simple HTTP service that handles requests and incorporates basic concurrency — nothing too complicated. The service I developed is a currency converter that translates USD to BRL (US Dollars to Brazilian Reais).</p>
 <p>When a user sends a request to the service, it responds with the current dollar value based on data from the last five minutes. Why the last five minutes? This approach involves a routine that continuously checks the dollar rate via HTTP requests every five minutes concurrently.</p>

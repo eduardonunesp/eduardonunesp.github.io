@@ -30,15 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Golang/">
-                                    <span itemprop="name">Golang</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -51,8 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
@@ -81,6 +81,21 @@
         </time>
     </div>
     <div itemprop="articleBody">
+        
+    <ul>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/practicing-golang-pt2/#Channels_and_Routines">Channels and Routines</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/practicing-golang-pt2/#Main_function">Main function</a>
+            
+        </li>
+    
+    </ul>
+
         <h2 id="Channels_and_Routines">Channels and Routines</h2>
 <p>The time has come to discuss one of the main features of the Go language: concurrency. Undoubtedly, one of the most exciting aspects of Go is that concurrency is ingrained in the language’s core. It does not require auxiliary libraries, workarounds, or makeshift solutions.</p>
 <p>The key components responsible for Go’s concurrency model are the go keyword, channels, and goroutines. The go keyword initiates a function as a goroutine, allowing it to run independently alongside the main thread until it completes. Channels facilitate communication between goroutines by providing a synchronized way to send and receive values. When a value is sent to a channel (similar to a pipe), it is only received if the channel is ready to accept it, ensuring synchronization and preventing race conditions between connected functions.</p>

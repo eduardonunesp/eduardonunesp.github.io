@@ -8,7 +8,7 @@
     <updated>2024-05-13T00:00:00+00:00</updated>
     <id>https://edoncode.dev/atom.xml</id>
     <entry xml:lang="en">
-        <title>Understanding the Two Sum Problem in Go</title>
+        <title>Understanding the Two Sum Problem in Go: Optimized and Brute Force Solution</title>
         <published>2024-05-13T00:00:00+00:00</published>
         <updated>2024-05-13T00:00:00+00:00</updated>
         
@@ -23,33 +23,8 @@
         <link rel="alternate" type="text/html" href="https://edoncode.dev/Golang/understanding-two-sum-problem-in-go/"/>
         <id>https://edoncode.dev/Golang/understanding-two-sum-problem-in-go/</id>
         
-        <content type="html" xml:base="https://edoncode.dev/Golang/understanding-two-sum-problem-in-go/">&lt;h1 id=&quot;Understanding_the_Two_Sum_Problem_in_Go:_Optimized_and_Brute_Force_Solutions&quot;&gt;Understanding the Two Sum Problem in Go: Optimized and Brute Force Solutions&lt;&#x2F;h1&gt;
+        <content type="html" xml:base="https://edoncode.dev/Golang/understanding-two-sum-problem-in-go/">&lt;h2 id=&quot;Problem_Statement&quot;&gt;Problem Statement&lt;&#x2F;h2&gt;
 &lt;p&gt;The &lt;strong&gt;Two Sum&lt;&#x2F;strong&gt; problem is a staple in algorithmic challenges, often used to assess a programmer&#x27;s problem-solving skills and understanding of data structures. This article explores two Go (Golang) implementations of the Two Sum problem: an optimized approach using a hash map and a straightforward brute-force method. We&#x27;ll delve into the problem statement, dissect both solutions, and analyze their time and space complexities.&lt;&#x2F;p&gt;
-&lt;hr &#x2F;&gt;
-&lt;h2 id=&quot;Table_of_Contents&quot;&gt;Table of Contents&lt;&#x2F;h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#problem-statement&quot;&gt;Problem Statement&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-1-optimized-approach-using-a-hash-map&quot;&gt;Solution 1: Optimized Approach Using a Hash Map&lt;&#x2F;a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-1-code-overview&quot;&gt;Solution 1 Code Overview&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-1-how-it-works&quot;&gt;Solution 1 How It Works&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-1-example-walkthrough&quot;&gt;Solution 1 Example Walkthrough&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-1-time-and-space-complexity&quot;&gt;Solution 1 Time and Space Complexity&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
-&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-2-brute-force-approach-using-nested-loops&quot;&gt;Solution 2: Brute Force Approach Using Nested Loops&lt;&#x2F;a&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-2-code-overview&quot;&gt;Solution 2 Code Overview&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-2-how-it-works&quot;&gt;Solution 2 How It Works&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-2-example-walkthrough&quot;&gt;Solution 2 Example Walkthrough&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#solution-2-time-and-space-complexity&quot;&gt;Solution 2 Time and Space Complexity&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;&#x2F;ul&gt;
-&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#comparing-the-two-approaches&quot;&gt;Comparing the Two Approaches&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;edoncode.dev&#x2F;Golang&#x2F;understanding-two-sum-problem-in-go&#x2F;#conclusion&quot;&gt;Conclusion&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
-&lt;&#x2F;ol&gt;
-&lt;hr &#x2F;&gt;
-&lt;h2 id=&quot;Problem_Statement&quot;&gt;Problem Statement&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;strong&gt;Given&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;An array of integers &lt;code&gt;nums&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;

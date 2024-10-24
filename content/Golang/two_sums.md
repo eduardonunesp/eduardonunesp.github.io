@@ -1,34 +1,13 @@
 +++
-title = "Understanding the Two Sum Problem in Go"
+title = "Understanding the Two Sum Problem in Go: Optimized and Brute Force Solution"
 slug = "understanding-two-sum-problem-in-go"
 date = "2024-05-13"
 +++
 
-# Understanding the Two Sum Problem in Go: Optimized and Brute Force Solutions
+## Problem Statement
 
 The **Two Sum** problem is a staple in algorithmic challenges, often used to assess a programmer's problem-solving skills and understanding of data structures. This article explores two Go (Golang) implementations of the Two Sum problem: an optimized approach using a hash map and a straightforward brute-force method. We'll delve into the problem statement, dissect both solutions, and analyze their time and space complexities.
 
----
-
-## Table of Contents
-
-1. [Problem Statement](#problem-statement)
-2. [Solution 1: Optimized Approach Using a Hash Map](#solution-1-optimized-approach-using-a-hash-map)
-    - [Solution 1 Code Overview](#solution-1-code-overview)
-    - [Solution 1 How It Works](#solution-1-how-it-works)
-    - [Solution 1 Example Walkthrough](#solution-1-example-walkthrough)
-    - [Solution 1 Time and Space Complexity](#solution-1-time-and-space-complexity)
-3. [Solution 2: Brute Force Approach Using Nested Loops](#solution-2-brute-force-approach-using-nested-loops)
-    - [Solution 2 Code Overview](#solution-2-code-overview)
-    - [Solution 2 How It Works](#solution-2-how-it-works)
-    - [Solution 2 Example Walkthrough](#solution-2-example-walkthrough)
-    - [Solution 2 Time and Space Complexity](#solution-2-time-and-space-complexity)
-4. [Comparing the Two Approaches](#comparing-the-two-approaches)
-5. [Conclusion](#conclusion)
-
----
-
-## Problem Statement
 
 **Given**:
 - An array of integers `nums`.

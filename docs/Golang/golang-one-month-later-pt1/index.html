@@ -30,15 +30,8 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Golang/">
-                                    <span itemprop="name">Golang</span>
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
                                 </a>
                             </li>
                         
@@ -51,8 +44,15 @@
                         
                             
                             <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
                                 </a>
                             </li>
                         
@@ -81,6 +81,42 @@
         </time>
     </div>
     <div itemprop="articleBody">
+        
+    <ul>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/golang-one-month-later-pt1/#The_Way_Go_Creates_Its_Environment">The Way Go Creates Its Environment</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/golang-one-month-later-pt1/#Where_are_my_sources_and_binaries_in_Go?">Where are my sources and binaries in Go?</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/golang-one-month-later-pt1/#Packages,_repositories,_and_binaries_are_all_“connected”">Packages, repositories, and binaries are all “connected”</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/golang-one-month-later-pt1/#Is_there_an_error?_No,_now_there_is_an_error?_Now_it_has?_Not?_then_follow">Is there an error? No, now there is an error? Now it has? Not? then follow</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/golang-one-month-later-pt1/#Go_doesn’t_want_you_to_miss_or_forget_something;_it_bugs_you_with_until_you_learn_it.">Go doesn’t want you to miss or forget something; it bugs you with until you learn it.</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+    </ul>
+
         <p>Maybe it’s been more than a month that I’m studying Go http://www.golangbr.org/; however this is not the case, the important thing is that I want to share a little of what happened during this period — starting with the fact that I had not been studying a new language for some time (in fact Go is really new, it was released to the public on March 2012, when I was “immersed” in Python and then Node.JS).</p>
 <h2 id="The_Way_Go_Creates_Its_Environment">The Way Go Creates Its Environment</h2>
 <p>In Python, we often use virtualenv to create a package environment that doesn’t mix with the global environment; in Node.JS, NPM makes life even more comfortable to create a dependency environment in the project directory itself. Go has an approach that I found strange at first, but once I got used to making sense.</p>
