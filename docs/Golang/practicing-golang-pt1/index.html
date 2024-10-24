@@ -1,87 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html class="dark light">
 
-        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
-        
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Ed On Code</title>
+    
+
+    
+    
+    
+    <title>
+         Practicing Golang (Part 1)
+        
+    </title>
 
         
-            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+            <meta property="og:title" content="Practicing Golang (Part 1)" />
         
-        
-    </head>
-    <body>
-        <div class="content">
-        
-        
-            <header>
-                <div class="header-left">
-                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
-                </div>
-                <div class="header-right">
-                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
-                      <ul>
-                        
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Golang/">
-                                    <span itemprop="name">Golang</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
-                                </a>
-                            </li>
-                        
-                        
-                        <li class="nav">
-                            <a itemprop="url" href="https://github.com/eduardonunesp">
-                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
-                            </a>
-                        </li>
-                        
-                        
-                      </ul>
-                    </nav>
-                </div>
-            </header>
-        
-        
-        <main>
+     
+
+     
+         
+             <meta property="og:description" content="Ed On Code is a blog about software development and related topics." />
+         
+     
+
+     
+         
+             <meta name="description" content="Ed On Code is a blog about software development and related topics." />
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://edoncode.dev/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Ed On Code" href="https://edoncode.dev/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://edoncode.dev/theme/light.css />
+        <link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://edoncode.dev/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://edoncode.dev/js/themetoggle.js></script>
+    
+        <script>setTheme(getSavedTheme());</script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://edoncode.dev/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;edoncode.dev>Ed On Code</a>
+
+        <div class="socials">
             
-<article itemscope itemtype="http://schema.org/BlogPosting">
-    <div itemprop="headline">
-        <h1>Practicing Golang (Part 1)</h1>
-        <div class="border"></div>
-        <time datetime="2015-10-13" class="date" itemprop="datePublished">
-            13 Oct 2015
-        </time>
+        </div>
     </div>
-    <div itemprop="articleBody">
-        <p>In my previous article on Golang, I took a brief look at the programming language developed by Google, highlighting some features that I found exciting and others that were less memorable.</p>
+
+    <nav>
+        
+
+        
+        |<a id="dark-mode-toggle" onclick="toggleTheme(); event.preventDefault();" href="#">
+            <img src=https://edoncode.dev/feather/sun.svg id="sun-icon" style="filter: invert(1);" alt="Light" />
+            <img src=https://edoncode.dev/feather/moon.svg id="moon-icon" alt="Dark" />
+        </a>
+
+        <!-- Inititialize the theme toggle icons -->
+        <script>updateItemToggleTheme()</script>
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        Practicing Golang (Part 1)<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2015-10-13</time>
+                    
+
+                    
+
+                    
+
+                    
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <p>In my previous article on Golang, I took a brief look at the programming language developed by Google, highlighting some features that I found exciting and others that were less memorable.</p>
 <p>Building on that foundation, I decided to demonstrate, in practice, how to create a simple HTTP service that handles requests and incorporates basic concurrency — nothing too complicated. The service I developed is a currency converter that translates USD to BRL (US Dollars to Brazilian Reais).</p>
 <p>When a user sends a request to the service, it responds with the current dollar value based on data from the last five minutes. Why the last five minutes? This approach involves a routine that continuously checks the dollar rate via HTTP requests every five minutes concurrently.</p>
 <p>Consequently, when a user request arrives, the service can immediately return the required value without needing to query an external service each time, as it stores the latest value in memory and manages it concurrently.</p>
@@ -158,25 +221,18 @@
 </span></code></pre>
 <p>When the parseJSON function receives the JSON text result on line 3, it creates an object based on the requestResult struct. On line 5, the json.Unmarshal function is responsible for parsing the JSON data and mapping it to the requestResult structure. This highlights the importance of designing the struct to accurately mirror the JSON format, ensuring that only the relevant data—the USD value—is extracted and returned. By aligning the struct with the JSON response, we facilitate efficient and precise data handling, allowing our service to focus solely on the information that matters.</p>
 
-    </div>
-</article>
+        </section>
+    </article>
+</main>
 
-        </main>
+
+
         
-        <footer>
             
-            <div class="border"></div>
-            <div class="footer">
-                <small class="footer-left">
-                    Copyright &copy; Eduardo Pereira
-                </small>
-                <small class="footer-right">
-                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
-                </small>
-            </div>
         
-        </footer>
-    
-        </div>
-    </body>
+
+        
+    </div>
+</body>
+
 </html>

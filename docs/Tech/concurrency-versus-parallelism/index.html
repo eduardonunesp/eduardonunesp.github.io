@@ -1,87 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html class="dark light">
 
-        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
-        
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Ed On Code</title>
+    
+
+    
+    
+    
+    <title>
+         Concurrency versus Parallelism
+        
+    </title>
 
         
-            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+            <meta property="og:title" content="Concurrency versus Parallelism" />
         
-        
-    </head>
-    <body>
-        <div class="content">
-        
-        
-            <header>
-                <div class="header-left">
-                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
-                </div>
-                <div class="header-right">
-                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
-                      <ul>
-                        
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Tech/">
-                                    <span itemprop="name">Tech</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Golang/">
-                                    <span itemprop="name">Golang</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
-                                    <span itemprop="name">Adventures</span>
-                                </a>
-                            </li>
-                        
-                            
-                            <li class="nav">
-                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
-                                    <span itemprop="name">Thoughts</span>
-                                </a>
-                            </li>
-                        
-                        
-                        <li class="nav">
-                            <a itemprop="url" href="https://github.com/eduardonunesp">
-                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
-                            </a>
-                        </li>
-                        
-                        
-                      </ul>
-                    </nav>
-                </div>
-            </header>
-        
-        
-        <main>
+     
+
+     
+         
+             <meta property="og:description" content="Ed On Code is a blog about software development and related topics." />
+         
+     
+
+     
+         
+             <meta name="description" content="Ed On Code is a blog about software development and related topics." />
+         
+    
+
+    
+    
+
+    
+    
+        <link href=https://edoncode.dev/fonts.css rel="stylesheet" />
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+
+    
+
+    
+    <link rel="alternate" type="application/atom+xml" title="Ed On Code" href="https://edoncode.dev/atom.xml">
+
+
+    
+    
+        <link rel="stylesheet" type="text/css" href=https://edoncode.dev/theme/light.css />
+        <link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://edoncode.dev/theme/dark.css" />
+    
+
+    <!-- Set the correct theme in the script -->
+    <script src=https://edoncode.dev/js/themetoggle.js></script>
+    
+        <script>setTheme(getSavedTheme());</script>
+    
+
+    <link rel="stylesheet" type="text/css" media="screen" href=https://edoncode.dev/main.css />
+
+    
+</head>
+
+
+<body>
+    <div class="content">
+        <header>
+    <div class="main">
+        <a href=https:&#x2F;&#x2F;edoncode.dev>Ed On Code</a>
+
+        <div class="socials">
             
-<article itemscope itemtype="http://schema.org/BlogPosting">
-    <div itemprop="headline">
-        <h1>Concurrency versus Parallelism</h1>
-        <div class="border"></div>
-        <time datetime="2015-10-17" class="date" itemprop="datePublished">
-            17 Oct 2015
-        </time>
+        </div>
     </div>
-    <div itemprop="articleBody">
-        <blockquote>
+
+    <nav>
+        
+
+        
+        |<a id="dark-mode-toggle" onclick="toggleTheme(); event.preventDefault();" href="#">
+            <img src=https://edoncode.dev/feather/sun.svg id="sun-icon" style="filter: invert(1);" alt="Light" />
+            <img src=https://edoncode.dev/feather/moon.svg id="moon-icon" alt="Dark" />
+        </a>
+
+        <!-- Inititialize the theme toggle icons -->
+        <script>updateItemToggleTheme()</script>
+        
+    </nav>
+</header>
+
+
+        
+        
+    
+<main>
+    <article>
+        <div class="title">
+            
+            
+    <div class="page-header">
+        Concurrency versus Parallelism<span class="primary-color" style="font-size: 1.6em">.</span>
+    </div>
+
+
+                <div class="meta">
+                    
+                        Posted on <time>2015-10-17</time>
+                    
+
+                    
+
+                    
+
+                    
+                    
+
+                    
+                    
+
+                    
+
+                </div>
+        </div>
+
+        
+
+        
+        
+
+        <section class="body">
+            <blockquote>
 <p>In a universe where countless events unfold simultaneously and we cannot even begin to comprehend their sheer number, everything is in a state of constant change. This relentless flux often leaves us without a clear direction or the ability to foresee what lies ahead, making it challenging to maintain a steady flow or exercise foresight amidst the chaos.</p>
 </blockquote>
 <p>Imagine standing in line to place an order for a meal. As you wait your turn, the cashier takes orders while the person ahead of you steps aside to make a call. Meanwhile, a new order swiftly arrives in the kitchen. Nearby, another attendant is busy serving a previous order, and you find yourself glancing at your powerful four-core smartphone, pondering which movies are playing at the theaters while listening to your favorite band.</p>
@@ -111,25 +174,18 @@
 <li>Golang Book <a href="https://www.golang-book.com/books/intro/10">https://www.golang-book.com/books/intro/10</a></li>
 </ul>
 
-    </div>
-</article>
+        </section>
+    </article>
+</main>
 
-        </main>
+
+
         
-        <footer>
             
-            <div class="border"></div>
-            <div class="footer">
-                <small class="footer-left">
-                    Copyright &copy; Eduardo Pereira
-                </small>
-                <small class="footer-right">
-                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
-                </small>
-            </div>
         
-        </footer>
-    
-        </div>
-    </body>
+
+        
+    </div>
+</body>
+
 </html>
