@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
+        
+
+        <title>Ed On Code</title>
+
+        
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
+        
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
+                </div>
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
+        
+        
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Finding the Top K Frequent Elements in Go: Iterative Approach</h1>
+        <div class="border"></div>
+        <time datetime="2024-08-11" class="date" itemprop="datePublished">
+            11 Aug 2024
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        
+    <ul>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Problem_Statement">Problem Statement</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Examples">Examples</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Code_Overview">Code Overview</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#How_It_Works">How It Works</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Example_Walkthrough">Example Walkthrough</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Time_and_Space_Complexity">Time and Space Complexity</a>
+            
+                <ul>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Time_Complexity">Time Complexity</a>
+                        </li>
+                    
+                        <li>
+                            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Space_Complexity">Space Complexity</a>
+                        </li>
+                    
+                </ul>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Potential_Improvements">Potential Improvements</a>
+            
+        </li>
+    
+        <li>
+            <a href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/#Conclusion">Conclusion</a>
+            
+        </li>
+    
+    </ul>
+
+        <p>In the landscape of algorithmic challenges, identifying the most frequent elements within a dataset is a common task that tests a programmer's ability to manage data efficiently. This article delves into a Go (Golang) implementation of the <strong>Top K Frequent Elements</strong> problem, exploring both its methodology and underlying complexities. We'll walk through the provided code, understand its logic, and analyze its performance.</p>
+<h2 id="Problem_Statement">Problem Statement</h2>
+<p><strong>Given</strong>:</p>
+<ul>
+<li>An integer array <code>nums</code>.</li>
+<li>An integer <code>k</code>.</li>
+</ul>
+<p><strong>Objective</strong>:
+Return the <code>k</code> most frequent elements in <code>nums</code>. The answer can be returned in any order.</p>
+<p><strong>Constraints</strong>:</p>
+<ul>
+<li>You may assume that <code>k</code> is always valid, i.e., <code>1 ≤ k ≤</code> the number of unique elements in <code>nums</code>.</li>
+<li>The algorithm should have a time complexity better than <code>O(n log n)</code> where <code>n</code> is the size of the array.</li>
+</ul>
+<h3 id="Examples">Examples</h3>
+<ol>
+<li>
+<p><strong>Example 1</strong>:</p>
+<ul>
+<li><strong>Input</strong>: <code>nums = [1,1,1,2,2,3]</code>, <code>k = 2</code></li>
+<li><strong>Output</strong>: <code>[1,2]</code></li>
+<li><strong>Explanation</strong>: <code>1</code> appears three times and <code>2</code> appears twice. They are the two most frequent elements.</li>
+</ul>
+</li>
+<li>
+<p><strong>Example 2</strong>:</p>
+<ul>
+<li><strong>Input</strong>: <code>nums = [1]</code>, <code>k = 1</code></li>
+<li><strong>Output</strong>: <code>[1]</code></li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="Code_Overview">Code Overview</h2>
+<pre data-lang="go" style="background-color:#2b303b;color:#c0c5ce;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#b48ead;">package </span><span style="color:#bf616a;">leetcode
+</span><span>
+</span><span style="color:#65737e;">// Given an integer array nums and an integer k, return the k most frequent
+</span><span style="color:#65737e;">// elements. You may return the answer in any order.
+</span><span>
+</span><span style="color:#65737e;">// Example 1:
+</span><span>
+</span><span style="color:#65737e;">// Input: nums = [1,1,1,2,2,3], k = 2
+</span><span style="color:#65737e;">// Output: [1,2]
+</span><span style="color:#65737e;">// Example 2:
+</span><span>
+</span><span style="color:#65737e;">// Input: nums = [1], k = 1
+</span><span style="color:#65737e;">// Output: [1]
+</span><span>
+</span><span style="color:#b48ead;">func </span><span style="color:#8fa1b3;">topKFrequent</span><span>(</span><span style="color:#bf616a;">nums </span><span>[]</span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">K </span><span style="color:#b48ead;">int</span><span>) []</span><span style="color:#b48ead;">int </span><span>{
+</span><span>    </span><span style="color:#65737e;">// create int with the list of the K values
+</span><span>    </span><span style="color:#bf616a;">KList </span><span>:= </span><span style="color:#96b5b4;">make</span><span>([]</span><span style="color:#b48ead;">int</span><span>, </span><span style="color:#bf616a;">K</span><span>)
+</span><span>    </span><span style="color:#65737e;">// mapping with number as key and count frequency
+</span><span>    </span><span style="color:#bf616a;">freqMap </span><span>:= </span><span style="color:#96b5b4;">make</span><span>(</span><span style="color:#b48ead;">map</span><span>[</span><span style="color:#b48ead;">int</span><span>]</span><span style="color:#b48ead;">int</span><span>)
+</span><span>    </span><span style="color:#65737e;">// first pass through the values and fill the map
+</span><span>    </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">_</span><span>, </span><span style="color:#bf616a;">num </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">nums </span><span>{
+</span><span>        </span><span style="color:#bf616a;">freqMap</span><span>[</span><span style="color:#bf616a;">num</span><span>]++
+</span><span>    }
+</span><span>    </span><span style="color:#65737e;">// update the bucket of values for K
+</span><span>    </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">i </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">K </span><span>{
+</span><span>        </span><span style="color:#b48ead;">var </span><span>(
+</span><span>            </span><span style="color:#bf616a;">maxFreqFound      </span><span style="color:#b48ead;">int
+</span><span>            </span><span style="color:#bf616a;">maxCandidateFound </span><span style="color:#b48ead;">int
+</span><span>        )
+</span><span>        </span><span style="color:#b48ead;">for </span><span style="color:#bf616a;">num</span><span>, </span><span style="color:#bf616a;">freq </span><span>:= </span><span style="color:#b48ead;">range </span><span style="color:#bf616a;">freqMap </span><span>{
+</span><span>            </span><span style="color:#65737e;">// is freq gt max freq found
+</span><span>            </span><span style="color:#b48ead;">if </span><span style="color:#bf616a;">freq </span><span>&gt; </span><span style="color:#bf616a;">maxFreqFound </span><span>{
+</span><span>                </span><span style="color:#65737e;">// found candidate number
+</span><span>                </span><span style="color:#bf616a;">maxCandidateFound </span><span>= </span><span style="color:#bf616a;">num
+</span><span>                </span><span style="color:#65737e;">// register the current max freq found
+</span><span>                </span><span style="color:#bf616a;">maxFreqFound </span><span>= </span><span style="color:#bf616a;">freq
+</span><span>            }
+</span><span>        }
+</span><span>        </span><span style="color:#65737e;">// update the K list result
+</span><span>        </span><span style="color:#bf616a;">KList</span><span>[</span><span style="color:#bf616a;">i</span><span>] = </span><span style="color:#bf616a;">maxCandidateFound
+</span><span>        </span><span style="color:#65737e;">// remove the value found from map
+</span><span>        </span><span style="color:#96b5b4;">delete</span><span>(</span><span style="color:#bf616a;">freqMap</span><span>, </span><span style="color:#bf616a;">maxCandidateFound</span><span>)
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">KList
+</span><span>}
+</span></code></pre>
+<hr />
+<h2 id="How_It_Works">How It Works</h2>
+<p>The provided Go function <code>topKFrequent</code> aims to identify the <code>k</code> most frequent elements in the <code>nums</code> array. Here's a step-by-step breakdown of its logic:</p>
+<ol>
+<li>
+<p><strong>Initialization</strong>:</p>
+<ul>
+<li><code>KList</code>: A slice of integers with a length of <code>K</code> is created to store the top <code>k</code> frequent elements.</li>
+<li><code>freqMap</code>: A map is initialized to keep track of the frequency of each element in <code>nums</code>. The keys are the elements from <code>nums</code>, and the values are their corresponding counts.</li>
+</ul>
+</li>
+<li>
+<p><strong>Frequency Counting</strong>:</p>
+<ul>
+<li>The function iterates over each number in <code>nums</code>, incrementing its count in <code>freqMap</code>. After this loop, <code>freqMap</code> contains the frequency of every unique element in <code>nums</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Identifying Top K Elements</strong>:</p>
+<ul>
+<li>The function enters a loop that runs <code>K</code> times, intending to find the top <code>k</code> frequent elements.</li>
+<li><strong>Within Each Iteration</strong>:
+<ul>
+<li>It initializes two variables: <code>maxFreqFound</code> to keep track of the highest frequency found in the current iteration, and <code>maxCandidateFound</code> to store the element with this highest frequency.</li>
+<li>It iterates over <code>freqMap</code>, comparing each element's frequency to <code>maxFreqFound</code>. If a higher frequency is found, it updates both <code>maxFreqFound</code> and <code>maxCandidateFound</code>.</li>
+<li>After traversing the entire <code>freqMap</code>, <code>maxCandidateFound</code> holds the element with the highest remaining frequency.</li>
+<li>This element is added to <code>KList</code>, and its entry is removed from <code>freqMap</code> to prevent it from being considered in subsequent iterations.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Result</strong>:</p>
+<ul>
+<li>After <code>K</code> iterations, <code>KList</code> contains the top <code>k</code> frequent elements, which the function returns.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="Example_Walkthrough">Example Walkthrough</h2>
+<p>Let's walk through <strong>Example 1</strong> to understand how the function operates:</p>
+<ul>
+<li>
+<p><strong>Input</strong>:</p>
+<ul>
+<li><code>nums = [1,1,1,2,2,3]</code></li>
+<li><code>k = 2</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Process</strong>:</p>
+<ol>
+<li>
+<p><strong>Frequency Counting</strong>:</p>
+<ul>
+<li>After the first loop, <code>freqMap</code> becomes:<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+</span><span>    1: 3,
+</span><span>    2: 2,
+</span><span>    3: 1
+</span><span>}
+</span></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>First Iteration (<code>i=0</code>)</strong>:</p>
+<ul>
+<li>Initialize <code>maxFreqFound = 0</code>, <code>maxCandidateFound = 0</code>.</li>
+<li>Iterate over <code>freqMap</code>:
+<ul>
+<li><code>num=1</code>, <code>freq=3</code>: Since <code>3 &gt; 0</code>, update <code>maxFreqFound = 3</code>, <code>maxCandidateFound = 1</code>.</li>
+<li><code>num=2</code>, <code>freq=2</code>: <code>2 &lt; 3</code>, no change.</li>
+<li><code>num=3</code>, <code>freq=1</code>: <code>1 &lt; 3</code>, no change.</li>
+</ul>
+</li>
+<li>Add <code>1</code> to <code>KList[0]</code> and remove <code>1</code> from <code>freqMap</code>.</li>
+<li><code>KList</code> now: <code>[1, 0]</code></li>
+<li><code>freqMap</code> now:<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+</span><span>    2: 2,
+</span><span>    3: 1
+</span><span>}
+</span></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Second Iteration (<code>i=1</code>)</strong>:</p>
+<ul>
+<li>Initialize <code>maxFreqFound = 0</code>, <code>maxCandidateFound = 0</code>.</li>
+<li>Iterate over <code>freqMap</code>:
+<ul>
+<li><code>num=2</code>, <code>freq=2</code>: Since <code>2 &gt; 0</code>, update <code>maxFreqFound = 2</code>, <code>maxCandidateFound = 2</code>.</li>
+<li><code>num=3</code>, <code>freq=1</code>: <code>1 &lt; 2</code>, no change.</li>
+</ul>
+</li>
+<li>Add <code>2</code> to <code>KList[1]</code> and remove <code>2</code> from <code>freqMap</code>.</li>
+<li><code>KList</code> now: <code>[1, 2]</code></li>
+<li><code>freqMap</code> now:<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{
+</span><span>    3: 1
+</span><span>}
+</span></code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Result</strong>:</p>
+<ul>
+<li>The function returns <code>[1, 2]</code> as the two most frequent elements.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr />
+<h2 id="Time_and_Space_Complexity">Time and Space Complexity</h2>
+<p>Analyzing the performance of the <code>topKFrequent</code> function provides insights into its efficiency and scalability.</p>
+<h3 id="Time_Complexity">Time Complexity</h3>
+<ol>
+<li>
+<p><strong>Frequency Counting</strong>:</p>
+<ul>
+<li>Iterating over <code>nums</code> to build <code>freqMap</code> takes <strong>O(n)</strong> time, where <code>n</code> is the number of elements in <code>nums</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Identifying Top K Elements</strong>:</p>
+<ul>
+<li>For each of the <code>k</code> iterations:
+<ul>
+<li>The inner loop traverses the <code>freqMap</code>, which initially has up to <code>n</code> unique elements but decreases as elements are removed.</li>
+<li>In the worst case, each inner loop iteration takes <strong>O(n)</strong> time.</li>
+</ul>
+</li>
+<li>Thus, the overall time complexity for this part is <strong>O(k * n)</strong>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Total Time Complexity</strong>:</p>
+<ul>
+<li>Combining both parts, the total time complexity is <strong>O(n + k * n)</strong>.</li>
+<li>In scenarios where <code>k</code> is small relative to <code>n</code>, this approximates to <strong>O(n)</strong>.</li>
+<li>However, in the worst-case scenario where <code>k</code> is proportional to <code>n</code>, the time complexity becomes <strong>O(n²)</strong>.</li>
+</ul>
+</li>
+</ol>
+<h3 id="Space_Complexity">Space Complexity</h3>
+<ol>
+<li>
+<p><strong>Frequency Map</strong>:</p>
+<ul>
+<li>The <code>freqMap</code> stores up to <code>n</code> unique elements, resulting in <strong>O(n)</strong> space.</li>
+</ul>
+</li>
+<li>
+<p><strong>Result List</strong>:</p>
+<ul>
+<li><code>KList</code> stores <code>k</code> elements, contributing <strong>O(k)</strong> space.</li>
+</ul>
+</li>
+<li>
+<p><strong>Total Space Complexity</strong>:</p>
+<ul>
+<li>The overall space complexity is <strong>O(n + k)</strong>.</li>
+<li>Since <code>k</code> is typically much smaller than <code>n</code>, this is effectively <strong>O(n)</strong>.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2 id="Potential_Improvements">Potential Improvements</h2>
+<p>While the provided implementation is straightforward, there are more efficient approaches to solving the Top K Frequent Elements problem, especially for large datasets.</p>
+<ol>
+<li>
+<p><strong>Heap-Based Approach</strong>:</p>
+<ul>
+<li>Utilize a min-heap of size <code>k</code> to keep track of the top <code>k</code> elements.</li>
+<li>Time Complexity: <strong>O(n log k)</strong></li>
+<li>Space Complexity: <strong>O(n)</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Bucket Sort</strong>:</p>
+<ul>
+<li>Create buckets where the index represents the frequency, and each bucket contains elements with that frequency.</li>
+<li>Iterate through the buckets in reverse order to gather the top <code>k</code> elements.</li>
+<li>Time Complexity: <strong>O(n)</strong></li>
+<li>Space Complexity: <strong>O(n)</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Optimizing Current Implementation</strong>:</p>
+<ul>
+<li>Replace the inner loop that finds the maximum frequency with a more efficient search mechanism.</li>
+<li>Avoid removing elements from <code>freqMap</code>, which can be costly.</li>
+</ul>
+</li>
+</ol>
+<p>Implementing one of these optimized approaches can significantly reduce the time complexity, especially when dealing with large input sizes and values of <code>k</code>.</p>
+<hr />
+<h2 id="Conclusion">Conclusion</h2>
+<p>The <code>topKFrequent</code> function offers a clear and intuitive method for identifying the most frequent elements within an integer array using Go's powerful data structures. By leveraging maps to count frequencies and iteratively extracting the top <code>k</code> elements, the function accomplishes its goal effectively for smaller datasets.</p>
+<p>However, for scalability and performance optimization, especially with larger datasets, exploring heap-based or bucket sort methodologies is advisable. These alternatives provide enhanced time complexities and can handle more extensive and varied input sizes with greater efficiency.</p>
+<p>Understanding both the strengths and limitations of the provided approach equips developers with the knowledge to choose the most appropriate algorithm based on the specific requirements and constraints of their projects.</p>
+
+    </div>
+</article>
+
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
+</html>

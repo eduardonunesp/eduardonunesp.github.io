@@ -5,8 +5,309 @@
     <link rel="self" type="application/atom+xml" href="https://edoncode.dev/atom.xml"/>
     <link rel="alternate" type="text/html" href="https://edoncode.dev"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
-    <updated>2024-06-02T00:00:00+00:00</updated>
+    <updated>2024-08-11T00:00:00+00:00</updated>
     <id>https://edoncode.dev/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Finding the Top K Frequent Elements in Go: Iterative Approach</title>
+        <published>2024-08-11T00:00:00+00:00</published>
+        <updated>2024-08-11T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/"/>
+        <id>https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/</id>
+        
+        <content type="html" xml:base="https://edoncode.dev/Golang/finding-the-top-k-frequent-elements-in-go/">&lt;p&gt;In the landscape of algorithmic challenges, identifying the most frequent elements within a dataset is a common task that tests a programmer&#x27;s ability to manage data efficiently. This article delves into a Go (Golang) implementation of the &lt;strong&gt;Top K Frequent Elements&lt;&#x2F;strong&gt; problem, exploring both its methodology and underlying complexities. We&#x27;ll walk through the provided code, understand its logic, and analyze its performance.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;Problem_Statement&quot;&gt;Problem Statement&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;strong&gt;Given&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;An integer array &lt;code&gt;nums&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;An integer &lt;code&gt;k&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;Objective&lt;&#x2F;strong&gt;:
+Return the &lt;code&gt;k&lt;&#x2F;code&gt; most frequent elements in &lt;code&gt;nums&lt;&#x2F;code&gt;. The answer can be returned in any order.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;Constraints&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;You may assume that &lt;code&gt;k&lt;&#x2F;code&gt; is always valid, i.e., &lt;code&gt;1 ≤ k ≤&lt;&#x2F;code&gt; the number of unique elements in &lt;code&gt;nums&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;The algorithm should have a time complexity better than &lt;code&gt;O(n log n)&lt;&#x2F;code&gt; where &lt;code&gt;n&lt;&#x2F;code&gt; is the size of the array.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;Examples&quot;&gt;Examples&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Example 1&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Input&lt;&#x2F;strong&gt;: &lt;code&gt;nums = [1,1,1,2,2,3]&lt;&#x2F;code&gt;, &lt;code&gt;k = 2&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Output&lt;&#x2F;strong&gt;: &lt;code&gt;[1,2]&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Explanation&lt;&#x2F;strong&gt;: &lt;code&gt;1&lt;&#x2F;code&gt; appears three times and &lt;code&gt;2&lt;&#x2F;code&gt; appears twice. They are the two most frequent elements.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Example 2&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Input&lt;&#x2F;strong&gt;: &lt;code&gt;nums = [1]&lt;&#x2F;code&gt;, &lt;code&gt;k = 1&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Output&lt;&#x2F;strong&gt;: &lt;code&gt;[1]&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Code_Overview&quot;&gt;Code Overview&lt;&#x2F;h2&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;leetcode
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Given an integer array nums and an integer k, return the k most frequent
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; elements. You may return the answer in any order.
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Example 1:
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Input: nums = [1,1,1,2,2,3], k = 2
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Output: [1,2]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Example 2:
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Input: nums = [1], k = 1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Output: [1]
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#8fa1b3;&quot;&gt;topKFrequent&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nums &lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;K &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;) []&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; create int with the list of the K values
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;KList &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;([]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;K&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; mapping with number as key and count frequency
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freqMap &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;make&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; first pass through the values and fill the map
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;_&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;num &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;nums &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freqMap&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;num&lt;&#x2F;span&gt;&lt;span&gt;]++
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; update the bucket of values for K
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;i &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;K &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;var &lt;&#x2F;span&gt;&lt;span&gt;(
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxFreqFound      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxCandidateFound &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;int
+&lt;&#x2F;span&gt;&lt;span&gt;        )
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;for &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;num&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freq &lt;&#x2F;span&gt;&lt;span&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;range &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freqMap &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; is freq gt max freq found
+&lt;&#x2F;span&gt;&lt;span&gt;            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freq &lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxFreqFound &lt;&#x2F;span&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; found candidate number
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxCandidateFound &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;num
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; register the current max freq found
+&lt;&#x2F;span&gt;&lt;span&gt;                &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxFreqFound &lt;&#x2F;span&gt;&lt;span&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freq
+&lt;&#x2F;span&gt;&lt;span&gt;            }
+&lt;&#x2F;span&gt;&lt;span&gt;        }
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; update the K list result
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;KList&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;i&lt;&#x2F;span&gt;&lt;span&gt;] = &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxCandidateFound
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; remove the value found from map
+&lt;&#x2F;span&gt;&lt;span&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;delete&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;freqMap&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;maxCandidateFound&lt;&#x2F;span&gt;&lt;span&gt;)
+&lt;&#x2F;span&gt;&lt;span&gt;    }
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;KList
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;How_It_Works&quot;&gt;How It Works&lt;&#x2F;h2&gt;
+&lt;p&gt;The provided Go function &lt;code&gt;topKFrequent&lt;&#x2F;code&gt; aims to identify the &lt;code&gt;k&lt;&#x2F;code&gt; most frequent elements in the &lt;code&gt;nums&lt;&#x2F;code&gt; array. Here&#x27;s a step-by-step breakdown of its logic:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Initialization&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;KList&lt;&#x2F;code&gt;: A slice of integers with a length of &lt;code&gt;K&lt;&#x2F;code&gt; is created to store the top &lt;code&gt;k&lt;&#x2F;code&gt; frequent elements.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;freqMap&lt;&#x2F;code&gt;: A map is initialized to keep track of the frequency of each element in &lt;code&gt;nums&lt;&#x2F;code&gt;. The keys are the elements from &lt;code&gt;nums&lt;&#x2F;code&gt;, and the values are their corresponding counts.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Frequency Counting&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The function iterates over each number in &lt;code&gt;nums&lt;&#x2F;code&gt;, incrementing its count in &lt;code&gt;freqMap&lt;&#x2F;code&gt;. After this loop, &lt;code&gt;freqMap&lt;&#x2F;code&gt; contains the frequency of every unique element in &lt;code&gt;nums&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Identifying Top K Elements&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The function enters a loop that runs &lt;code&gt;K&lt;&#x2F;code&gt; times, intending to find the top &lt;code&gt;k&lt;&#x2F;code&gt; frequent elements.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Within Each Iteration&lt;&#x2F;strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;It initializes two variables: &lt;code&gt;maxFreqFound&lt;&#x2F;code&gt; to keep track of the highest frequency found in the current iteration, and &lt;code&gt;maxCandidateFound&lt;&#x2F;code&gt; to store the element with this highest frequency.&lt;&#x2F;li&gt;
+&lt;li&gt;It iterates over &lt;code&gt;freqMap&lt;&#x2F;code&gt;, comparing each element&#x27;s frequency to &lt;code&gt;maxFreqFound&lt;&#x2F;code&gt;. If a higher frequency is found, it updates both &lt;code&gt;maxFreqFound&lt;&#x2F;code&gt; and &lt;code&gt;maxCandidateFound&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;After traversing the entire &lt;code&gt;freqMap&lt;&#x2F;code&gt;, &lt;code&gt;maxCandidateFound&lt;&#x2F;code&gt; holds the element with the highest remaining frequency.&lt;&#x2F;li&gt;
+&lt;li&gt;This element is added to &lt;code&gt;KList&lt;&#x2F;code&gt;, and its entry is removed from &lt;code&gt;freqMap&lt;&#x2F;code&gt; to prevent it from being considered in subsequent iterations.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Result&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;After &lt;code&gt;K&lt;&#x2F;code&gt; iterations, &lt;code&gt;KList&lt;&#x2F;code&gt; contains the top &lt;code&gt;k&lt;&#x2F;code&gt; frequent elements, which the function returns.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Example_Walkthrough&quot;&gt;Example Walkthrough&lt;&#x2F;h2&gt;
+&lt;p&gt;Let&#x27;s walk through &lt;strong&gt;Example 1&lt;&#x2F;strong&gt; to understand how the function operates:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Input&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;nums = [1,1,1,2,2,3]&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;k = 2&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Process&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Frequency Counting&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;After the first loop, &lt;code&gt;freqMap&lt;&#x2F;code&gt; becomes:&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    1: 3,
+&lt;&#x2F;span&gt;&lt;span&gt;    2: 2,
+&lt;&#x2F;span&gt;&lt;span&gt;    3: 1
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;First Iteration (&lt;code&gt;i=0&lt;&#x2F;code&gt;)&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Initialize &lt;code&gt;maxFreqFound = 0&lt;&#x2F;code&gt;, &lt;code&gt;maxCandidateFound = 0&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Iterate over &lt;code&gt;freqMap&lt;&#x2F;code&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;num=1&lt;&#x2F;code&gt;, &lt;code&gt;freq=3&lt;&#x2F;code&gt;: Since &lt;code&gt;3 &amp;gt; 0&lt;&#x2F;code&gt;, update &lt;code&gt;maxFreqFound = 3&lt;&#x2F;code&gt;, &lt;code&gt;maxCandidateFound = 1&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;num=2&lt;&#x2F;code&gt;, &lt;code&gt;freq=2&lt;&#x2F;code&gt;: &lt;code&gt;2 &amp;lt; 3&lt;&#x2F;code&gt;, no change.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;num=3&lt;&#x2F;code&gt;, &lt;code&gt;freq=1&lt;&#x2F;code&gt;: &lt;code&gt;1 &amp;lt; 3&lt;&#x2F;code&gt;, no change.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Add &lt;code&gt;1&lt;&#x2F;code&gt; to &lt;code&gt;KList[0]&lt;&#x2F;code&gt; and remove &lt;code&gt;1&lt;&#x2F;code&gt; from &lt;code&gt;freqMap&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KList&lt;&#x2F;code&gt; now: &lt;code&gt;[1, 0]&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;freqMap&lt;&#x2F;code&gt; now:&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    2: 2,
+&lt;&#x2F;span&gt;&lt;span&gt;    3: 1
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Second Iteration (&lt;code&gt;i=1&lt;&#x2F;code&gt;)&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Initialize &lt;code&gt;maxFreqFound = 0&lt;&#x2F;code&gt;, &lt;code&gt;maxCandidateFound = 0&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Iterate over &lt;code&gt;freqMap&lt;&#x2F;code&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;num=2&lt;&#x2F;code&gt;, &lt;code&gt;freq=2&lt;&#x2F;code&gt;: Since &lt;code&gt;2 &amp;gt; 0&lt;&#x2F;code&gt;, update &lt;code&gt;maxFreqFound = 2&lt;&#x2F;code&gt;, &lt;code&gt;maxCandidateFound = 2&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;num=3&lt;&#x2F;code&gt;, &lt;code&gt;freq=1&lt;&#x2F;code&gt;: &lt;code&gt;1 &amp;lt; 2&lt;&#x2F;code&gt;, no change.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Add &lt;code&gt;2&lt;&#x2F;code&gt; to &lt;code&gt;KList[1]&lt;&#x2F;code&gt; and remove &lt;code&gt;2&lt;&#x2F;code&gt; from &lt;code&gt;freqMap&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;KList&lt;&#x2F;code&gt; now: &lt;code&gt;[1, 2]&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;freqMap&lt;&#x2F;code&gt; now:&lt;pre style=&quot;background-color:#2b303b;color:#c0c5ce;&quot;&gt;&lt;code&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;    3: 1
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Result&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The function returns &lt;code&gt;[1, 2]&lt;&#x2F;code&gt; as the two most frequent elements.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Time_and_Space_Complexity&quot;&gt;Time and Space Complexity&lt;&#x2F;h2&gt;
+&lt;p&gt;Analyzing the performance of the &lt;code&gt;topKFrequent&lt;&#x2F;code&gt; function provides insights into its efficiency and scalability.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;Time_Complexity&quot;&gt;Time Complexity&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Frequency Counting&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Iterating over &lt;code&gt;nums&lt;&#x2F;code&gt; to build &lt;code&gt;freqMap&lt;&#x2F;code&gt; takes &lt;strong&gt;O(n)&lt;&#x2F;strong&gt; time, where &lt;code&gt;n&lt;&#x2F;code&gt; is the number of elements in &lt;code&gt;nums&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Identifying Top K Elements&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;For each of the &lt;code&gt;k&lt;&#x2F;code&gt; iterations:
+&lt;ul&gt;
+&lt;li&gt;The inner loop traverses the &lt;code&gt;freqMap&lt;&#x2F;code&gt;, which initially has up to &lt;code&gt;n&lt;&#x2F;code&gt; unique elements but decreases as elements are removed.&lt;&#x2F;li&gt;
+&lt;li&gt;In the worst case, each inner loop iteration takes &lt;strong&gt;O(n)&lt;&#x2F;strong&gt; time.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;Thus, the overall time complexity for this part is &lt;strong&gt;O(k * n)&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Total Time Complexity&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Combining both parts, the total time complexity is &lt;strong&gt;O(n + k * n)&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;In scenarios where &lt;code&gt;k&lt;&#x2F;code&gt; is small relative to &lt;code&gt;n&lt;&#x2F;code&gt;, this approximates to &lt;strong&gt;O(n)&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;However, in the worst-case scenario where &lt;code&gt;k&lt;&#x2F;code&gt; is proportional to &lt;code&gt;n&lt;&#x2F;code&gt;, the time complexity becomes &lt;strong&gt;O(n²)&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;Space_Complexity&quot;&gt;Space Complexity&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Frequency Map&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;freqMap&lt;&#x2F;code&gt; stores up to &lt;code&gt;n&lt;&#x2F;code&gt; unique elements, resulting in &lt;strong&gt;O(n)&lt;&#x2F;strong&gt; space.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Result List&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;KList&lt;&#x2F;code&gt; stores &lt;code&gt;k&lt;&#x2F;code&gt; elements, contributing &lt;strong&gt;O(k)&lt;&#x2F;strong&gt; space.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Total Space Complexity&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The overall space complexity is &lt;strong&gt;O(n + k)&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Since &lt;code&gt;k&lt;&#x2F;code&gt; is typically much smaller than &lt;code&gt;n&lt;&#x2F;code&gt;, this is effectively &lt;strong&gt;O(n)&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Potential_Improvements&quot;&gt;Potential Improvements&lt;&#x2F;h2&gt;
+&lt;p&gt;While the provided implementation is straightforward, there are more efficient approaches to solving the Top K Frequent Elements problem, especially for large datasets.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Heap-Based Approach&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Utilize a min-heap of size &lt;code&gt;k&lt;&#x2F;code&gt; to keep track of the top &lt;code&gt;k&lt;&#x2F;code&gt; elements.&lt;&#x2F;li&gt;
+&lt;li&gt;Time Complexity: &lt;strong&gt;O(n log k)&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Space Complexity: &lt;strong&gt;O(n)&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Bucket Sort&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create buckets where the index represents the frequency, and each bucket contains elements with that frequency.&lt;&#x2F;li&gt;
+&lt;li&gt;Iterate through the buckets in reverse order to gather the top &lt;code&gt;k&lt;&#x2F;code&gt; elements.&lt;&#x2F;li&gt;
+&lt;li&gt;Time Complexity: &lt;strong&gt;O(n)&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Space Complexity: &lt;strong&gt;O(n)&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Optimizing Current Implementation&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Replace the inner loop that finds the maximum frequency with a more efficient search mechanism.&lt;&#x2F;li&gt;
+&lt;li&gt;Avoid removing elements from &lt;code&gt;freqMap&lt;&#x2F;code&gt;, which can be costly.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Implementing one of these optimized approaches can significantly reduce the time complexity, especially when dealing with large input sizes and values of &lt;code&gt;k&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;Conclusion&quot;&gt;Conclusion&lt;&#x2F;h2&gt;
+&lt;p&gt;The &lt;code&gt;topKFrequent&lt;&#x2F;code&gt; function offers a clear and intuitive method for identifying the most frequent elements within an integer array using Go&#x27;s powerful data structures. By leveraging maps to count frequencies and iteratively extracting the top &lt;code&gt;k&lt;&#x2F;code&gt; elements, the function accomplishes its goal effectively for smaller datasets.&lt;&#x2F;p&gt;
+&lt;p&gt;However, for scalability and performance optimization, especially with larger datasets, exploring heap-based or bucket sort methodologies is advisable. These alternatives provide enhanced time complexities and can handle more extensive and varied input sizes with greater efficiency.&lt;&#x2F;p&gt;
+&lt;p&gt;Understanding both the strengths and limitations of the provided approach equips developers with the knowledge to choose the most appropriate algorithm based on the specific requirements and constraints of their projects.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
     <entry xml:lang="en">
         <title>Exploring Binary Search in Go: Iterative and Recursive Implementations</title>
         <published>2024-06-02T00:00:00+00:00</published>
