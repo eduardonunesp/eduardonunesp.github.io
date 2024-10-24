@@ -1,150 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<html class="dark light">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    
-
-    
-    
-    
-    <title>
-         Golang One Month Later (Part 1)
+    <head>
         
-    </title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        
-            <meta property="og:title" content="Golang One Month Later (Part 1)" />
-        
-     
-
-     
-         
-             <meta property="og:description" content="Ed On Code is a blog about software development and related topics." />
-         
-     
-
-     
-         
-             <meta name="description" content="Ed On Code is a blog about software development and related topics." />
-         
-    
-
-    
-    
-
-    
-    
-        <link href=https://edoncode.dev/fonts.css rel="stylesheet" />
-    
-
-    
-    
-
-    
-    
-
-    
-    
-    
-    
-    
-
-    
-
-    
-    <link rel="alternate" type="application/atom+xml" title="Ed On Code" href="https://edoncode.dev/atom.xml">
-
-
-    
-    
-        <link rel="stylesheet" type="text/css" href=https://edoncode.dev/theme/light.css />
-        <link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://edoncode.dev/theme/dark.css" />
-    
-
-    <!-- Set the correct theme in the script -->
-    <script src=https://edoncode.dev/js/themetoggle.js></script>
-    
-        <script>setTheme(getSavedTheme());</script>
-    
-
-    <link rel="stylesheet" type="text/css" media="screen" href=https://edoncode.dev/main.css />
-
-    
-</head>
-
-
-<body>
-    <div class="content">
-        <header>
-    <div class="main">
-        <a href=https:&#x2F;&#x2F;edoncode.dev>Ed On Code</a>
-
-        <div class="socials">
-            
-        </div>
-    </div>
-
-    <nav>
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
         
 
-        
-        |<a id="dark-mode-toggle" onclick="toggleTheme(); event.preventDefault();" href="#">
-            <img src=https://edoncode.dev/feather/sun.svg id="sun-icon" style="filter: invert(1);" alt="Light" />
-            <img src=https://edoncode.dev/feather/moon.svg id="moon-icon" alt="Dark" />
-        </a>
-
-        <!-- Inititialize the theme toggle icons -->
-        <script>updateItemToggleTheme()</script>
-        
-    </nav>
-</header>
-
+        <title>Ed On Code</title>
 
         
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
         
-    
-<main>
-    <article>
-        <div class="title">
-            
-            
-    <div class="page-header">
-        Golang One Month Later (Part 1)<span class="primary-color" style="font-size: 1.6em">.</span>
-    </div>
-
-
-                <div class="meta">
-                    
-                        Posted on <time>2015-10-09</time>
-                    
-
-                    
-
-                    
-
-                    
-                    
-
-                    
-                    
-
-                    
-
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
                 </div>
-        </div>
-
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
         
-
         
-        
-
-        <section class="body">
-            <p>Maybe it’s been more than a month that I’m studying Go http://www.golangbr.org/; however this is not the case, the important thing is that I want to share a little of what happened during this period — starting with the fact that I had not been studying a new language for some time (in fact Go is really new, it was released to the public on March 2012, when I was “immersed” in Python and then Node.JS).</p>
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Golang One Month Later (Part 1)</h1>
+        <div class="border"></div>
+        <time datetime="2015-10-09" class="date" itemprop="datePublished">
+            09 Oct 2015
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        <p>Maybe it’s been more than a month that I’m studying Go http://www.golangbr.org/; however this is not the case, the important thing is that I want to share a little of what happened during this period — starting with the fact that I had not been studying a new language for some time (in fact Go is really new, it was released to the public on March 2012, when I was “immersed” in Python and then Node.JS).</p>
 <h2 id="The_Way_Go_Creates_Its_Environment">The Way Go Creates Its Environment</h2>
 <p>In Python, we often use virtualenv to create a package environment that doesn’t mix with the global environment; in Node.JS, NPM makes life even more comfortable to create a dependency environment in the project directory itself. Go has an approach that I found strange at first, but once I got used to making sense.</p>
 <p>The idea is to create a root directory for the environment, which contains dependencies and sources projects on this path, as well as the compiled binaries in Go.</p>
@@ -192,18 +129,25 @@
 <p>Since Go functions can return more than two variables, it is pretty common to return an error type and a result, so you are continually doing error checks one after the other in heaps. Go even has an exception type called panic, but it’s not recommended overuse it.</p>
 <p>The code formatting pattern is a rule that you have a program to format your code (it comes bundled and is called go format). To be clear: metalinter is a collection of various static checks. When I pass my code of even sadness, I have to complain that the code is too big, or that my keyboard is dirty, jokes aside, when you follow this linter, the code is standard Go Master.</p>
 
-        </section>
-    </article>
-</main>
-
-
-
-        
-            
-        
-
-        
     </div>
-</body>
+</article>
 
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
 </html>

@@ -1,150 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<html class="dark light">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    
-
-    
-    
-    
-    <title>
-         Practicing Golang (Part 2)
+    <head>
         
-    </title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        
-            <meta property="og:title" content="Practicing Golang (Part 2)" />
-        
-     
-
-     
-         
-             <meta property="og:description" content="Ed On Code is a blog about software development and related topics." />
-         
-     
-
-     
-         
-             <meta name="description" content="Ed On Code is a blog about software development and related topics." />
-         
-    
-
-    
-    
-
-    
-    
-        <link href=https://edoncode.dev/fonts.css rel="stylesheet" />
-    
-
-    
-    
-
-    
-    
-
-    
-    
-    
-    
-    
-
-    
-
-    
-    <link rel="alternate" type="application/atom+xml" title="Ed On Code" href="https://edoncode.dev/atom.xml">
-
-
-    
-    
-        <link rel="stylesheet" type="text/css" href=https://edoncode.dev/theme/light.css />
-        <link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://edoncode.dev/theme/dark.css" />
-    
-
-    <!-- Set the correct theme in the script -->
-    <script src=https://edoncode.dev/js/themetoggle.js></script>
-    
-        <script>setTheme(getSavedTheme());</script>
-    
-
-    <link rel="stylesheet" type="text/css" media="screen" href=https://edoncode.dev/main.css />
-
-    
-</head>
-
-
-<body>
-    <div class="content">
-        <header>
-    <div class="main">
-        <a href=https:&#x2F;&#x2F;edoncode.dev>Ed On Code</a>
-
-        <div class="socials">
-            
-        </div>
-    </div>
-
-    <nav>
+        <meta name="description" content="Ed On Code is a blog about software development and related topics.">
         
 
-        
-        |<a id="dark-mode-toggle" onclick="toggleTheme(); event.preventDefault();" href="#">
-            <img src=https://edoncode.dev/feather/sun.svg id="sun-icon" style="filter: invert(1);" alt="Light" />
-            <img src=https://edoncode.dev/feather/moon.svg id="moon-icon" alt="Dark" />
-        </a>
-
-        <!-- Inititialize the theme toggle icons -->
-        <script>updateItemToggleTheme()</script>
-        
-    </nav>
-</header>
-
+        <title>Ed On Code</title>
 
         
+            <link rel="stylesheet" href="https://edoncode.dev/theme.css">
         
-    
-<main>
-    <article>
-        <div class="title">
-            
-            
-    <div class="page-header">
-        Practicing Golang (Part 2)<span class="primary-color" style="font-size: 1.6em">.</span>
-    </div>
-
-
-                <div class="meta">
-                    
-                        Posted on <time>2015-10-13</time>
-                    
-
-                    
-
-                    
-
-                    
-                    
-
-                    
-                    
-
-                    
-
+        
+    </head>
+    <body>
+        <div class="content">
+        
+        
+            <header>
+                <div class="header-left">
+                    <a href="https://edoncode.dev" class="logo">Ed On Code</a>
                 </div>
-        </div>
-
+                <div class="header-right">
+                    <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
+                      <ul>
+                        
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Tech/">
+                                    <span itemprop="name">Tech</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Golang/">
+                                    <span itemprop="name">Golang</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Adventures/">
+                                    <span itemprop="name">Adventures</span>
+                                </a>
+                            </li>
+                        
+                            
+                            <li class="nav">
+                                <a itemprop="url" href="https://edoncode.dev/Thoughts/">
+                                    <span itemprop="name">Thoughts</span>
+                                </a>
+                            </li>
+                        
+                        
+                        <li class="nav">
+                            <a itemprop="url" href="https://github.com/eduardonunesp">
+                                <img class="icon" src="https://edoncode.dev/icons/github.svg" alt="Github">
+                            </a>
+                        </li>
+                        
+                        
+                      </ul>
+                    </nav>
+                </div>
+            </header>
         
-
         
-        
-
-        <section class="body">
-            <h2 id="Channels_and_Routines">Channels and Routines</h2>
+        <main>
+            
+<article itemscope itemtype="http://schema.org/BlogPosting">
+    <div itemprop="headline">
+        <h1>Practicing Golang (Part 2)</h1>
+        <div class="border"></div>
+        <time datetime="2015-10-13" class="date" itemprop="datePublished">
+            13 Oct 2015
+        </time>
+    </div>
+    <div itemprop="articleBody">
+        <h2 id="Channels_and_Routines">Channels and Routines</h2>
 <p>The time has come to discuss one of the main features of the Go language: concurrency. Undoubtedly, one of the most exciting aspects of Go is that concurrency is ingrained in the language’s core. It does not require auxiliary libraries, workarounds, or makeshift solutions.</p>
 <p>The key components responsible for Go’s concurrency model are the go keyword, channels, and goroutines. The go keyword initiates a function as a goroutine, allowing it to run independently alongside the main thread until it completes. Channels facilitate communication between goroutines by providing a synchronized way to send and receive values. When a value is sent to a channel (similar to a pipe), it is only received if the channel is ready to accept it, ensuring synchronization and preventing race conditions between connected functions.</p>
 <p>Additionally, Go supports buffered channels, which allow for more flexible communication patterns by enabling channels to hold a specified number of values without immediate receipt. Understanding these concurrency mechanisms is essential for building efficient and scalable applications in Go. For more information, visit the Go Concurrency Tour.</p>
@@ -226,18 +163,25 @@
 <p>Finally, we reach the concluding steps of our implementation. On line 3, we create a pool using the pool function, which returns a channel. On line 4, the value from this channel is retrieved and stored in the latestResult variable, which, as its name suggests, holds the most recent result. Up to line 19, various initialization routines are performed, including setting variables, checking the environment, and, if necessary, changing the HTTP port (which is essential when deploying to platforms like Heroku). On line 21, a handler is created for the root route “/” and assigned to a function designed to handle HTTP requests.</p>
 <p>At this point, on line 22, the select statement is used to check if a value was successfully retrieved from the channel. If a value is present, the corresponding execution path is followed; otherwise, the default case is executed if the channel is empty. Finally, the latestResult value is written to the HTTP response, ensuring that the requesting user receives the most recent USD value.</p>
 
-        </section>
-    </article>
-</main>
-
-
-
-        
-            
-        
-
-        
     </div>
-</body>
+</article>
 
+        </main>
+        
+        <footer>
+            
+            <div class="border"></div>
+            <div class="footer">
+                <small class="footer-left">
+                    Copyright &copy; Eduardo Pereira
+                </small>
+                <small class="footer-right">
+                    Powered by <a href="https://www.getzola.org">Zola</a> | Theme <a href="https://github.com/barlog-m/oceanic-zen">Oceanic Zen</a>
+                </small>
+            </div>
+        
+        </footer>
+    
+        </div>
+    </body>
 </html>

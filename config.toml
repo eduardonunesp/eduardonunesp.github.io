@@ -15,7 +15,7 @@ build_search_index = true
 default_language = "en"
 
 # theme = "anpu"
-theme = "apollo"
+theme = "oceanic-zen"
 
 
 generate_feeds = true
